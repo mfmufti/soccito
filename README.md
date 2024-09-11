@@ -8,4 +8,4 @@
 </ul> 
 
 ## Team Contract
-<a href="-/wikis/Team-Contract#team-members">Team Contract</a>
+<a href="~/wikis/Team-Contract#team-members">Team Contract</a>
