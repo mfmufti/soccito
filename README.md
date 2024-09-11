@@ -6,6 +6,7 @@
   <li>David Movsisyan (dmovsisy@uwaterloo.ca)</li>
   <li>Omar Elnajmi (oelnajmi@uwaterloo.ca)</li>
 </ul> 
+
 ## Team Contract
 <ul>
   <li>Meetings: We plan on meeting after every class and once online every week.</li>
