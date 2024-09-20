@@ -9,3 +9,4 @@
 
 ## Team Contract
 <a href="https://git.uwaterloo.ca/mw2shah/team-9/-/wikis/Team-Contract">Team Contract</a>
+<a href="https://git.uwaterloo.ca/mw2shah/team-9/-/wikis/Project-Proposal">Project Proposal</a>
