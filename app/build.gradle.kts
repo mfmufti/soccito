@@ -5,7 +5,6 @@ plugins {
     // Add the Google services Gradle plugin
     id("com.google.gms.google-services")
 }
-}
 
 android {
     namespace = "com.team9.soccermanager"
