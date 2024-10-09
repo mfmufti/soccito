@@ -1,6 +1,7 @@
 package com.team9.soccermanager
 
 import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -10,6 +11,7 @@ import com.google.firebase.auth.auth
 import com.google.firebase.Firebase
 
 class EmailPasswordActivity : Activity() {
+
 
     // [START declare_auth]
     private lateinit var auth: FirebaseAuth
@@ -24,6 +26,10 @@ class EmailPasswordActivity : Activity() {
         // [END initialize_auth]
     }
 
+    init {
+        auth = Firebase.auth
+    }
+
     // [START on_start_check_user]
     public override fun onStart() {
         super.onStart()
@@ -35,7 +41,7 @@ class EmailPasswordActivity : Activity() {
     }
     // [END on_start_check_user]
 
-    private fun createAccount(email: String, password: String) {
+    public fun createAccount(baseContext: Context, email: String, password: String) {
         // [START create_user_with_email]
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
@@ -58,7 +64,7 @@ class EmailPasswordActivity : Activity() {
         // [END create_user_with_email]
     }
 
-    private fun signIn(email: String, password: String) {
+    public fun signIn(baseContext: Context, email: String, password: String) {
         // [START sign_in_with_email]
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
@@ -66,6 +72,11 @@ class EmailPasswordActivity : Activity() {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithEmail:success")
                     val user = auth.currentUser
+                    Toast.makeText(
+                        baseContext,
+                        "We are In",
+                        Toast.LENGTH_SHORT,
+                    ).show()
                     updateUI(user)
                 } else {
                     // If sign in fails, display a message to the user.
@@ -81,7 +92,11 @@ class EmailPasswordActivity : Activity() {
         // [END sign_in_with_email]
     }
 
-    private fun sendEmailVerification() {
+    public fun signOut() {
+        Firebase.auth.signOut()
+    }
+
+    public fun sendEmailVerification() {
         // [START send_email_verification]
         val user = auth.currentUser!!
         user.sendEmailVerification()
@@ -98,6 +113,15 @@ class EmailPasswordActivity : Activity() {
     }
 
     companion object {
+        var instance : EmailPasswordActivity? = null;
+
+        public fun get() : EmailPasswordActivity {
+            if (instance == null) {
+                instance = EmailPasswordActivity();
+            }
+            return instance!!;
+        }
         private const val TAG = "EmailPassword"
     }
+
 }

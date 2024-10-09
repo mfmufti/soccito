@@ -1,5 +1,6 @@
 package com.team9.soccermanager
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -12,15 +13,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.*
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.*
 import com.team9.soccermanager.ui.theme.SoccerManagerTheme
 import androidx.compose.runtime.*
-import android.util.Log
-import android.widget.Toast
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.auth
 import com.google.firebase.Firebase
 
@@ -32,7 +28,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             SoccerManagerTheme {
                 Surface(modifier = Modifier.fillMaxSize()) {
-                    MainScreen()
+                    MainScreen(baseContext)
                 }
             }
         }
@@ -64,18 +60,18 @@ private fun getUserProfile() {
 
 
 @Composable
-fun MainScreen() {
+fun MainScreen(baseContext: Context) {
     var isLoginScreen by remember { mutableStateOf(true) }
 
     if (isLoginScreen) {
-        LoginScreen(switchToRegister = { isLoginScreen = false })
+        LoginScreen(baseContext = baseContext, switchToRegister = { isLoginScreen = false })
     } else {
-        RegistrationScreen(switchToLogin = { isLoginScreen = true })
+        RegistrationScreen(baseContext = baseContext, switchToLogin = { isLoginScreen = true })
     }
 }
 
 @Composable
-fun LoginScreen(switchToRegister: () -> Unit) {
+fun LoginScreen(switchToRegister: () -> Unit, baseContext: Context) {
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("")}
 
@@ -110,7 +106,7 @@ fun LoginScreen(switchToRegister: () -> Unit) {
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
-            onClick = { /* handle login */ },
+            onClick = { EmailPasswordActivity.get().signIn(baseContext, username, password) },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Login")
@@ -130,7 +126,7 @@ fun LoginScreen(switchToRegister: () -> Unit) {
 }
 
 @Composable
-fun RegistrationScreen(switchToLogin: () -> Unit) {
+fun RegistrationScreen(switchToLogin: () -> Unit, baseContext: Context) {
     var username by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -175,7 +171,7 @@ fun RegistrationScreen(switchToLogin: () -> Unit) {
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
-            onClick = { /* handle registration */ },
+            onClick = { EmailPasswordActivity.get().createAccount(baseContext, email, password) },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Register")
