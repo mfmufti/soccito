@@ -17,6 +17,13 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.*
 import com.team9.soccermanager.ui.theme.SoccerManagerTheme
 import androidx.compose.runtime.*
+import android.util.Log
+import android.widget.Toast
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.auth
+import com.google.firebase.Firebase
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,6 +38,30 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
+
+private fun getUserProfile() {
+    // [START get_user_profile]
+    val user = Firebase.auth.currentUser
+    user?.let {
+        // Name, email address, and profile photo Url
+        val name = it.displayName
+        val email = it.email
+        val photoUrl = it.photoUrl
+
+        // Check if user's email is verified
+        val emailVerified = it.isEmailVerified
+
+        // The user's ID, unique to the Firebase project. Do NOT use this value to
+        // authenticate with your backend server, if you have one. Use
+        // FirebaseUser.getIdToken() instead.
+        val uid = it.uid
+    }
+    // [END get_user_profile]
+}
+
+
+
 
 @Composable
 fun MainScreen() {
