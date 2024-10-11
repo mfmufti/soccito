@@ -15,3 +15,6 @@
 
 ## Design Proposal
 <a href="https://git.uwaterloo.ca/mw2shah/team-9/-/wikis/Design-Proposal">Design Proposal</a>
+
+## Meeting Notes
+<a href="https://git.uwaterloo.ca/mw2shah/team-9/-/wikis/Meeting-Notes">Meeting Notes</a>
