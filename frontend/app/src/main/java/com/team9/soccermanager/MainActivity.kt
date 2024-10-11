@@ -62,7 +62,7 @@ fun loginHandler(baseContext: Context, pwd: String, username: String) {
         if (success) {
             // User is logged in, proceed to the main screen
             println("LOGGED IN, WELCOME")
-            val name = "John Doe"
+            var name = username
             val intent = Intent(baseContext, WelcomeScreen::class.java).apply {
                 putExtra("USER_NAME", name)
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK
@@ -74,12 +74,12 @@ fun loginHandler(baseContext: Context, pwd: String, username: String) {
     }
 }
 
-fun registerHandler(baseContext: Context, pwd: String, username: String) {
-    EmailPasswordActivity.get().createAccount(baseContext, username, pwd) { success ->
+fun registerHandler(baseContext: Context, email: String, pwd: String, username: String) {
+    EmailPasswordActivity.get().createAccount(baseContext, username = username, email = email, password = pwd) { success ->
         if (success) {
             // User is logged in, proceed to the main screen
             println("LOGGED IN, WELCOME")
-            val name = "John Doe"
+            var name = username
             val intent = Intent(baseContext, WelcomeScreen::class.java).apply {
                 putExtra("USER_NAME", name)
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK
@@ -203,7 +203,7 @@ fun RegistrationScreen(switchToLogin: () -> Unit, baseContext: Context) {
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
-            onClick = { registerHandler(baseContext, username = email, pwd = password) },
+            onClick = { registerHandler(baseContext, username = username, email = email, pwd = password) },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Register")

@@ -10,6 +10,8 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.auth
 import com.google.firebase.Firebase
 import org.junit.Assert.*
+import com.google.firebase.firestore.firestore
+
 
 class EmailPasswordActivity : Activity() {
 
@@ -26,6 +28,8 @@ class EmailPasswordActivity : Activity() {
         auth = Firebase.auth
         // [END initialize_auth]
     }
+
+    val db = Firebase.firestore
 
     init {
         auth = Firebase.auth
@@ -47,7 +51,28 @@ class EmailPasswordActivity : Activity() {
         return auth.currentUser != null
     }
 
-    public fun createAccount(baseContext: Context, email: String, password: String, fcn: (Boolean) -> Unit) {
+    public fun getUserName(fcn: (String) -> Unit) {
+        var name: String
+        println("getUserName")
+        db.collection("users")
+            .get()
+            .addOnSuccessListener { result ->
+                print("SuccessListener")
+                for (document in result) {
+                    if(document.id == auth.currentUser?.uid!!){
+                        name = document.data.get("username").toString()
+                        fcn(name)
+                    }
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.w(TAG, "Error getting documents.", exception)
+                fcn("")
+            }
+
+    }
+
+    public fun createAccount(baseContext: Context, username: String, email: String, password: String, fcn: (Boolean) -> Unit) {
         // [START create_user_with_email]
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
@@ -55,6 +80,16 @@ class EmailPasswordActivity : Activity() {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "createUserWithEmail:success")
                     val user = auth.currentUser
+                    val userProfile = hashMapOf(
+                        "username" to username,
+                        "email" to email
+                    )
+                    db.collection("users").document(auth.currentUser?.uid!!)
+                        .set(userProfile)
+                        .addOnSuccessListener { documentReference ->
+                            //    Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
+                            Toast.makeText(baseContext, "DocumentSnapshot added with ID: ${auth.currentUser?.uid!!}", Toast.LENGTH_SHORT).show()
+                        }
                     updateUI(user)
                 } else {
                     // If sign in fails, display a message to the user.
