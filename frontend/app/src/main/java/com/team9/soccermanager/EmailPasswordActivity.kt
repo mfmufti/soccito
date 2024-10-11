@@ -9,6 +9,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.auth
 import com.google.firebase.Firebase
+import org.junit.Assert.*
 
 class EmailPasswordActivity : Activity() {
 
@@ -28,6 +29,7 @@ class EmailPasswordActivity : Activity() {
 
     init {
         auth = Firebase.auth
+        //assertEquals(auth.currentUser, null)
     }
 
     // [START on_start_check_user]
@@ -45,7 +47,7 @@ class EmailPasswordActivity : Activity() {
         return auth.currentUser != null
     }
 
-    public fun createAccount(baseContext: Context, email: String, password: String) {
+    public fun createAccount(baseContext: Context, email: String, password: String, fcn: (Boolean) -> Unit) {
         // [START create_user_with_email]
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
@@ -64,11 +66,12 @@ class EmailPasswordActivity : Activity() {
                     ).show()
                     updateUI(null)
                 }
+                fcn(task.isSuccessful)
             }
         // [END create_user_with_email]
     }
 
-    public fun signIn(baseContext: Context, email: String, password: String) {
+    public fun signIn(baseContext: Context, email: String, password: String, fcn: (Boolean) -> Unit) {
         // [START sign_in_with_email]
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
@@ -92,6 +95,7 @@ class EmailPasswordActivity : Activity() {
                     ).show()
                     updateUI(null)
                 }
+                fcn(task.isSuccessful)
             }
         // [END sign_in_with_email]
     }
@@ -114,6 +118,11 @@ class EmailPasswordActivity : Activity() {
     }
 
     private fun reload() {
+    }
+
+    public override fun onDestroy() {
+        super.onDestroy()
+        signOut()
     }
 
     companion object {

@@ -20,7 +20,6 @@ import com.team9.soccermanager.ui.theme.SoccerManagerTheme
 import androidx.compose.runtime.*
 import com.google.firebase.auth.auth
 import com.google.firebase.Firebase
-import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,19 +58,36 @@ private fun getUserProfile() {
 
 
 fun loginHandler(baseContext: Context, pwd: String, username: String) {
-    EmailPasswordActivity.get().signIn(baseContext, username, pwd)
-    // Check if the user is logged in
-    if (EmailPasswordActivity.get().isLoggedIn()) {
-        // User is logged in, proceed to the main screen
-        println("LOGGED IN, WELCOME")
-        val name = "John Doe"
-        val intent = Intent(baseContext, WelcomeScreen::class.java).apply {
-            putExtra("USER_NAME", name)
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+    EmailPasswordActivity.get().signIn(baseContext, username, pwd) { success ->
+        if (success) {
+            // User is logged in, proceed to the main screen
+            println("LOGGED IN, WELCOME")
+            val name = "John Doe"
+            val intent = Intent(baseContext, WelcomeScreen::class.java).apply {
+                putExtra("USER_NAME", name)
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            }
+            baseContext.startActivity(intent)
+        } else {
+            println("FAILED")
         }
-        baseContext.startActivity(intent)
-    } else {
-        println("FAILED")
+    }
+}
+
+fun registerHandler(baseContext: Context, pwd: String, username: String) {
+    EmailPasswordActivity.get().createAccount(baseContext, username, pwd) { success ->
+        if (success) {
+            // User is logged in, proceed to the main screen
+            println("LOGGED IN, WELCOME")
+            val name = "John Doe"
+            val intent = Intent(baseContext, WelcomeScreen::class.java).apply {
+                putExtra("USER_NAME", name)
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            }
+            baseContext.startActivity(intent)
+        } else {
+            println("FAILED")
+        }
     }
 }
 
@@ -88,7 +104,7 @@ fun MainScreen(baseContext: Context) {
 
 @Composable
 fun LoginScreen(switchToRegister: () -> Unit, baseContext: Context) {
-    var username by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("")}
 
     Column(
@@ -103,9 +119,9 @@ fun LoginScreen(switchToRegister: () -> Unit, baseContext: Context) {
         Spacer(modifier = Modifier.height(16.dp))
 
         TextField(
-            value = username,
-            onValueChange = { username = it },
-            label = { Text("Username") },
+            value = email,
+            onValueChange = { email = it },
+            label = { Text("Email") },
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -122,7 +138,7 @@ fun LoginScreen(switchToRegister: () -> Unit, baseContext: Context) {
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
-            onClick = { loginHandler(baseContext, password, username) },
+            onClick = { loginHandler(baseContext, password, email) },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Login")
@@ -187,7 +203,7 @@ fun RegistrationScreen(switchToLogin: () -> Unit, baseContext: Context) {
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
-            onClick = { EmailPasswordActivity.get().createAccount(baseContext, email, password) },
+            onClick = { registerHandler(baseContext, username = email, pwd = password) },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Register")
