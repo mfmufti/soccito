@@ -1,5 +1,6 @@
 package com.team9.soccermanager
 
+import android.content.Intent
 import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -19,7 +20,7 @@ import com.team9.soccermanager.ui.theme.SoccerManagerTheme
 import androidx.compose.runtime.*
 import com.google.firebase.auth.auth
 import com.google.firebase.Firebase
-
+import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,7 +58,22 @@ private fun getUserProfile() {
 }
 
 
-
+fun loginHandler(baseContext: Context, pwd: String, username: String) {
+    EmailPasswordActivity.get().signIn(baseContext, username, pwd)
+    // Check if the user is logged in
+    if (EmailPasswordActivity.get().isLoggedIn()) {
+        // User is logged in, proceed to the main screen
+        println("LOGGED IN, WELCOME")
+        val name = "John Doe"
+        val intent = Intent(baseContext, WelcomeScreen::class.java).apply {
+            putExtra("USER_NAME", name)
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        baseContext.startActivity(intent)
+    } else {
+        println("FAILED")
+    }
+}
 
 @Composable
 fun MainScreen(baseContext: Context) {
@@ -106,7 +122,7 @@ fun LoginScreen(switchToRegister: () -> Unit, baseContext: Context) {
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
-            onClick = { EmailPasswordActivity.get().signIn(baseContext, username, password) },
+            onClick = { loginHandler(baseContext, password, username) },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Login")

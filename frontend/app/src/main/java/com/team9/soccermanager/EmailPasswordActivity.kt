@@ -41,6 +41,10 @@ class EmailPasswordActivity : Activity() {
     }
     // [END on_start_check_user]
 
+    public fun isLoggedIn(): Boolean {
+        return auth.currentUser != null
+    }
+
     public fun createAccount(baseContext: Context, email: String, password: String) {
         // [START create_user_with_email]
         auth.createUserWithEmailAndPassword(email, password)
