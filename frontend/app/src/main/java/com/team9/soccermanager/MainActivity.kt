@@ -20,6 +20,7 @@ import com.team9.soccermanager.ui.theme.SoccerManagerTheme
 import androidx.compose.runtime.*
 import com.google.firebase.auth.auth
 import com.google.firebase.Firebase
+import com.google.firebase.firestore.firestore
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,16 +59,35 @@ private fun getUserProfile() {
 
 
 fun loginHandler(baseContext: Context, pwd: String, username: String) {
+    println("login handler");
     EmailPasswordActivity.get().signIn(baseContext, username, pwd) { success ->
         if (success) {
             // User is logged in, proceed to the main screen
-            println("LOGGED IN, WELCOME")
-            var name = username
-            val intent = Intent(baseContext, WelcomeScreen::class.java).apply {
-                putExtra("USER_NAME", name)
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            println("LOGGED IN... WELCOME")
+           /* Firebase.firestore.collection("users").get().addOnCompleteListener {
+                println("successful? ")
+                println(it.isSuccessful)
+                for(document in it.result) {
+                    println(Firebase.auth.currentUser?.email)
+                    println("document id " + document.data["email"])
+                    if(document.data["email"] == Firebase.auth.currentUser?.email){
+                        println(document.data.get("username").toString())
+                    }
+                }
             }
-            baseContext.startActivity(intent)
+            println("nice")*/
+
+            EmailPasswordActivity.get().getUserName {
+                var name = it
+                println("USERNAME FOUND ")
+                println(name)
+                val intent = Intent(baseContext, WelcomeScreen::class.java).apply {
+                    putExtra("USER_NAME", name)
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                }
+                baseContext.startActivity(intent)
+            }
+
         } else {
             println("FAILED")
         }
@@ -79,12 +99,16 @@ fun registerHandler(baseContext: Context, email: String, pwd: String, username: 
         if (success) {
             // User is logged in, proceed to the main screen
             println("LOGGED IN, WELCOME")
-            var name = username
-            val intent = Intent(baseContext, WelcomeScreen::class.java).apply {
-                putExtra("USER_NAME", name)
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            println("LOGGED IN, NOT WLECOME")
+            EmailPasswordActivity.get().getUserName {
+                println("HELLO HELLO HI!")
+                var name = it
+                val intent = Intent(baseContext, WelcomeScreen::class.java).apply {
+                    putExtra("USER_NAME", name)
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                }
+                baseContext.startActivity(intent)
             }
-            baseContext.startActivity(intent)
         } else {
             println("FAILED")
         }

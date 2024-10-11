@@ -9,7 +9,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.auth
 import com.google.firebase.Firebase
-import org.junit.Assert.*
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 
 
@@ -18,6 +18,7 @@ class EmailPasswordActivity : Activity() {
 
     // [START declare_auth]
     private lateinit var auth: FirebaseAuth
+    private lateinit var db: FirebaseFirestore
     // [END declare_auth]
 
     public override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,10 +30,11 @@ class EmailPasswordActivity : Activity() {
         // [END initialize_auth]
     }
 
-    val db = Firebase.firestore
+    //val db = Firebase.firestore
 
     init {
         auth = Firebase.auth
+        db = Firebase.firestore
         //assertEquals(auth.currentUser, null)
     }
 
