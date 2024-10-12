@@ -16,5 +16,8 @@
 ## Design Proposal
 <a href="https://git.uwaterloo.ca/mw2shah/team-9/-/wikis/Design-Proposal">Design Proposal</a>
 
+## Releases
+<a href="https://git.uwaterloo.ca/mw2shah/team-9/-/releases/1.1.0">Release 1.1.0</a>
+
 ## Meeting Notes
 <a href="https://git.uwaterloo.ca/mw2shah/team-9/-/wikis/Meeting-Notes">Meeting Notes</a>
