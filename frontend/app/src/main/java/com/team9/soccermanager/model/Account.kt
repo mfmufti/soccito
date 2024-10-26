@@ -3,10 +3,17 @@ package com.team9.soccermanager.model
 import android.util.Log
 import androidx.compose.runtime.Composable
 import com.google.firebase.Firebase
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.auth
+import com.google.firebase.auth.*
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
+
+enum class RegisterError {
+    NONE, WEAK_PASSWORD, BAD_EMAIL, USER_EXISTS, UNKNOWN
+}
+
+enum class LoginError {
+    NONE, NOT_EXIST, BAD_CREDENTIALS, UNKNOWN
+}
 
 class Account {
     private val TAG = "Model"
@@ -36,7 +43,7 @@ class Account {
             }
     }
 
-    fun createAccount(username: String, email: String, password: String, then: (Boolean) -> Unit = {}) {
+    fun createAccount(username: String, email: String, password: String, then: (RegisterError) -> Unit = {}) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -47,27 +54,34 @@ class Account {
                     )
                     db.collection("users").document(auth.currentUser?.uid!!)
                         .set(userProfile)
+                    then(RegisterError.NONE)
                 } else {
                     Log.w(TAG, "Failed to create account", task.exception)
+                    then(when (task.exception) {
+                        is FirebaseAuthWeakPasswordException -> RegisterError.WEAK_PASSWORD
+                        is FirebaseAuthInvalidCredentialsException -> RegisterError.BAD_EMAIL
+                        is FirebaseAuthUserCollisionException -> RegisterError.USER_EXISTS
+                        else -> RegisterError.UNKNOWN
+                    })
                 }
-                then(task.isSuccessful)
             }
     }
 
-    fun signIn(email: String, password: String, then: (Boolean) -> Unit = {}) {
+    fun signIn(email: String, password: String, then: (LoginError) -> Unit = {}) {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.d(TAG, "signInWithEmail:success")
+                    Log.d(TAG, "Sign in successful")
                     //val user = auth.currentUser
-                    // notify of success
+                    then(LoginError.NONE)
                 } else {
-                    // If sign in fails, display a message to the user.
-                    Log.w(TAG, "signInWithEmail:failure", task.exception)
-                    // notify of failure
+                    Log.w(TAG, "Failed to sign in", task.exception)
+                    then(when (task.exception) {
+                        is FirebaseAuthInvalidUserException -> LoginError.NOT_EXIST
+                        is FirebaseAuthInvalidCredentialsException -> LoginError.BAD_CREDENTIALS
+                        else -> LoginError.UNKNOWN
+                    })
                 }
-                then(task.isSuccessful)
             }
     }
 

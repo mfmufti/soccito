@@ -1,31 +1,25 @@
 package com.team9.soccermanager.screens.login
 
-import android.widget.Toast
-import com.team9.soccermanager.MainActivity
 import com.team9.soccermanager.model.Account
+import com.team9.soccermanager.model.LoginError
 
 class LoginViewModel {
     private var account = Account()
 
-    fun handleLogin(email: String, password: String, switchToWelcome: () -> Unit) {// Replace with meaningful form validation
-        // Replace with comprehensive form validation
+    fun handleLogin(email: String, password: String, success: () -> Unit, failure: (String) -> Unit) {
         if (email.isEmpty() || password.isEmpty()) {
+            failure("Please provide an email and password.")
             return
         }
-        account.signIn(email, password) { success ->
-            if (success) {
-                Toast.makeText(
-                    MainActivity.context,
-                    "Authentication successful",
-                    Toast.LENGTH_SHORT,
-                ).show()
-                switchToWelcome()
+        account.signIn(email, password) { status ->
+            if (status == LoginError.NONE) {
+                success()
             } else {
-                Toast.makeText(
-                    MainActivity.context,
-                    "Authentication failed",
-                    Toast.LENGTH_SHORT,
-                ).show()
+                failure(when (status) {
+                    LoginError.NOT_EXIST -> "No user with this email exists."
+                    LoginError.BAD_CREDENTIALS -> "Invalid username or password."
+                    else -> "Unknown error occurred."
+                })
             }
         }
     }
