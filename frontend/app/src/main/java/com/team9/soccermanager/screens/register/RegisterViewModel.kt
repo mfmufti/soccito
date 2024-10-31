@@ -4,14 +4,13 @@ import com.team9.soccermanager.model.Account
 import com.team9.soccermanager.model.RegisterError
 
 class RegisterViewModel {
-    private var account = Account()
 
     fun handleRegister(username: String, email: String, password: String, success: () -> Unit, failure: (String) -> Unit) {
         if (username.isEmpty() || email.isEmpty() || password.isEmpty()) {
             failure("Please fill all fields.")
             return
         }
-        account.createAccount(username, email, password) { status ->
+        Account.createAccount(username, email, password) { status ->
             if (status == RegisterError.NONE) {
                 success()
             } else {

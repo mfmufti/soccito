@@ -105,13 +105,19 @@ fun App(navController: NavHostController = rememberNavController()) {
             )
         }
         composable<NewAdminScreen> {
-            NewAdminView()
+            NewAdminView(
+                switchToHome = { nav.clearSwitch(HomeScreen) }
+            )
         }
         composable<NewCoachScreen> {
-            NewCoachView()
+            NewCoachView(
+                switchToHome = { nav.clearSwitch(HomeScreen) }
+            )
         }
         composable<NewPlayerScreen> {
-            NewPlayerView()
+            NewPlayerView(
+                switchToHome = { nav.clearSwitch(HomeScreen) }
+            )
         }
         composable<HomeScreen> {
             HomeView()

@@ -7,7 +7,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.unit.*
 
 @Composable
-fun NewCoachView() {
+fun NewCoachView(
+    switchToHome: () -> Unit,
+    viewModel: NewCoachViewModel = NewCoachViewModel()
+) {
     var league by remember { mutableStateOf("") }
     var team by remember { mutableStateOf("") }
 
@@ -46,7 +49,7 @@ fun NewCoachView() {
             Spacer(modifier = Modifier.height(16.dp))
 
             Button(
-                onClick = { },
+                onClick = { viewModel.createTeam(league, team, onSuccess = switchToHome)},
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Create")

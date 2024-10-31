@@ -15,10 +15,9 @@ enum class LoginError {
     NONE, NOT_EXIST, BAD_CREDENTIALS, UNKNOWN
 }
 
-class Account {
+object Account {
     private val TAG = "Model"
     private var auth: FirebaseAuth = Firebase.auth
-    private var db: FirebaseFirestore = Firebase.firestore
 
     fun isLoggedIn(): Boolean {
         return auth.currentUser != null
@@ -26,7 +25,7 @@ class Account {
 
     fun getUserName(then: (String) -> Unit) {
         var name: String
-        db.collection("users")
+        Firebase.firestore.collection("users")
             .get()
             .addOnSuccessListener { result ->
                 print("SuccessListener")
@@ -52,7 +51,7 @@ class Account {
                         "username" to username,
                         "email" to email
                     )
-                    db.collection("users").document(auth.currentUser?.uid!!)
+                    Firebase.firestore.collection("users").document(auth.currentUser?.uid!!)
                         .set(userProfile)
                     then(RegisterError.NONE)
                 } else {

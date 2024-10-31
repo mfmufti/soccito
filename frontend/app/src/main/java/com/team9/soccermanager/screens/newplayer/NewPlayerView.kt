@@ -7,7 +7,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.unit.*
 
 @Composable
-fun NewPlayerView() {
+fun NewPlayerView(
+    switchToHome: () -> Unit,
+    viewModel: NewPlayerViewModel = NewPlayerViewModel()
+) {
     var team by remember { mutableStateOf("") }
 
     Scaffold (
@@ -36,7 +39,7 @@ fun NewPlayerView() {
             Spacer(modifier = Modifier.height(16.dp))
 
             Button(
-                onClick = { },
+                onClick = { viewModel.joinTeam(team, onSuccess = switchToHome) },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Join")

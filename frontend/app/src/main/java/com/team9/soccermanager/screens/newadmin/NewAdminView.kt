@@ -7,7 +7,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.unit.*
 
 @Composable
-fun NewAdminView() {
+fun NewAdminView(
+    switchToHome: () -> Unit,
+    viewModel: NewAdminViewModel = NewAdminViewModel()
+) {
     var league by remember { mutableStateOf("") }
 
     Scaffold (
@@ -36,7 +39,7 @@ fun NewAdminView() {
             Spacer(modifier = Modifier.height(16.dp))
 
             Button(
-                onClick = { },
+                onClick = { viewModel.createLeague(league, onSuccess = switchToHome) },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Create")
