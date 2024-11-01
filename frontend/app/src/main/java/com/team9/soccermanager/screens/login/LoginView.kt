@@ -45,8 +45,7 @@ fun LoginView(
     var error by remember { mutableStateOf("") }
 
     Scaffold(
-        modifier = Modifier.
-            padding(16.dp),
+        modifier = Modifier.padding(16.dp),
         topBar = {
             TopAppBar(
                 title = {},

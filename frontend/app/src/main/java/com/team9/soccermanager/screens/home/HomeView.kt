@@ -3,6 +3,7 @@ package com.team9.soccermanager.screens.home
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -20,20 +21,35 @@ fun HomeView(
 ) {
     var username by remember { mutableStateOf("") }
     var teamStandings = remember { viewModel.getTeamStandings() }
+    var joinCode by remember { mutableStateOf("") }
 
     viewModel.getUserName { username = it }
+    viewModel.getJoinCode { joinCode = it }
 
     Scaffold(
         modifier = Modifier.padding(16.dp),
         topBar = {
             Text(
                 text = "Welcome $username",
-                fontSize = 30.sp,
+                fontSize = 28.sp,
                 textAlign = TextAlign.Center,
+                lineHeight = 32.sp,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
             )
+        },
+        bottomBar = {
+            if (joinCode.isNotEmpty()) {
+                SelectionContainer {
+                    Text(
+                        text = joinCode,
+                        color = MaterialTheme.colorScheme.error,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+            }
         }
     ) { padding -> Column(
             modifier = Modifier

@@ -10,6 +10,10 @@ import kotlinx.coroutines.withContext
 class NewAdminViewModel : ViewModel() {
 
     fun createLeague(leagueName: String, onSuccess: () -> Unit, onError: (String) -> Unit) {
+        if (leagueName.isEmpty()) {
+            onError("Please leave no fields blank.")
+            return
+        }
         viewModelScope.launch(Dispatchers.IO) {
             val res = LeagueAccessor.createLeague(leagueName)
             withContext(Dispatchers.Main) {

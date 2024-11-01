@@ -1,28 +1,44 @@
 package com.team9.soccermanager.screens.newadmin
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.ui.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.unit.*
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewAdminView(
     switchToHome: () -> Unit,
+    switchBack: () -> Unit,
     viewModel: NewAdminViewModel = NewAdminViewModel()
 ) {
     var league by remember { mutableStateOf("") }
     var error by remember { mutableStateOf("") }
 
     Scaffold (
-        modifier = Modifier
-            .padding(16.dp)
+        modifier = Modifier.padding(16.dp),
+        topBar = {
+            TopAppBar(
+                title = {},
+                navigationIcon = {
+                    IconButton(onClick = switchBack) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "back",
+                        )
+                    }
+                }
+            )
+        }
     ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding),
-            verticalArrangement = Arrangement.Center,
+            verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(text = "Welcome Admin!", fontSize = 30.sp)

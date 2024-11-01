@@ -102,24 +102,27 @@ fun App(navController: NavHostController = rememberNavController()) {
         composable<TypeSelectScreen> {
             TypeSelectView(
                 switchBack = { nav.pop() },
-                switchToPlayer = { nav.clearSwitch(NewPlayerScreen) },
-                switchToCoach = { nav.clearSwitch(NewCoachScreen) },
-                switchToAdmin = { nav.clearSwitch(NewAdminScreen) }
+                switchToPlayer = { nav.switch(NewPlayerScreen) },
+                switchToCoach = { nav.switch(NewCoachScreen) },
+                switchToAdmin = { nav.switch(NewAdminScreen) }
             )
         }
         composable<NewAdminScreen> {
             NewAdminView(
-                switchToHome = { nav.clearSwitch(HomeScreen) }
+                switchToHome = { nav.clearSwitch(HomeScreen) },
+                switchBack = { nav.pop() }
             )
         }
         composable<NewCoachScreen> {
             NewCoachView(
-                switchToHome = { nav.clearSwitch(HomeScreen) }
+                switchToHome = { nav.clearSwitch(HomeScreen) },
+                switchBack = { nav.pop() }
             )
         }
         composable<NewPlayerScreen> {
             NewPlayerView(
-                switchToHome = { nav.clearSwitch(HomeScreen) }
+                switchToHome = { nav.clearSwitch(HomeScreen) },
+                switchBack = { nav.pop() }
             )
         }
         composable<HomeScreen> {

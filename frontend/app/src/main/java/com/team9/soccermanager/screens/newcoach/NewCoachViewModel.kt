@@ -11,6 +11,10 @@ import kotlinx.coroutines.withContext
 class NewCoachViewModel : ViewModel() {
 
     fun createTeam(leagueCode: String, teamName: String, onSuccess: () -> Unit, onError: (String) -> Unit) {
+        if (leagueCode.isEmpty() || teamName.isEmpty()) {
+            onError("Please leave no fields blank")
+            return
+        }
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 // TODO: restructure error handling, should not deal with them both here and in accessors
@@ -24,7 +28,7 @@ class NewCoachViewModel : ViewModel() {
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
-                onError("There was an error creating the team.");
+                onError("There was an error creating the team");
             }
         }
     }

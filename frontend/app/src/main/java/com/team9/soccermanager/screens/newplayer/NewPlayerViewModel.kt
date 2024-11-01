@@ -11,7 +11,11 @@ import kotlinx.coroutines.withContext
 
 class NewPlayerViewModel : ViewModel() {
 
-    fun joinTeam(teamCode: String,  onSuccess: () -> Unit, onError: (String) -> Unit) {
+    fun joinTeam(teamCode: String, onSuccess: () -> Unit, onError: (String) -> Unit) {
+        if (teamCode.isEmpty()) {
+            onError("Please leave no fields blank.")
+            return
+        }
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 // TODO: restructure error handling, should not deal with them both here and in accessors

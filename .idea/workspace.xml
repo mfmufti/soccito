@@ -10,9 +10,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e3032951-07d6-40b1-be00-4b24d3b4c02b" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/MainActivity.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/home/HomeView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/home/HomeView.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/home/HomeViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/home/HomeViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/login/LoginView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/login/LoginView.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/newadmin/NewAdminView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/newadmin/NewAdminView.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/newadmin/NewAdminViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/newadmin/NewAdminViewModel.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/newcoach/NewCoachView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/newcoach/NewCoachView.kt" afterDir="false" />
