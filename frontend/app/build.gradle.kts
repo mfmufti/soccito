@@ -66,4 +66,11 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    testImplementation(kotlin("test"))
+    testImplementation("junit:junit:4.13.2")
+    // For Android-specific instrumented tests
+    androidTestImplementation("androidx.test.ext:junit:1.1.3")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3") // Check for the latest version
 }
+
