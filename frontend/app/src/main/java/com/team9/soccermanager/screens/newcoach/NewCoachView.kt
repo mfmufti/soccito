@@ -13,6 +13,7 @@ fun NewCoachView(
 ) {
     var league by remember { mutableStateOf("") }
     var team by remember { mutableStateOf("") }
+    var error by remember { mutableStateOf("") }
 
     Scaffold (
         modifier = Modifier
@@ -46,10 +47,18 @@ fun NewCoachView(
                 modifier = Modifier.fillMaxWidth()
             )
 
+            if (error.isNotEmpty()) {
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Text(error, color = MaterialTheme.colorScheme.error)
+            }
+
             Spacer(modifier = Modifier.height(16.dp))
 
             Button(
-                onClick = { viewModel.createTeam(league, team, onSuccess = switchToHome)},
+                onClick = { viewModel.createTeam(
+                    league, team, onSuccess = switchToHome, onError = { error = it }
+                ) },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Create")

@@ -12,6 +12,7 @@ fun NewAdminView(
     viewModel: NewAdminViewModel = NewAdminViewModel()
 ) {
     var league by remember { mutableStateOf("") }
+    var error by remember { mutableStateOf("") }
 
     Scaffold (
         modifier = Modifier
@@ -36,10 +37,16 @@ fun NewAdminView(
                 modifier = Modifier.fillMaxWidth()
             )
 
+            if (error.isNotEmpty()) {
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Text(error, color = MaterialTheme.colorScheme.error)
+            }
+
             Spacer(modifier = Modifier.height(16.dp))
 
             Button(
-                onClick = { viewModel.createLeague(league, onSuccess = switchToHome) },
+                onClick = { viewModel.createLeague(league, onSuccess = switchToHome, onError = { error = it }) },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Create")

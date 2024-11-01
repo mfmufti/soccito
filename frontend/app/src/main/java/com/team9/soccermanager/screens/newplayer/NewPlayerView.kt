@@ -12,6 +12,7 @@ fun NewPlayerView(
     viewModel: NewPlayerViewModel = NewPlayerViewModel()
 ) {
     var team by remember { mutableStateOf("") }
+    var error by remember { mutableStateOf("") }
 
     Scaffold (
         modifier = Modifier
@@ -36,10 +37,16 @@ fun NewPlayerView(
                 modifier = Modifier.fillMaxWidth()
             )
 
+            if (error.isNotEmpty()) {
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Text(error, color = MaterialTheme.colorScheme.error)
+            }
+
             Spacer(modifier = Modifier.height(16.dp))
 
             Button(
-                onClick = { viewModel.joinTeam(team, onSuccess = switchToHome) },
+                onClick = { viewModel.joinTeam(team, onSuccess = switchToHome, onError = { error = it }) },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Join")

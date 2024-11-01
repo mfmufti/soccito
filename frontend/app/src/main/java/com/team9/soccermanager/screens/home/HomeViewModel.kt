@@ -9,4 +9,12 @@ class HomeViewModel {
             then(it)
         }
     }
+
+    fun getTeamStandings() : MutableList<String> {
+        return mutableListOf("Manchester", "Gifted", "Tryhards")
+    }
+
+    fun signOut() {
+        Account.signOut()
+    }
 }

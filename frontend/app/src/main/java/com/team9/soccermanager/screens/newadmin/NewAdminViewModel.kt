@@ -9,16 +9,15 @@ import kotlinx.coroutines.withContext
 
 class NewAdminViewModel : ViewModel() {
 
-    fun createLeague(leagueName: String,  onSuccess: () -> Unit) {
+    fun createLeague(leagueName: String, onSuccess: () -> Unit, onError: (String) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             val res = LeagueAccessor.createLeague(leagueName)
             withContext(Dispatchers.Main) {
                 if (res != null) {
                     onSuccess()
                 } else {
-                    // TODO: update some state in view model that will show an error to user
+                    onError("There was an error creating the league.")
                 }
-
             }
         }
     }

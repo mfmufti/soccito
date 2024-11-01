@@ -11,7 +11,7 @@ import kotlinx.coroutines.withContext
 
 class NewPlayerViewModel : ViewModel() {
 
-    fun joinTeam(teamCode: String,  onSuccess: () -> Unit) {
+    fun joinTeam(teamCode: String,  onSuccess: () -> Unit, onError: (String) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 // TODO: restructure error handling, should not deal with them both here and in accessors
@@ -24,7 +24,7 @@ class NewPlayerViewModel : ViewModel() {
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
-                // TODO: show error in app
+                error("There was an error joining that team.")
             }
         }
     }

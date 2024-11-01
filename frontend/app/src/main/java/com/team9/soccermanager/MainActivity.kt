@@ -16,6 +16,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.team9.soccermanager.model.Account
 import com.team9.soccermanager.ui.theme.SoccerManagerTheme
 import com.team9.soccermanager.screens.login.LoginView
 import com.team9.soccermanager.screens.register.RegisterView
@@ -74,8 +75,10 @@ class Navigator(val navController: NavHostController) {
 @Composable
 fun App(navController: NavHostController = rememberNavController()) {
     val nav = remember(navController) { Navigator(navController) }
+    var start: Any = if (Account.isLoggedIn()) HomeScreen else WelcomeScreen
+    //start = NewCoachScreen // For debug purposes
 
-    NavHost(navController = navController, startDestination = WelcomeScreen) {
+    NavHost(navController = navController, startDestination = start) {
         composable<WelcomeScreen> {
             WelcomeView(
                 switchToLogin = { nav.switch(LoginScreen) },
@@ -120,7 +123,9 @@ fun App(navController: NavHostController = rememberNavController()) {
             )
         }
         composable<HomeScreen> {
-            HomeView()
+            HomeView(
+                switchToWelcome = { nav.clearSwitch(WelcomeScreen) }
+            )
         }
     }
 }

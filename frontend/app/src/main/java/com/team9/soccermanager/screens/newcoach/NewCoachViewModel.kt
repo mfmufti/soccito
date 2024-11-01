@@ -10,7 +10,7 @@ import kotlinx.coroutines.withContext
 
 class NewCoachViewModel : ViewModel() {
 
-    fun createTeam(leagueCode: String, teamName: String,  onSuccess: () -> Unit) {
+    fun createTeam(leagueCode: String, teamName: String, onSuccess: () -> Unit, onError: (String) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 // TODO: restructure error handling, should not deal with them both here and in accessors
@@ -24,7 +24,7 @@ class NewCoachViewModel : ViewModel() {
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
-                // TODO: show error in app
+                onError("There was an error creating the team.");
             }
         }
     }
