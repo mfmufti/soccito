@@ -1,5 +1,9 @@
 package com.team9.soccermanager
 
+import com.team9.soccermanager.model.Team
+import com.team9.soccermanager.model.accessor.TeamAccessor
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -12,5 +16,6 @@ class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
         assertEquals(4, 3 + 1)
+        var x = TeamAccessor
     }
 }

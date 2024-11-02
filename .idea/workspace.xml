@@ -10,17 +10,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e3032951-07d6-40b1-be00-4b24d3b4c02b" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/MainActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/home/HomeView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/home/HomeView.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/home/HomeViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/home/HomeViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/login/LoginView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/login/LoginView.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/newadmin/NewAdminView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/newadmin/NewAdminView.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/newadmin/NewAdminViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/newadmin/NewAdminViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/newcoach/NewCoachView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/newcoach/NewCoachView.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/newcoach/NewCoachViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/newcoach/NewCoachViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/newplayer/NewPlayerView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/newplayer/NewPlayerView.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/newplayer/NewPlayerViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/newplayer/NewPlayerViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/model/accessor/TeamAccessor.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/model/accessor/TeamAccessor.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/src/test/java/com/team9/soccermanager/ExampleUnitTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/test/java/com/team9/soccermanager/ExampleUnitTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/src/test/java/com/team9/soccermanager/TestTeam.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/test/java/com/team9/soccermanager/TestTeam.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/gradle/libs.versions.toml" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/gradle/libs.versions.toml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,7 +26,7 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[DeviceId(pluginId=PhysicalDevice, isTemplate=false, identifier=serial=320226215454)]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[DeviceId(pluginId=LocalEmulator, isTemplate=false, identifier=path=/home/mfmufti/.android/avd/Medium_Phone_API_35_2.avd)]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$/frontend">
       <ProjectState />
@@ -103,6 +99,9 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Android App.app.executor": "Run",
+    "Gradle./home/mfmufti/AndroidStudioProjects/SoccerManager/frontend/app [testDebugUnitTest].executor": "Run",
+    "JUnit.ExampleUnitTest.executor": "Run",
+    "JUnit.TestTeam.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.cidr.known.project.marker": "true",
     "RunOnceActivity.readMode.enableVisualFormatting": "true",
@@ -110,14 +109,14 @@
     "cidr.known.project.marker": "true",
     "git-widget-placeholder": "invites",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/home/mfmufti/Downloads/cwm-plugin-231.9392.1.14.zip",
-    "project.structure.last.edited": "Modules",
+    "last_opened_file_path": "/home/mfmufti/AndroidStudioProjects/SoccerManager/frontend/settings.gradle.kts",
+    "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.17",
     "project.structure.side.proportion": "0.2",
     "settings.editor.selected.configurable": "preferences.pluginManager"
   }
 }]]></component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Gradle./home/mfmufti/AndroidStudioProjects/SoccerManager/frontend/app [testDebugUnitTest]">
     <configuration name="app" type="AndroidRunConfigurationType" factoryName="Android App" activateToolWindowBeforeRun="false">
       <module name="Soccer_Manager.app.main" />
       <option name="DEPLOY" value="true" />
@@ -186,6 +185,33 @@
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration name="/home/mfmufti/AndroidStudioProjects/SoccerManager/frontend/app [testDebugUnitTest]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/frontend/app" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="testDebugUnitTest" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Gradle./home/mfmufti/AndroidStudioProjects/SoccerManager/frontend/app [testDebugUnitTest]" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">

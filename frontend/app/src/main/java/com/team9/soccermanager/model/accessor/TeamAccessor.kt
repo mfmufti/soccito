@@ -10,7 +10,7 @@ import kotlinx.coroutines.tasks.await
 object TeamAccessor : TeamDao {
     private const val TEAM_COL = "teams"
 
-    override suspend fun getTeamById(id: String): Team {
+    override suspend fun getTeamById(id: String): Team  {
         TODO("Not yet implemented")
     }
 

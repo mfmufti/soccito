@@ -66,6 +66,7 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    testImplementation("io.mockk:mockk:1.13.13")
     testImplementation(kotlin("test"))
     testImplementation("junit:junit:4.13.2")
     // For Android-specific instrumented tests
