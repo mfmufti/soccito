@@ -8,6 +8,8 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
 
 class HomeViewModel {
+    var signedOut = false
+
     fun getUserName(then : (String) -> Unit = {}) {
         Account.getUserName {
             then(it)
@@ -19,7 +21,10 @@ class HomeViewModel {
     }
 
     fun signOut() {
-        Account.signOut()
+        if (!signedOut) {
+            Account.signOut()
+            signedOut = true
+        }
     }
 
     fun getJoinCode(then: (String) -> Unit): Unit {
