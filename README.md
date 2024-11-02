@@ -21,7 +21,7 @@
 <a href="https://drive.google.com/file/d/1qeLfBo7Q2G__PTiMN203jkDThLdo2DRq/view?usp=sharing">Version 1.1.0 Download</a>
 
 <a href="https://git.uwaterloo.ca/mw2shah/team-9/-/releases/1.2.0">Release 1.2.0</a>\
-<a href="https://drive.google.com/file/d/1oTFxqDsR685Hca7oCclYM5UxeXWnYw8j/view?usp=sharing">Version 1.2.0 Download</a>
+<a href="https://drive.google.com/file/d/1tbggOG4wagCgY8mmm2F9H7vvoOkKcGES/view?usp=sharing">Version 1.2.0 Download</a>
 
 ## Meeting Notes
 <a href="https://git.uwaterloo.ca/mw2shah/team-9/-/wikis/Meeting-Notes">Meeting Notes</a>
