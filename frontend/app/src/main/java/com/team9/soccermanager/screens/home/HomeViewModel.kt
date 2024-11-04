@@ -8,7 +8,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
 
 class HomeViewModel {
-    var signedOut = false
+    private var signedOut = false
 
     fun getUserName(then : (String) -> Unit = {}) {
         Account.getUserName {

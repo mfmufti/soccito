@@ -20,7 +20,7 @@ class NewCoachViewModel : ViewModel() {
                 // TODO: restructure error handling, should not deal with them both here and in accessors
                 val league = LeagueAccessor.getLeagueByInviteCode(leagueCode)
                     ?: throw Exception("League not found")
-                val team = TeamAccessor.createTeam(teamName) ?: throw Exception("Failed to create team")
+                val team = TeamAccessor.createTeam(teamName, league.id) ?: throw Exception("Failed to create team")
                 league.teamIds.add(team.id)
                 LeagueAccessor.updateLeague(league)
                 withContext(Dispatchers.Main) {
