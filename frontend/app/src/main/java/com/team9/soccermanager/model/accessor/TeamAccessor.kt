@@ -10,8 +10,14 @@ import kotlinx.coroutines.tasks.await
 object TeamAccessor : TeamDao {
     private const val TEAM_COL = "teams"
 
-    override suspend fun getTeamById(id: String): Team  {
-        TODO("Not yet implemented")
+    override suspend fun getTeamById(id: String): Team?  {
+        try {
+            val query = Firebase.firestore.collection(TEAM_COL).whereEqualTo("id", id).get().await()
+            return query.documents[0].toObject<Team>()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return null
+        }
     }
 
     override suspend fun getTeamByInviteCode(code: String): Team? {
@@ -24,10 +30,10 @@ object TeamAccessor : TeamDao {
         }
     }
 
-    override suspend fun createTeam(teamName: String): Team? {
+    override suspend fun createTeam(teamName: String, leagueId: String): Team? {
         val teamDoc = Firebase.firestore.collection(TEAM_COL).document()
 
-        val team = Team(teamDoc.id, teamName, teamDoc.id, mutableListOf(), mutableListOf(Firebase.auth.uid ?: ""))
+        val team = Team(teamDoc.id, teamName, teamDoc.id, mutableListOf(), mutableListOf(Firebase.auth.uid ?: ""), leagueId, 0, 0, 0, 0, 0)
 
         try {
             teamDoc.set(team).await()

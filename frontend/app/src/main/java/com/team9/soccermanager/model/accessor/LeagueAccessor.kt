@@ -11,7 +11,13 @@ object LeagueAccessor : LeagueDao {
     private const val LEAGUE_COL = "leagues"
 
     override suspend fun getLeagueById(id: String): League? {
-        TODO("Not yet implemented")
+        try {
+            val query = Firebase.firestore.collection(LEAGUE_COL).whereEqualTo("id", id).get().await()
+            return query.documents[0].toObject<League>()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return null
+        }
     }
 
     override suspend fun getLeagueByInviteCode(code: String): League? {

@@ -7,6 +7,7 @@ import com.google.firebase.auth.*
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 
+
 enum class RegisterError {
     NONE, WEAK_PASSWORD, BAD_EMAIL, USER_EXISTS, UNKNOWN
 }

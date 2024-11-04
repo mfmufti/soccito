@@ -5,8 +5,14 @@ data class Team (
     val name: String,
     val code: String,
     val playerIds: MutableList<String>,
-    val coachIds: MutableList<String>
+    val coachIds: MutableList<String>,
+    val leagueId: String,
+    var wins: Int,
+    var losses: Int,
+    var draws: Int,
+    var gamesPlayed: Int,
+    var points: Int
 ) {
     // need to provide no-arg constructor to support deserialization with Firebase
-    constructor() : this("", "", "", mutableListOf(), mutableListOf())
+    constructor() : this("", "", "", mutableListOf(), mutableListOf(), "", 0, 0, 0, 0, 0)
 }
