@@ -53,8 +53,8 @@ open class PlayerHomeScreenViewModel {
         }
     }
 
-    fun getUserName(then: (String) -> Unit): Unit {
-        Account.getUserName { then(it) }
+    fun getFullName(then: (String) -> Unit): Unit {
+        then(Account.user!!.fullname)
     }
 
 

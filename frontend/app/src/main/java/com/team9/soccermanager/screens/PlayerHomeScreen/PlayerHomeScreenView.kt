@@ -1,10 +1,8 @@
 package com.team9.soccermanager.screens.playerHomeScreen
 
-import android.graphics.Paint.Align
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
@@ -15,12 +13,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.*
+import com.team9.soccermanager.model.Account
 
 @Composable
 fun PlayerHomeScreenView(
@@ -32,10 +28,10 @@ fun PlayerHomeScreenView(
     goToChat: () -> Unit
 ) {
     var teamName by remember { mutableStateOf("") }
-    var username by remember { mutableStateOf("") }
+    var fullname by remember { mutableStateOf("") }
 
-    viewModel.getTeamName { teamName = it }
-    viewModel.getUserName { username = it }
+    //viewModel.getTeamName { teamName = it }
+    viewModel.getFullName { fullname = it }
 
     Scaffold (
         topBar =  {
@@ -90,7 +86,8 @@ fun PlayerHomeScreenView(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(text = "Welcome $username", style = TextStyle(fontSize = 30.sp))
+            Text(text = "Welcome $fullname", style = TextStyle(fontSize = 30.sp))
+            Text(text = "You are a ${Account.user!!.type}", style = TextStyle(fontSize = 30.sp)) // test type
 
             Spacer(modifier = Modifier.height(15.dp))
 

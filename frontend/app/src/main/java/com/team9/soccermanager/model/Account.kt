@@ -1,10 +1,8 @@
 package com.team9.soccermanager.model
 
 import android.util.Log
-import androidx.compose.runtime.Composable
 import com.google.firebase.Firebase
 import com.google.firebase.auth.*
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 
 
@@ -19,6 +17,7 @@ enum class LoginError {
 object Account {
     private val TAG = "Model"
     private var auth: FirebaseAuth = Firebase.auth
+    public var user: User? = null
 
     fun isLoggedIn(): Boolean {
         return auth.currentUser != null
@@ -43,18 +42,24 @@ object Account {
             }
     }
 
-    fun createAccount(username: String, email: String, password: String, then: (RegisterError) -> Unit = {}) {
+    fun createAccount(type: String, fullname: String, email: String, password: String, then: (RegisterError) -> Unit = {}) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.d(TAG, "Successfully created account")
                     val userProfile = hashMapOf(
-                        "username" to username,
-                        "email" to email
+                        "fullname" to fullname,
+                        "email" to email,
+                        "type" to type
                     )
                     Firebase.firestore.collection("users").document(auth.currentUser?.uid!!)
                         .set(userProfile)
-                    then(RegisterError.NONE)
+                    Firebase.firestore.collection("users").document(auth.currentUser?.uid!!).get().addOnSuccessListener {
+                        user = it.toObject(User::class.java)
+                        then(RegisterError.NONE)
+                    }.addOnFailureListener({
+                        then(RegisterError.UNKNOWN)
+                    })
                 } else {
                     Log.w(TAG, "Failed to create account", task.exception)
                     then(when (task.exception) {
@@ -67,16 +72,22 @@ object Account {
             }
     }
 
+    fun getCurUser() : User? {
+        return user
+    }
+
     fun signIn(email: String, password: String, then: (LoginError) -> Unit = {}) {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.d(TAG, "Sign in successful")
                     //val user = auth.currentUser
-                    then(LoginError.NONE)
-                    val document = Firebase.firestore.collection("user").document("").get().await()
-
-                    val something: User = document.toObject(User::class.java)
+                    Firebase.firestore.collection("users").document(auth.currentUser?.uid!!).get().addOnSuccessListener {
+                        user = it.toObject(User::class.java)
+                        then(LoginError.NONE)
+                    }.addOnFailureListener({
+                        then(LoginError.UNKNOWN)
+                    })
                 } else {
                     Log.w(TAG, "Failed to sign in", task.exception)
                     then(when (task.exception) {

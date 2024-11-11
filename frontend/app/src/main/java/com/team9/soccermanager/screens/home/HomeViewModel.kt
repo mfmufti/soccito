@@ -28,6 +28,8 @@ class HomeViewModel {
     }
 
     fun getJoinCode(then: (String) -> Unit): Unit {
+        then("no join code yet bruh")
+        return
         CoroutineScope(Dispatchers.Default).launch {
             if (Firebase.auth.currentUser == null) {
                 return@launch

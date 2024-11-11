@@ -35,12 +35,13 @@ import androidx.compose.ui.unit.sp
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegisterView(
+    type: String,
     switchBack: () -> Unit,
     switchToLogin: () -> Unit,
-    switchToTypeSelect: () -> Unit,
+    switchToSpecific: (type: String) -> Unit,
     viewModel: RegisterViewModel = RegisterViewModel()
 ) {
-    var username by remember { mutableStateOf("") }
+    var fullname by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var error by remember { mutableStateOf("") }
@@ -74,9 +75,9 @@ fun RegisterView(
             Spacer(modifier = Modifier.height(16.dp))
 
             TextField(
-                value = username,
-                onValueChange = { username = it },
-                label = { Text("Username") },
+                value = fullname,
+                onValueChange = { fullname = it },
+                label = { Text("Full name") },
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -110,7 +111,7 @@ fun RegisterView(
 
             Button(
                 onClick = { viewModel.handleRegister(
-                    username, email, password, success = switchToTypeSelect, failure = { error = it }
+                    type, fullname, email, password, success = { switchToSpecific(type) }, failure = { error = it }
                 ) },
                 modifier = Modifier.fillMaxWidth()
             ) {

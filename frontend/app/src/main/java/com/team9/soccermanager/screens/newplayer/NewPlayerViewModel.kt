@@ -28,7 +28,7 @@ class NewPlayerViewModel : ViewModel() {
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
-                error("There was an error joining that team.")
+                onError("There was an error joining that team.")
             }
         }
     }

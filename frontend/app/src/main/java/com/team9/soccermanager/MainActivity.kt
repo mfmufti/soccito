@@ -1,7 +1,6 @@
 package com.team9.soccermanager
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -16,7 +15,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.team9.soccermanager.model.Account
+import androidx.navigation.toRoute
 import com.team9.soccermanager.ui.theme.SoccerManagerTheme
 import com.team9.soccermanager.screens.login.LoginView
 import com.team9.soccermanager.screens.register.RegisterView
@@ -35,7 +34,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable object WelcomeScreen
 @Serializable object LoginScreen
-@Serializable object RegisterScreen
+@Serializable data class RegisterScreen(var type: String)
 @Serializable object TypeSelectScreen
 @Serializable object NewAdminScreen
 @Serializable object NewCoachScreen
@@ -85,7 +84,7 @@ class Navigator(val navController: NavHostController) {
 @Composable
 fun App(navController: NavHostController = rememberNavController()) {
     val nav = remember(navController) { Navigator(navController) }
-    var start: Any = if (Account.isLoggedIn()) HomeScreen else WelcomeScreen
+    var start: Any = WelcomeScreen
     //start = LeagueStandingsScreen // For debug purposes
     // First check if authenticated user is player, coach, admin, and guide them
     // to the appropriate screen. If its player, go to playerHomeScreen upon login and register
@@ -94,55 +93,65 @@ fun App(navController: NavHostController = rememberNavController()) {
         composable<WelcomeScreen> {
             WelcomeView(
                 switchToLogin = { nav.switch(LoginScreen) },
-                switchToRegister = { nav.switch(RegisterScreen) }
+                switchToRegister = { nav.switch(TypeSelectScreen) }
             )
         }
         composable<LoginScreen> {
             LoginView(
                 switchBack = { nav.pop() },
                 switchToRegister = { nav.popSwitch(RegisterScreen, WelcomeScreen) },
-                switchToHome = { nav.clearSwitch(HomeScreen) }
+                switchToHome = { nav.clearSwitch(PlayerHomeScreen) }
                 // For testing player screen, uncomment below line (and comment above line) and login as player:
                 // email: pt1@test.com, pwd: abc123
                 // switchToHome = { nav.clearSwitch(PlayerHomeScreen) }
             )
         }
-        composable<RegisterScreen> {
+        composable<RegisterScreen> { backStackEntry ->
+            val data: RegisterScreen = backStackEntry.toRoute()
             RegisterView(
+                type = data.type,
                 switchBack = { nav.pop() },
                 switchToLogin = { nav.popSwitch(LoginScreen, WelcomeScreen) },
-                switchToTypeSelect = { nav.clearSwitch(TypeSelectScreen) }
+                switchToSpecific = {
+                    if (it == "player") {
+                        nav.switch(NewPlayerScreen)
+                    } else if (it == "admin") {
+                        nav.switch(NewAdminScreen)
+                    } else {
+                        nav.switch(NewCoachScreen)
+                    }
+                }
             )
         }
         composable<TypeSelectScreen> {
             TypeSelectView(
                 switchBack = { nav.pop() },
-                switchToPlayer = { nav.switch(NewPlayerScreen) },
-                switchToCoach = { nav.switch(NewCoachScreen) },
-                switchToAdmin = { nav.switch(NewAdminScreen) }
+                switchToPlayer = { nav.switch(RegisterScreen("player")) },
+                switchToCoach = { nav.switch(RegisterScreen("coach")) },
+                switchToAdmin = { nav.switch(RegisterScreen("admin")) }
             )
         }
         composable<NewAdminScreen> {
             NewAdminView(
-                switchToHome = { nav.clearSwitch(HomeScreen) },
+                switchToHome = { nav.clearSwitch(PlayerHomeScreen) },
                 switchBack = { nav.pop() }
             )
         }
         composable<NewCoachScreen> {
             NewCoachView(
-                switchToHome = { nav.clearSwitch(HomeScreen) },
+                switchToHome = { nav.clearSwitch(PlayerHomeScreen) },
                 switchBack = { nav.pop() }
             )
         }
         composable<NewPlayerScreen> {
             NewPlayerView(
-                switchToHome = { nav.clearSwitch(HomeScreen) },
+                switchToHome = { nav.clearSwitch(PlayerHomeScreen) },
                 switchBack = { nav.pop() }
             )
         }
         composable<HomeScreen> {
             HomeView(
-                switchToWelcome = { nav.clearSwitch(WelcomeScreen) }
+                switchToWelcome = { nav.clearSwitch(PlayerHomeScreen) }
             )
         }
         composable<PlayerHomeScreen> {
