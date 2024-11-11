@@ -74,6 +74,9 @@ object Account {
                     Log.d(TAG, "Sign in successful")
                     //val user = auth.currentUser
                     then(LoginError.NONE)
+                    val document = Firebase.firestore.collection("user").document("").get().await()
+
+                    val something: User = document.toObject(User::class.java)
                 } else {
                     Log.w(TAG, "Failed to sign in", task.exception)
                     then(when (task.exception) {
