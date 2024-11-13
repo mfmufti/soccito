@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.*
+import com.google.maps.android.compose.GoogleMap
 
 @Composable
 fun PlayerGameScheduleView(
@@ -28,9 +29,10 @@ fun PlayerGameScheduleView(
     goToHome: () -> Unit,
     goToRoster: () -> Unit,
     goToChat: () -> Unit
-) {
-    var teamName by remember { mutableStateOf("") }
-    viewModel.getTeamName { teamName = it }
+    ) {
+        var teamName by remember { mutableStateOf("") }
+        viewModel.getTeamName { teamName = it }
+    var isMapLoaded by remember { mutableStateOf(false) }
 
     Scaffold (
         topBar =  {
@@ -41,6 +43,19 @@ fun PlayerGameScheduleView(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding()
+                ) {
+                    // Add GoogleMap here
+                    GoogleMap(
+                        modifier = Modifier.fillMaxSize(),
+                        onMapLoaded = { isMapLoaded = true }
+                    )
+
+                    // ...
+                }
                 Text(text = teamName)
                 Button(
                     onClick = { viewModel.signOut(); switchToWelcome() },
@@ -88,3 +103,4 @@ fun PlayerGameScheduleView(
         }
     )
 }
+
