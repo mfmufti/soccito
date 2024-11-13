@@ -5,7 +5,7 @@ data class User(
     val fullname: String,
     val leagueID: String,
     val leagueName: String,
-    val teamID: String,
+    var teamID: String,
     val teamName: String,
     val type: String,
 ) {

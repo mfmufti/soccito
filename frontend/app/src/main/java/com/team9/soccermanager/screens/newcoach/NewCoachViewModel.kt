@@ -2,6 +2,7 @@ package com.team9.soccermanager.screens.newcoach
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.team9.soccermanager.model.Account
 import com.team9.soccermanager.model.accessor.LeagueAccessor
 import com.team9.soccermanager.model.accessor.TeamAccessor
 import kotlinx.coroutines.Dispatchers
@@ -23,6 +24,7 @@ class NewCoachViewModel : ViewModel() {
                 val team = TeamAccessor.createTeam(teamName, league.id) ?: throw Exception("Failed to create team")
                 league.teamIds.add(team.id)
                 LeagueAccessor.updateLeague(league)
+                Account.joinTeam(team.id)
                 withContext(Dispatchers.Main) {
                     onSuccess()
                 }

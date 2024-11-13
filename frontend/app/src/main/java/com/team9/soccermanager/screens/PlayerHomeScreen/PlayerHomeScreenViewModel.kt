@@ -1,5 +1,7 @@
 package com.team9.soccermanager.screens.playerHomeScreen
 
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.firestore
@@ -8,8 +10,9 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
 import com.google.firebase.firestore.toObject
 import com.team9.soccermanager.model.Team
+import com.team9.soccermanager.model.accessor.TeamAccessor
 
-open class PlayerHomeScreenViewModel {
+open class PlayerHomeScreenViewModel : ViewModel() {
 
     var signedOut = false;
 
@@ -17,6 +20,21 @@ open class PlayerHomeScreenViewModel {
         if (!signedOut) {
             Account.signOut()
             signedOut = true
+        }
+    }
+
+    fun getTeam(then: (Team) -> Unit): Unit {
+        val teamId = Account.getCurUser()?.teamID
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val team = TeamAccessor.getTeamById(teamId!!)
+                    ?: throw Exception("Team not found")
+                withContext(Dispatchers.Main) {
+                    then(team)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 

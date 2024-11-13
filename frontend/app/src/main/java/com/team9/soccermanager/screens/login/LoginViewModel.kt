@@ -5,14 +5,18 @@ import com.team9.soccermanager.model.LoginError
 
 class LoginViewModel {
 
-    fun handleLogin(email: String, password: String, success: () -> Unit, failure: (String) -> Unit) {
+    fun handleLogin(email: String, password: String, success: (String) -> Unit, failure: (String) -> Unit) {
         if (email.isEmpty() || password.isEmpty()) {
             failure("Please provide an email and password.")
             return
         }
         Account.signIn(email, password) { status ->
             if (status == LoginError.NONE) {
-                success()
+                if(Account.getCurUser() == null) {
+                    failure("Authentication successful, but user was not created.")
+                } else {
+                    success(Account.getCurUser()!!.type)
+                }
             } else {
                 failure(when (status) {
                     LoginError.NOT_EXIST -> "No user with this email exists."

@@ -4,6 +4,7 @@ import android.util.Log
 import com.google.firebase.Firebase
 import com.google.firebase.auth.*
 import com.google.firebase.firestore.firestore
+import kotlinx.coroutines.tasks.await
 
 
 enum class RegisterError {
@@ -76,6 +77,11 @@ object Account {
         return user
     }
 
+    fun joinTeam(teamId: String) {
+        user?.teamID = teamId
+        updateRemoteUser()
+    }
+
     fun signIn(email: String, password: String, then: (LoginError) -> Unit = {}) {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
@@ -101,6 +107,10 @@ object Account {
 
     fun signOut() {
         Firebase.auth.signOut()
+    }
+
+    private fun updateRemoteUser() {
+        Firebase.firestore.collection("users").document(auth.currentUser?.uid!!).set(user!!)
     }
 
     fun sendEmailVerification() {

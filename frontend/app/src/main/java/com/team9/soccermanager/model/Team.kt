@@ -1,5 +1,9 @@
 package com.team9.soccermanager.model
 
+data class Announcement (val content: String, val authorName: String, val datePosted: Long) {
+    constructor() : this("", "",0)
+}
+
 data class Team (
     val id: String,
     val name: String,
@@ -11,8 +15,9 @@ data class Team (
     var losses: Int,
     var draws: Int,
     var gamesPlayed: Int,
-    var points: Int
+    var points: Int,
+    val announcements: MutableList<Announcement>
 ) {
     // need to provide no-arg constructor to support deserialization with Firebase
-    constructor() : this("", "", "", mutableListOf(), mutableListOf(), "", 0, 0, 0, 0, 0)
+    constructor() : this("", "", "", mutableListOf(), mutableListOf(), "", 0, 0, 0, 0, 0, mutableListOf())
 }
