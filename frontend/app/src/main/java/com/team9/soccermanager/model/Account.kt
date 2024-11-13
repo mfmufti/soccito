@@ -102,7 +102,6 @@ object Account {
 
     fun signOut() {
         Firebase.auth.signOut()
-        GS.user = null
     }
 
     private fun updateRemoteUser() {

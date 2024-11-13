@@ -25,7 +25,7 @@ open class PlayerHomeScreenViewModel : ViewModel() {
     }
 
     fun getTeam(then: (Team) -> Unit): Unit {
-        val teamId = Account.getCurUser()?.teamID
+        val teamId = GS.user?.teamID
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val team = TeamAccessor.getTeamById(teamId!!)

@@ -1,6 +1,7 @@
 package com.team9.soccermanager.screens.login
 
 import com.team9.soccermanager.model.Account
+import com.team9.soccermanager.model.GS
 import com.team9.soccermanager.model.LoginError
 
 class LoginViewModel {
@@ -12,10 +13,10 @@ class LoginViewModel {
         }
         Account.signIn(email, password) { status ->
             if (status == LoginError.NONE) {
-                if(Account.getCurUser() == null) {
+                if(GS.user == null) {
                     failure("Authentication successful, but user was not created.")
                 } else {
-                    success(Account.getCurUser()!!.type)
+                    success(GS.user!!.type)
                 }
             } else {
                 failure(when (status) {
