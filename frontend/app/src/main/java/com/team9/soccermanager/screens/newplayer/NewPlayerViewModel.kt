@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
+import com.team9.soccermanager.model.Account
 import com.team9.soccermanager.model.accessor.TeamAccessor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -23,6 +24,7 @@ class NewPlayerViewModel : ViewModel() {
                     ?: throw Exception("Team not found")
                 team.playerIds.add(Firebase.auth.uid ?: throw Exception("Player not logged in"))
                 TeamAccessor.updateTeam(team)
+                Account.joinTeam(team.id)
                 withContext(Dispatchers.Main) {
                     onSuccess()
                 }

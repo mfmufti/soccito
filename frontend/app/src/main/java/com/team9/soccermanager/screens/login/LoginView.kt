@@ -37,7 +37,7 @@ import androidx.compose.ui.unit.sp
 fun LoginView(
     switchBack: () -> Unit,
     switchToRegister: () -> Unit,
-    switchToHome: () -> Unit,
+    switchToSpecific: (type: String) -> Unit,
     viewModel: LoginViewModel = LoginViewModel()
 ) {
     var email by remember { mutableStateOf("") }
@@ -99,7 +99,7 @@ fun LoginView(
 
             Button(
                 onClick = { viewModel.handleLogin(
-                    email, password, success = switchToHome, failure = { error = it }
+                    email, password, success = switchToSpecific, failure = { error = it }
                 ) },
                 modifier = Modifier.fillMaxWidth()
             ) {

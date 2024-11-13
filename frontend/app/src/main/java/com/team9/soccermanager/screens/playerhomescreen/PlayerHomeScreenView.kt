@@ -2,6 +2,8 @@ package com.team9.soccermanager.screens.playerHomeScreen
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
@@ -18,6 +20,9 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.*
 import com.team9.soccermanager.model.Account
 import com.team9.soccermanager.model.GS
+import com.team9.soccermanager.model.Announcement
+import java.text.DateFormat.getDateTimeInstance
+import java.util.Date
 
 @Composable
 fun PlayerHomeScreenView(
@@ -30,6 +35,11 @@ fun PlayerHomeScreenView(
 ) {
     var teamName by remember { mutableStateOf("") }
     var fullname by remember { mutableStateOf("") }
+    var announcements by remember { mutableStateOf<List<Announcement>?>(null) }
+
+    viewModel.getTeam {
+        announcements = it.announcements.toList()
+    }
 
     //viewModel.getTeamName { teamName = it }
     viewModel.getFullName { fullname = it }
@@ -106,10 +116,19 @@ fun PlayerHomeScreenView(
                         .padding(16.dp),
                     contentAlignment = Alignment.TopStart
                 ) {
-                    Text(
-                        text = "Announcements show up here.", // Pull from Firestore DB
-                        style = TextStyle(fontSize = 16.sp)
-                    )
+                    if(announcements == null) Text( text = "Loading...", style = TextStyle(fontSize = 16.sp))
+                    else LazyColumn(Modifier.fillMaxWidth()) {
+                        items(announcements!!) {
+                                announcement -> ListItem(
+                            headlineContent = { Text(announcement.content) },
+                            supportingContent =
+                            { Text("~ ${announcement.authorName} | ${
+                                getDateTimeInstance().format(
+                                    Date(announcement.datePosted)
+                                )}") }
+                        )
+                        }
+                    }
                 }
             }
 

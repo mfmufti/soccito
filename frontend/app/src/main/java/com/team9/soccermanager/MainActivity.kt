@@ -16,6 +16,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.team9.soccermanager.screens.coachScreen.CoachHomeScreenView
 import com.team9.soccermanager.ui.theme.SoccerManagerTheme
 import com.team9.soccermanager.screens.login.LoginView
 import com.team9.soccermanager.screens.register.RegisterView
@@ -41,6 +42,7 @@ import kotlinx.serialization.Serializable
 @Serializable object NewPlayerScreen
 @Serializable object HomeScreen
 @Serializable object PlayerHomeScreen
+@Serializable object CoachHomeScreen
 @Serializable object LeagueStandingsScreen
 @Serializable object PlayerGameScheduleScreen
 @Serializable object PlayerRosterScreen
@@ -100,7 +102,15 @@ fun App(navController: NavHostController = rememberNavController()) {
             LoginView(
                 switchBack = { nav.pop() },
                 switchToRegister = { nav.popSwitch(RegisterScreen, WelcomeScreen) },
-                switchToHome = { nav.clearSwitch(PlayerHomeScreen) }
+                switchToSpecific = {
+                    if (it == "player") {
+                        nav.switch(PlayerHomeScreen)
+                    } else if (it == "admin") {
+                        nav.switch(PlayerHomeScreen)
+                    } else {
+                        nav.switch(CoachHomeScreen)
+                    }
+                }
                 // For testing player screen, uncomment below line (and comment above line) and login as player:
                 // email: pt1@test.com, pwd: abc123
                 // switchToHome = { nav.clearSwitch(PlayerHomeScreen) }
@@ -139,7 +149,7 @@ fun App(navController: NavHostController = rememberNavController()) {
         }
         composable<NewCoachScreen> {
             NewCoachView(
-                switchToHome = { nav.clearSwitch(PlayerHomeScreen) },
+                switchToHome = { nav.clearSwitch(CoachHomeScreen) },
                 switchBack = { nav.pop() }
             )
         }
@@ -156,6 +166,15 @@ fun App(navController: NavHostController = rememberNavController()) {
         }
         composable<PlayerHomeScreen> {
             PlayerHomeScreenView(
+                switchToWelcome = { nav.clearSwitch(WelcomeScreen) },
+                goToLeagueStandings = { nav.switch(LeagueStandingsScreen) },
+                goToSchedule = { nav.clearSwitch(PlayerGameScheduleScreen) },
+                goToRoster = { nav.clearSwitch(PlayerRosterScreen) },
+                goToChat = { nav.clearSwitch(PlayerChatScreen) }
+            )
+        }
+        composable<CoachHomeScreen> {
+            CoachHomeScreenView(
                 switchToWelcome = { nav.clearSwitch(WelcomeScreen) },
                 goToLeagueStandings = { nav.switch(LeagueStandingsScreen) },
                 goToSchedule = { nav.clearSwitch(PlayerGameScheduleScreen) },
