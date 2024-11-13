@@ -17,7 +17,6 @@ enum class LoginError {
 object Account {
     private val TAG = "Model"
     private var auth: FirebaseAuth = Firebase.auth
-    public var user: User? = null
 
     fun isLoggedIn(): Boolean {
         return auth.currentUser != null
@@ -55,7 +54,7 @@ object Account {
                     Firebase.firestore.collection("users").document(auth.currentUser?.uid!!)
                         .set(userProfile)
                     Firebase.firestore.collection("users").document(auth.currentUser?.uid!!).get().addOnSuccessListener {
-                        user = it.toObject(User::class.java)
+                        GS.user = it.toObject(User::class.java)
                         then(RegisterError.NONE)
                     }.addOnFailureListener({
                         then(RegisterError.UNKNOWN)
@@ -72,10 +71,6 @@ object Account {
             }
     }
 
-    fun getCurUser() : User? {
-        return user
-    }
-
     fun signIn(email: String, password: String, then: (LoginError) -> Unit = {}) {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
@@ -83,7 +78,7 @@ object Account {
                     Log.d(TAG, "Sign in successful")
                     //val user = auth.currentUser
                     Firebase.firestore.collection("users").document(auth.currentUser?.uid!!).get().addOnSuccessListener {
-                        user = it.toObject(User::class.java)
+                        GS.user = it.toObject(User::class.java)
                         then(LoginError.NONE)
                     }.addOnFailureListener({
                         then(LoginError.UNKNOWN)
@@ -101,6 +96,7 @@ object Account {
 
     fun signOut() {
         Firebase.auth.signOut()
+        GS.user = null
     }
 
     fun sendEmailVerification() {

@@ -23,12 +23,12 @@ import com.team9.soccermanager.screens.home.HomeView
 import com.team9.soccermanager.screens.newadmin.NewAdminView
 import com.team9.soccermanager.screens.newcoach.NewCoachView
 import com.team9.soccermanager.screens.newplayer.NewPlayerView
-import com.team9.soccermanager.screens.playerChatScreen.PlayerChatView
-import com.team9.soccermanager.screens.playerGameScheduleScreen.PlayerGameScheduleView
+import com.team9.soccermanager.screens.playerchatscreen.PlayerChatView
+import com.team9.soccermanager.screens.playergameschedulescreen.PlayerGameScheduleView
 import com.team9.soccermanager.screens.typeselect.TypeSelectView
 import com.team9.soccermanager.screens.welcome.WelcomeView
 import com.team9.soccermanager.screens.playerHomeScreen.PlayerHomeScreenView
-import com.team9.soccermanager.screens.playerRosterScreen.PlayerRosterView
+import com.team9.soccermanager.screens.playerrosterscreen.PlayerRosterView
 import com.team9.soccermanager.screens.rankingsScreen.RankingView
 import kotlinx.serialization.Serializable
 
@@ -189,7 +189,7 @@ fun App(navController: NavHostController = rememberNavController()) {
         }
         composable<LeagueStandingsScreen> {
             RankingView(
-                switchBack = { nav.pop() }
+                switchBack = { nav.popSwitch(PlayerHomeScreen, LeagueStandingsScreen) }
             )
         }
 

@@ -7,6 +7,7 @@ import com.team9.soccermanager.model.Account
 import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
 import com.google.firebase.firestore.toObject
+import com.team9.soccermanager.model.GS
 import com.team9.soccermanager.model.Team
 
 open class PlayerHomeScreenViewModel {
@@ -54,9 +55,6 @@ open class PlayerHomeScreenViewModel {
     }
 
     fun getFullName(then: (String) -> Unit): Unit {
-        then(Account.user!!.fullname)
+        then(GS.user!!.fullname)
     }
-
-
-
 }

@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.*
 import com.team9.soccermanager.model.Account
+import com.team9.soccermanager.model.GS
 
 @Composable
 fun PlayerHomeScreenView(
@@ -87,7 +88,7 @@ fun PlayerHomeScreenView(
             verticalArrangement = Arrangement.Center
         ) {
             Text(text = "Welcome $fullname", style = TextStyle(fontSize = 30.sp))
-            Text(text = "You are a ${Account.user!!.type}", style = TextStyle(fontSize = 30.sp)) // test type
+            Text(text = "You are a ${GS.user!!.type}", style = TextStyle(fontSize = 30.sp)) // test type
 
             Spacer(modifier = Modifier.height(15.dp))
 

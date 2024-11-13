@@ -1,4 +1,4 @@
-package com.team9.soccermanager.screens.playerGameScheduleScreen
+package com.team9.soccermanager.screens.playergameschedulescreen
 
 import com.team9.soccermanager.screens.playerHomeScreen.PlayerHomeScreenViewModel
 
