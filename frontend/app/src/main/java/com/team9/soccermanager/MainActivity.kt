@@ -17,6 +17,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.team9.soccermanager.screens.coachScreen.CoachHomeScreenView
+import com.team9.soccermanager.screens.coachScreen.forms.CoachHomeScreenFormsView
 import com.team9.soccermanager.ui.theme.SoccerManagerTheme
 import com.team9.soccermanager.screens.login.LoginView
 import com.team9.soccermanager.screens.register.RegisterView
@@ -43,6 +44,7 @@ import kotlinx.serialization.Serializable
 @Serializable object HomeScreen
 @Serializable object PlayerHomeScreen
 @Serializable object CoachHomeScreen
+@Serializable object CoachHomeScreenForms
 @Serializable object LeagueStandingsScreen
 @Serializable object PlayerGameScheduleScreen
 @Serializable object PlayerRosterScreen
@@ -179,7 +181,13 @@ fun App(navController: NavHostController = rememberNavController()) {
                 goToLeagueStandings = { nav.switch(LeagueStandingsScreen) },
                 goToSchedule = { nav.clearSwitch(PlayerGameScheduleScreen) },
                 goToRoster = { nav.clearSwitch(PlayerRosterScreen) },
-                goToChat = { nav.clearSwitch(PlayerChatScreen) }
+                goToChat = { nav.clearSwitch(PlayerChatScreen) },
+                goToForms = { nav.switch(CoachHomeScreenForms) }
+            )
+        }
+        composable<CoachHomeScreenForms> {
+            CoachHomeScreenFormsView(
+                switchBack = { nav.pop() }
             )
         }
         composable<PlayerGameScheduleScreen> {

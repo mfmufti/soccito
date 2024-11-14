@@ -36,7 +36,8 @@ fun CoachHomeScreenView(
     goToLeagueStandings: () -> Unit,
     goToSchedule: () -> Unit,
     goToRoster: () -> Unit,
-    goToChat: () -> Unit
+    goToChat: () -> Unit,
+    goToForms: () -> Unit
 ) {
     var teamName by remember { mutableStateOf("") }
     var fullname by remember { mutableStateOf("") }
@@ -222,7 +223,7 @@ fun CoachHomeScreenView(
             }
 
             Button(
-                onClick = { },
+                onClick = { goToForms() },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
