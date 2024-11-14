@@ -1,5 +1,7 @@
 package com.team9.soccermanager.screens.playerHomeScreen
 
+import android.content.ContentResolver
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.Firebase
@@ -16,6 +18,12 @@ import com.team9.soccermanager.model.accessor.TeamAccessor
 open class PlayerHomeScreenViewModel : ViewModel() {
 
     var signedOut = false;
+
+    fun uploadForm(uri: Uri, contentResolver: ContentResolver) {
+        viewModelScope.launch(Dispatchers.IO) {
+            TeamAccessor.uploadForm(uri, contentResolver)
+        }
+    }
 
     fun signOut() {
         if (!signedOut) {

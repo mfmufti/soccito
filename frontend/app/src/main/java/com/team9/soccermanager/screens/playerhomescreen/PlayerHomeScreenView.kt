@@ -1,5 +1,8 @@
 package com.team9.soccermanager.screens.playerHomeScreen
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -16,6 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.*
 import com.team9.soccermanager.model.Account
@@ -36,6 +40,17 @@ fun PlayerHomeScreenView(
     var teamName by remember { mutableStateOf("") }
     var fullname by remember { mutableStateOf("") }
     var announcements by remember { mutableStateOf<List<Announcement>?>(null) }
+
+    val contentResolver = LocalContext.current.contentResolver
+    val pickFileLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent(),
+        onResult = { uri: Uri? ->
+            uri?.let {
+                // The user selected a file, you can now open it or read from it
+                viewModel.uploadForm(it, contentResolver)
+            }
+        }
+    )
 
     viewModel.getTeam {
         announcements = it.announcements.toList()
@@ -116,7 +131,7 @@ fun PlayerHomeScreenView(
                         .padding(16.dp),
                     contentAlignment = Alignment.TopStart
                 ) {
-                    if(announcements == null) Text( text = "Loading...", style = TextStyle(fontSize = 16.sp))
+                    if(announcements == null) Text( text = "", style = TextStyle(fontSize = 16.sp))
                     else LazyColumn(Modifier.fillMaxWidth()) {
                         items(announcements!!) {
                                 announcement -> ListItem(
@@ -164,7 +179,7 @@ fun PlayerHomeScreenView(
             }
 
             Button(
-                onClick = {},
+                onClick = { pickFileLauncher.launch("application/*") },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
