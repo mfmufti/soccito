@@ -1,13 +1,13 @@
 package com.team9.soccermanager.model
 
 data class User(
-    val email: String,
-    val fullname: String,
-    val leagueID: String,
+    var email: String,
+    var fullname: String,
+    var leagueID: String,
     val leagueName: String,
     var teamID: String,
     val teamName: String,
-    val type: String,
+    var type: String,
 ) {
     // need to provide no-arg constructor to support deserialization with Firebase
     constructor() : this("", "", "", "", "", "", "")
