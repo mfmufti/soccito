@@ -25,6 +25,7 @@ class NewPlayerViewModel : ViewModel() {
                 team.playerIds.add(Firebase.auth.uid ?: throw Exception("Player not logged in"))
                 TeamAccessor.updateTeam(team)
                 Account.joinTeam(team.id)
+                Account.joinLeague(team.leagueId)
                 withContext(Dispatchers.Main) {
                     onSuccess()
                 }

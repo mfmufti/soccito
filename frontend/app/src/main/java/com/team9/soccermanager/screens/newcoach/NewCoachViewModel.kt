@@ -25,6 +25,7 @@ class NewCoachViewModel : ViewModel() {
                 league.teamIds.add(team.id)
                 LeagueAccessor.updateLeague(league)
                 Account.joinTeam(team.id)
+                Account.joinLeague(leagueCode)
                 withContext(Dispatchers.Main) {
                     onSuccess()
                 }

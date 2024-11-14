@@ -9,13 +9,18 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.team9.soccermanager.model.Account
+import com.team9.soccermanager.model.GS
 import com.team9.soccermanager.screens.coachScreen.CoachHomeScreenView
 import com.team9.soccermanager.screens.coachScreen.forms.CoachHomeScreenFormsView
 import com.team9.soccermanager.ui.theme.SoccerManagerTheme
@@ -32,8 +37,10 @@ import com.team9.soccermanager.screens.welcome.WelcomeView
 import com.team9.soccermanager.screens.playerHomeScreen.PlayerHomeScreenView
 import com.team9.soccermanager.screens.playerrosterscreen.PlayerRosterView
 import com.team9.soccermanager.screens.rankingsScreen.RankingView
+import com.team9.soccermanager.screens.loadscreen.LoadView
 import kotlinx.serialization.Serializable
 
+@Serializable object LoadScreen
 @Serializable object WelcomeScreen
 @Serializable object LoginScreen
 @Serializable data class RegisterScreen(var type: String)
@@ -87,13 +94,30 @@ class Navigator(val navController: NavHostController) {
 
 @Composable
 fun App(navController: NavHostController = rememberNavController()) {
-    val nav = remember(navController) { Navigator(navController) }
-    var start: Any = WelcomeScreen
+
     //start = LeagueStandingsScreen // For debug purposes
     // First check if authenticated user is player, coach, admin, and guide them
     // to the appropriate screen. If its player, go to playerHomeScreen upon login and register
 
+    val nav = remember(navController) { Navigator(navController) }
+    var start by remember { mutableStateOf<Any>(LoadScreen) }
+
+    if (Account.isLoggedIn()) {
+        Account.setupGS {
+            start = when(GS.user?.type) {
+                "admin" -> PlayerHomeScreen
+                "player" -> PlayerHomeScreen
+                else -> CoachHomeScreen
+            }
+        }
+    } else {
+        start = WelcomeScreen
+    }
+
     NavHost(navController = navController, startDestination = start) {
+        composable<LoadScreen> {
+            LoadView()
+        }
         composable<WelcomeScreen> {
             WelcomeView(
                 switchToLogin = { nav.switch(LoginScreen) },
@@ -103,7 +127,7 @@ fun App(navController: NavHostController = rememberNavController()) {
         composable<LoginScreen> {
             LoginView(
                 switchBack = { nav.pop() },
-                switchToRegister = { nav.popSwitch(RegisterScreen, WelcomeScreen) },
+                switchToRegister = { nav.popSwitch(TypeSelectScreen, WelcomeScreen) },
                 switchToSpecific = {
                     if (it == "player") {
                         nav.switch(PlayerHomeScreen)

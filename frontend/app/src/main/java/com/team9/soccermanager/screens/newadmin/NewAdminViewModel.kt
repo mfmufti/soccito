@@ -2,6 +2,7 @@ package com.team9.soccermanager.screens.newadmin
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.team9.soccermanager.model.Account
 import com.team9.soccermanager.model.accessor.LeagueAccessor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,6 +19,7 @@ class NewAdminViewModel : ViewModel() {
             val res = LeagueAccessor.createLeague(leagueName)
             withContext(Dispatchers.Main) {
                 if (res != null) {
+                    Account.joinLeague(res.id)
                     onSuccess()
                 } else {
                     onError("There was an error creating the league.")
