@@ -1,11 +1,19 @@
 package com.team9.soccermanager.model.accessor
 
+import android.content.ContentResolver
+import android.net.Uri
+import android.provider.OpenableColumns
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.firestore
 import com.google.firebase.firestore.toObject
+import com.google.firebase.storage.FirebaseStorage
+import com.team9.soccermanager.model.Account
+import com.team9.soccermanager.model.FormFile
+import com.team9.soccermanager.model.GS
 import com.team9.soccermanager.model.Team
 import kotlinx.coroutines.tasks.await
+import java.util.UUID
 
 object TeamAccessor : TeamDao {
     private const val TEAM_COL = "teams"
@@ -39,7 +47,7 @@ object TeamAccessor : TeamDao {
     override suspend fun createTeam(teamName: String, leagueId: String): Team? {
         val teamDoc = Firebase.firestore.collection(TEAM_COL).document()
 
-        val team = Team(teamDoc.id, teamName, teamDoc.id, mutableListOf(), mutableListOf(Firebase.auth.uid ?: ""), leagueId, 0, 0, 0, 0, 0, mutableListOf())
+        val team = Team(teamDoc.id, teamName, teamDoc.id, mutableListOf(), mutableListOf(Firebase.auth.uid ?: ""), leagueId, 0, 0, 0, 0, 0, mutableListOf(), mutableListOf())
 
         try {
             teamDoc.set(team).await()
@@ -61,6 +69,39 @@ object TeamAccessor : TeamDao {
         } catch (e: Exception) {
             e.printStackTrace()
             return false
+        }
+    }
+
+    override suspend fun uploadForm(uri: Uri, contentResolver: ContentResolver) {
+        // original java code: https://stackoverflow.com/questions/5568874/how-to-extract-the-file-name-from-uri-returned-from-intent-action-get-content/25005243#25005243
+        var result: String? = null
+        if (uri.scheme.equals("content")) {
+            val cursor = contentResolver.query(uri, null, null, null, null);
+            try {
+                if (cursor != null && cursor.moveToFirst()) {
+                    result = cursor.getString(cursor.getColumnIndexOrThrow(OpenableColumns.DISPLAY_NAME));
+                }
+            } finally {
+                cursor?.close();
+            }
+        }
+        if (result == null) {
+            result = uri.path
+            val cut = result!!.lastIndexOf('/');
+            if (cut != -1) {
+                result = result.substring(cut + 1);
+            }
+        }
+        val folderRef = FirebaseStorage.getInstance().getReference("teams")
+        val ref = folderRef.child("${_lastAccessedTeam?.id}/${UUID.randomUUID()}_${result}")
+
+        val inputStream = contentResolver.openInputStream(uri)
+        inputStream.use {
+            val downloadUrl = ref.putBytes(inputStream!!.readBytes()).await().storage.downloadUrl.await().toString()
+            //downloadUrl.metadata?.path
+            val newFormFile = FormFile(result, downloadUrl, GS.user?.fullname!!, System.currentTimeMillis())
+            _lastAccessedTeam?.forms?.add(newFormFile)
+            updateTeam(_lastAccessedTeam!!)
         }
     }
 }

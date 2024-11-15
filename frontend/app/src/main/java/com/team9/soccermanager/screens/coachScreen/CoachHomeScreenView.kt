@@ -31,7 +31,8 @@ fun CoachHomeScreenView(
     goToLeagueStandings: () -> Unit,
     goToSchedule: () -> Unit,
     goToRoster: () -> Unit,
-    goToChatSelect: () -> Unit
+    goToChatSelect: () -> Unit,
+    goToForms: () -> Unit
 ) {
     var teamName by remember { mutableStateOf("") }
     var fullname by remember { mutableStateOf("") }
@@ -116,7 +117,7 @@ fun CoachHomeScreenView(
                         .padding(16.dp),
                     contentAlignment = Alignment.TopStart
                 ) {
-                    if(announcements == null) Text( text = "Loading...", style = TextStyle(fontSize = 16.sp))
+                    if(announcements == null) Text( text = "", style = TextStyle(fontSize = 16.sp))
                     else LazyColumn(Modifier.fillMaxWidth()) {
                         items(announcements!!) {
                             announcement -> ListItem(
@@ -217,7 +218,7 @@ fun CoachHomeScreenView(
             }
 
             Button(
-                onClick = { },
+                onClick = goToForms,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)

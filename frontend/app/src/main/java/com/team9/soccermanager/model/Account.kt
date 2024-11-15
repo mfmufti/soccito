@@ -47,11 +47,10 @@ object Account {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.d(TAG, "Successfully created account")
-                    val userProfile = hashMapOf(
-                        "fullname" to fullname,
-                        "email" to email,
-                        "type" to type
-                    )
+                    var userProfile: User = User()
+                    userProfile.fullname = fullname
+                    userProfile.email = email
+                    userProfile.type = type
                     Firebase.firestore.collection("users").document(auth.currentUser?.uid!!)
                         .set(userProfile)
                     Firebase.firestore.collection("users").document(auth.currentUser?.uid!!).get().addOnSuccessListener {
@@ -76,6 +75,23 @@ object Account {
     fun joinTeam(teamId: String) {
         GS.user?.teamID = teamId
         updateRemoteUser()
+    }
+
+    fun joinLeague(leagueId: String) {
+        GS.user?.leagueID = leagueId
+        updateRemoteUser()
+    }
+
+    fun setupGS(then: () -> Unit) {
+        Firebase.firestore.collection("users").document(auth.currentUser?.uid!!).get()
+            .addOnSuccessListener {
+                GS.user = it.toObject(User::class.java)
+                println(GS.user?.type)
+                then()
+            }
+            .addOnFailureListener{
+            error("Failed to fetch user")
+            }
     }
 
     fun signIn(email: String, password: String, then: (LoginError) -> Unit = {}) {

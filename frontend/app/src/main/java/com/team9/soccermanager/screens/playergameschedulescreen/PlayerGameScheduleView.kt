@@ -1,15 +1,23 @@
 package com.team9.soccermanager.screens.playergameschedulescreen
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.List
+import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.*
 import com.google.maps.android.compose.GoogleMap
 
@@ -17,6 +25,7 @@ import com.google.maps.android.compose.GoogleMap
 fun PlayerGameScheduleView(
     viewModel: PlayerGameScheduleViewModel = PlayerGameScheduleViewModel(),
     switchToWelcome: () -> Unit,
+    goToSpecificGame: () -> Unit,
     goToHome: () -> Unit,
     goToRoster: () -> Unit,
     goToChatSelect: () -> Unit
@@ -34,19 +43,6 @@ fun PlayerGameScheduleView(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding()
-                ) {
-                    // Add GoogleMap here
-                    GoogleMap(
-                        modifier = Modifier.fillMaxSize(),
-                        onMapLoaded = { isMapLoaded = true }
-                    )
-
-                    // ...
-                }
                 Text(text = teamName)
                 Button(
                     onClick = { viewModel.signOut(); switchToWelcome() },
@@ -83,13 +79,55 @@ fun PlayerGameScheduleView(
             }
         },
         content = { paddingValues ->
-            Box(
+            Surface(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(paddingValues),
-                contentAlignment = Alignment.Center
+                    .padding(paddingValues)
             ) {
-                Text(text = "Player Game Schedule Screen")
+                Column(
+                    modifier = Modifier
+                        .verticalScroll(rememberScrollState())
+                        .fillMaxSize()
+                        .padding(16.dp),
+                    verticalArrangement = Arrangement.Top,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    data class Game(val home: String, val away: String)
+
+                    var data = listOf(
+                        Game("Leverkusen", "Bayern"),
+                        Game("Chelsea", "Leverkusen"),
+                        Game("Leverkusen", "Berlin"),
+                        Game("Leverkusen", "Dortmund"),
+                        Game("PSG", "Leverkusen"),
+                        Game("Leverkusen", "PSG"),
+                        Game("Leverkusen", "Liepzig"),
+                        Game("Leverkusen", "Augsburg")
+                    )
+
+                    for (game in data) {
+                        Button(
+                            onClick = { goToSpecificGame() },
+                            modifier = Modifier
+                                .padding(5.dp)
+                                .fillMaxWidth()
+                                .height(100.dp),
+                                shape = MaterialTheme.shapes.medium
+                        ) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.Center
+                            ) {
+                                Spacer(modifier = Modifier.width(5.dp))
+                                Text(
+                                    text = game.home + " vs. " + game.away,
+                                    fontSize = 24.sp,
+                                )
+                            }
+                        }
+                        Spacer(modifier = Modifier.height(8.dp))
+                    }
+                }
             }
         }
     )
