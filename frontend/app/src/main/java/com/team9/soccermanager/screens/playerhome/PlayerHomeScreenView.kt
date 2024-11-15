@@ -1,6 +1,7 @@
 package com.team9.soccermanager.screens.playerhome
 
 import android.net.Uri
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.*
@@ -40,13 +41,21 @@ fun PlayerHomeScreenView(
     var fullname by remember { mutableStateOf("") }
     var joinCode by remember { mutableStateOf("") }
 
-    val contentResolver = LocalContext.current.contentResolver
+    val ctx = LocalContext.current
+    val contentResolver = ctx.contentResolver
     val pickFileLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(),
         onResult = { uri: Uri? ->
             uri?.let {
                 // The user selected a file, you can now open it or read from it
-                viewModel.uploadForm(it, contentResolver)
+                val mimeType = contentResolver.getType(uri)
+                if (mimeType == "application/pdf" || mimeType == "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
+                    // The file is a PDF or DOCX, proceed with the upload
+                    viewModel.uploadForm(it, contentResolver)
+                } else {
+                    Toast.makeText(ctx, "Invalid Form Type (must be PDF or DOCX).", Toast.LENGTH_SHORT).show()
+                }
+
             }
         }
     )
