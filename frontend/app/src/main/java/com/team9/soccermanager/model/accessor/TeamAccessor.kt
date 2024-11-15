@@ -104,4 +104,18 @@ object TeamAccessor : TeamDao {
             updateTeam(_lastAccessedTeam!!)
         }
     }
+
+    override suspend fun listenForUpdates(onResult: (Team) -> Unit) {
+        val docRef = Firebase.firestore.collection(TEAM_COL).document(getTeamById(GS.user?.teamID!!)?.id!!)
+        docRef.addSnapshotListener { snapshot, e ->
+            if (e != null) {
+                return@addSnapshotListener
+            }
+
+            if (snapshot != null && snapshot.exists()) {
+                _lastAccessedTeam = snapshot.toObject<Team>()
+                onResult(_lastAccessedTeam!!)
+            }
+        }
+    }
 }

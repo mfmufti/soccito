@@ -20,6 +20,14 @@ open class CoachHomeScreenViewModel : ViewModel() {
 
     var signedOut = false;
 
+    init {
+        viewModelScope.launch(Dispatchers.IO) {
+            TeamAccessor.listenForUpdates {
+                // If there's any live components that need to update, do it here
+            }
+        }
+    }
+
     fun signOut() {
         if (!signedOut) {
             Account.signOut()

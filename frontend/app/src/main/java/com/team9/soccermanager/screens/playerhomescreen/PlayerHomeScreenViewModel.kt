@@ -2,6 +2,10 @@ package com.team9.soccermanager.screens.playerHomeScreen
 
 import android.content.ContentResolver
 import android.net.Uri
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.Firebase
@@ -11,6 +15,7 @@ import com.team9.soccermanager.model.Account
 import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
 import com.google.firebase.firestore.toObject
+import com.team9.soccermanager.model.Announcement
 import com.team9.soccermanager.model.GS
 import com.team9.soccermanager.model.Team
 import com.team9.soccermanager.model.accessor.TeamAccessor
@@ -18,6 +23,18 @@ import com.team9.soccermanager.model.accessor.TeamAccessor
 open class PlayerHomeScreenViewModel : ViewModel() {
 
     var signedOut = false;
+
+    var announcements = mutableStateOf<List<Announcement>?>(null)
+
+    init {
+        viewModelScope.launch(Dispatchers.IO) {
+            TeamAccessor.listenForUpdates {
+                viewModelScope.launch(Dispatchers.Main) {
+                    announcements.value = it.announcements.toList()
+                }
+            }
+        }
+    }
 
     fun uploadForm(uri: Uri, contentResolver: ContentResolver) {
         viewModelScope.launch(Dispatchers.IO) {

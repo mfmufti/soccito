@@ -39,7 +39,6 @@ fun PlayerHomeScreenView(
 ) {
     var teamName by remember { mutableStateOf("") }
     var fullname by remember { mutableStateOf("") }
-    var announcements by remember { mutableStateOf<List<Announcement>?>(null) }
     var joinCode by remember { mutableStateOf("") }
 
     val contentResolver = LocalContext.current.contentResolver
@@ -54,7 +53,7 @@ fun PlayerHomeScreenView(
     )
 
     viewModel.getTeam {
-        announcements = it.announcements.toList()
+        viewModel.announcements.value = it.announcements.toList()
     }
 
     //viewModel.getTeamName { teamName = it }
@@ -124,7 +123,7 @@ fun PlayerHomeScreenView(
                 modifier = Modifier
                     .padding(16.dp)
                     .fillMaxWidth()
-                    .height(150.dp),
+                    .height(200.dp),
                 shape = RoundedCornerShape(8.dp),
                 border = BorderStroke(1.dp, Color.Gray)
             ) {
@@ -134,9 +133,9 @@ fun PlayerHomeScreenView(
                         .padding(16.dp),
                     contentAlignment = Alignment.TopStart
                 ) {
-                    if(announcements == null) Text( text = "", style = TextStyle(fontSize = 16.sp))
+                    if(viewModel.announcements.value == null) Text( text = "", style = TextStyle(fontSize = 16.sp))
                     else LazyColumn(Modifier.fillMaxWidth()) {
-                        items(announcements!!) {
+                        items(viewModel.announcements.value!!.reversed()) {
                                 announcement -> ListItem(
                             headlineContent = { Text(announcement.content) },
                             supportingContent =

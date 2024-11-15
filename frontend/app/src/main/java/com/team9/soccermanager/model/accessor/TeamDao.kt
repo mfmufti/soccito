@@ -10,4 +10,5 @@ interface TeamDao {
     suspend fun createTeam(teamName: String, leagueId: String) : Team?
     suspend fun updateTeam(team: Team) : Boolean
     suspend fun uploadForm(uri: Uri, contentResolver: ContentResolver) : Unit
+    suspend fun listenForUpdates(onResult: (Team) -> Unit)
 }
