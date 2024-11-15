@@ -38,6 +38,7 @@ import com.team9.soccermanager.screens.playerHomeScreen.PlayerHomeScreenView
 import com.team9.soccermanager.screens.playerrosterscreen.PlayerRosterView
 import com.team9.soccermanager.screens.rankingsScreen.RankingView
 import com.team9.soccermanager.screens.loadscreen.LoadView
+import com.team9.soccermanager.screens.playerspecificgamescreen.PlayerSpecificGameView
 import kotlinx.serialization.Serializable
 
 @Serializable object LoadScreen
@@ -55,6 +56,7 @@ import kotlinx.serialization.Serializable
 @Serializable object LeagueStandingsScreen
 @Serializable object PlayerGameScheduleScreen
 @Serializable object PlayerRosterScreen
+@Serializable object PlayerSpecificGameScreen
 @Serializable object PlayerChatScreen
 
 class MainActivity : ComponentActivity() {
@@ -217,7 +219,17 @@ fun App(navController: NavHostController = rememberNavController()) {
         composable<PlayerGameScheduleScreen> {
             PlayerGameScheduleView(
                 switchToWelcome = { nav.clearSwitch(WelcomeScreen) },
+                goToSpecificGame = { nav.clearSwitch(PlayerSpecificGameScreen) },
                 goToHome = { nav.clearSwitch(PlayerHomeScreen) },
+                goToRoster = { nav.clearSwitch(PlayerRosterScreen) },
+                goToChat = { nav.clearSwitch(PlayerChatScreen) }
+            )
+        }
+        composable<PlayerSpecificGameScreen> {
+            PlayerSpecificGameView(
+                switchToWelcome = { nav.clearSwitch(WelcomeScreen) },
+                goToHome = { nav.clearSwitch(PlayerHomeScreen) },
+                goToSchedule = { nav.clearSwitch(PlayerGameScheduleScreen) },
                 goToRoster = { nav.clearSwitch(PlayerRosterScreen) },
                 goToChat = { nav.clearSwitch(PlayerChatScreen) }
             )
