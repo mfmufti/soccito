@@ -240,7 +240,7 @@ fun App(navController: NavHostController = rememberNavController()) {
         }
         composable<LeagueStandingsScreen> {
             RankingView(
-                switchBack = { nav.popSwitch(PlayerHomeScreen, LeagueStandingsScreen) }
+                switchBack = { nav.pop() }
             )
         }
 
