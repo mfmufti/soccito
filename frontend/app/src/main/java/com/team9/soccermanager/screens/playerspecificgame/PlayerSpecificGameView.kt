@@ -1,4 +1,4 @@
-package com.team9.soccermanager.screens.playerspecificgamescreen
+package com.team9.soccermanager.screens.playerspecificgame
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -16,7 +16,6 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
-import com.team9.soccermanager.screens.playergameschedulescreen.PlayerGameScheduleViewModel
 
 @Composable
 fun PlayerSpecificGameView(
@@ -46,8 +45,8 @@ fun PlayerSpecificGameView(
                     modifier = Modifier.size(100.dp, 36.dp),
                     contentPadding = PaddingValues(3.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.Red,
-                        contentColor = Color.White
+                        containerColor = MaterialTheme.colorScheme.errorContainer,
+                        contentColor = MaterialTheme.colorScheme.onErrorContainer
                     )) {
                     Text(text = "Sign Out")
                 }
@@ -71,7 +70,7 @@ fun PlayerSpecificGameView(
                     Icon(contentDescription = "Roster", imageVector = Icons.Filled.Person)
                 }
                 IconButton(onClick = goToChat) {
-                    Icon(contentDescription = "Chat", imageVector = Icons.AutoMirrored.Default.Send)
+                    Icon(contentDescription = "Chat", imageVector = Icons.Filled.Forum)
                 }
             }
         },

@@ -1,4 +1,4 @@
-package com.team9.soccermanager.screens.playerchatscreen
+package com.team9.soccermanager.screens.chat
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
@@ -7,11 +7,11 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.team9.soccermanager.model.GS
-import com.team9.soccermanager.screens.playerHomeScreen.PlayerHomeScreenViewModel
+import com.team9.soccermanager.screens.playerhome.PlayerHomeScreenViewModel
 
 data class Message(val right: Boolean, var text: String)
 
-class PlayerChatViewModel(val chatID: String): PlayerHomeScreenViewModel() {
+class ChatViewModel(val chatID: String): PlayerHomeScreenViewModel() {
     private val messages = mutableStateListOf<Message>()
     private var loading = mutableStateOf(true)
 

@@ -1,4 +1,4 @@
-package com.team9.soccermanager.screens.playerchatscreen
+package com.team9.soccermanager.screens.chat
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -24,10 +24,10 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.*
 
 @Composable
-fun PlayerChatView(
+fun ChatView(
     chatID: String,
     fullname: String,
-    viewModel: PlayerChatViewModel = PlayerChatViewModel(chatID),
+    viewModel: ChatViewModel = ChatViewModel(chatID),
     switchToWelcome: () -> Unit,
     switchBack: () -> Unit,
     goToHome: () -> Unit,
@@ -86,7 +86,7 @@ fun PlayerChatView(
                     Icon(contentDescription = "Roster", imageVector = Icons.Filled.Person)
                 }
                 IconButton(onClick = {}) {
-                    Icon(contentDescription = "Chat", imageVector = Icons.Filled.Forum, tint = Color.Blue)
+                    Icon(contentDescription = "Chat", imageVector = Icons.Filled.Forum, tint = MaterialTheme.colorScheme.surfaceTint)
                 }
             }
         },
@@ -114,7 +114,7 @@ fun PlayerChatView(
 }
 
 @Composable
-fun Chat(paddingValues: PaddingValues, messages: MutableList<Message>, viewModel: PlayerChatViewModel) {
+fun Chat(paddingValues: PaddingValues, messages: MutableList<Message>, viewModel: ChatViewModel) {
     val listState = rememberLazyListState()
 
     LaunchedEffect(messages.size) {

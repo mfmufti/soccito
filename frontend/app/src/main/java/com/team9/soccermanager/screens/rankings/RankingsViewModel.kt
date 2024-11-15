@@ -1,21 +1,12 @@
-package com.team9.soccermanager.screens.rankingsScreen
+package com.team9.soccermanager.screens.rankings
 
 import androidx.compose.runtime.mutableStateListOf
-import com.google.firebase.Firebase
-import com.google.firebase.auth.auth
-import com.google.firebase.firestore.firestore
-import com.google.firebase.firestore.toObject
 import com.team9.soccermanager.model.GS
-import com.team9.soccermanager.model.League
-import kotlinx.coroutines.tasks.await
 import com.team9.soccermanager.model.accessor.TeamAccessor
 import com.team9.soccermanager.model.accessor.LeagueAccessor
 import com.team9.soccermanager.model.Team
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
-class RankingViewModel {
+class RankingsViewModel {
     var leagueName: String = ""
     var teamsList = mutableStateListOf<Team?>()
     var teamId = GS.user?.teamID

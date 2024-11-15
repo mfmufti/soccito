@@ -106,7 +106,8 @@ object TeamAccessor : TeamDao {
     }
 
     override suspend fun listenForUpdates(onResult: (Team) -> Unit) {
-        val docRef = Firebase.firestore.collection(TEAM_COL).document(getTeamById(GS.user?.teamID!!)?.id!!)
+        val id = getTeamById(GS.user?.teamID!!)?.id ?: return
+        val docRef = Firebase.firestore.collection(TEAM_COL).document(id)
         docRef.addSnapshotListener { snapshot, e ->
             if (e != null) {
                 return@addSnapshotListener

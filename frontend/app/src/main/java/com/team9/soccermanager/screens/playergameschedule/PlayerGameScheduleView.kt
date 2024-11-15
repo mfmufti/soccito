@@ -1,9 +1,7 @@
-package com.team9.soccermanager.screens.playerrosterscreen
+package com.team9.soccermanager.screens.playergameschedule
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.*
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
@@ -13,20 +11,22 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.draw.*
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.*
 
 @Composable
-fun PlayerRosterView(
-    viewModel: PlayerRosterViewModel = PlayerRosterViewModel(),
+fun PlayerGameScheduleView(
+    viewModel: PlayerGameScheduleViewModel = PlayerGameScheduleViewModel(),
     switchToWelcome: () -> Unit,
+    goToSpecificGame: () -> Unit,
     goToHome: () -> Unit,
-    goToSchedule: () -> Unit,
+    goToRoster: () -> Unit,
     goToChatSelect: () -> Unit
-) {
-    var teamName by remember { mutableStateOf("") }
-    viewModel.getTeamName { teamName = it }
+    ) {
+        var teamName by remember { mutableStateOf("") }
+        viewModel.getTeamName { teamName = it }
+    var isMapLoaded by remember { mutableStateOf(false) }
 
     Scaffold (
         topBar =  {
@@ -61,17 +61,16 @@ fun PlayerRosterView(
                 IconButton(onClick = goToHome) {
                     Icon(contentDescription = "Home", imageVector = Icons.Filled.Home)
                 }
-                IconButton(onClick = goToSchedule) {
-                    Icon(contentDescription = "Schedule", imageVector = Icons.Filled.DateRange)
-                }
                 IconButton(onClick = {}) {
-                    Icon(contentDescription = "Roster", imageVector = Icons.Filled.Person, tint = Color.Blue)
+                    Icon(contentDescription = "Schedule", imageVector = Icons.Filled.DateRange, tint = MaterialTheme.colorScheme.surfaceTint)
+                }
+                IconButton(onClick = goToRoster) {
+                    Icon(contentDescription = "Roster", imageVector = Icons.Filled.Person)
                 }
                 IconButton(onClick = goToChatSelect) {
                     Icon(contentDescription = "Chat", imageVector = Icons.Filled.Forum)
                 }
             }
-
         },
         content = { paddingValues ->
             Surface(
@@ -87,46 +86,40 @@ fun PlayerRosterView(
                     verticalArrangement = Arrangement.Top,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    data class Player(val name: String, val email: String)
+                    data class Game(val home: String, val away: String)
 
                     var data = listOf(
-                        Player("First", "first@firsty.com"),
-                        Player("First", "first@firsty.com"),
-                        Player("First", "first@firsty.com"),
-                        Player("First", "first@firsty.com"),
-                        Player("First", "first@firsty.com"),
-                        Player("First", "first@firsty.com"),
-                        Player("First", "first@firsty.com"),
-                        Player("First", "first@firsty.com"),
-                        Player("First", "first@firsty.com"),
-                        Player("First", "first@firsty.com"),
-                        Player("Another", "justanother@x.com")
+                        Game("Leverkusen", "Bayern"),
+                        Game("Chelsea", "Leverkusen"),
+                        Game("Leverkusen", "Berlin"),
+                        Game("Leverkusen", "Dortmund"),
+                        Game("PSG", "Leverkusen"),
+                        Game("Leverkusen", "PSG"),
+                        Game("Leverkusen", "Liepzig"),
+                        Game("Leverkusen", "Augsburg")
                     )
 
-                    for (player in data) {
-                        Box(
+                    for (game in data) {
+                        Button(
+                            onClick = { goToSpecificGame() },
                             modifier = Modifier
-                                .clip(shape = RoundedCornerShape(15.dp, 15.dp, 15.dp, 15.dp))
-                                .background(MaterialTheme.colorScheme.inverseOnSurface)
-                                .padding(16.dp)
+                                .padding(5.dp)
                                 .fillMaxWidth()
+                                .height(100.dp),
+                            shape = MaterialTheme.shapes.medium
                         ) {
-                            Column(
-                                horizontalAlignment = Alignment.CenterHorizontally,
-                                modifier = Modifier
-                                    .fillMaxWidth()
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.Center
                             ) {
+                                Spacer(modifier = Modifier.width(5.dp))
                                 Text(
-                                    text = player.name,
-                                    fontSize = 30.sp
-                                )
-                                Text(
-                                    text = player.email,
-                                    fontSize = 12.sp
+                                    text = game.home + " vs. " + game.away,
+                                    fontSize = 24.sp,
+                                    textAlign = TextAlign.Center,
                                 )
                             }
                         }
-
                         Spacer(modifier = Modifier.height(8.dp))
                     }
                 }
@@ -134,3 +127,4 @@ fun PlayerRosterView(
         }
     )
 }
+

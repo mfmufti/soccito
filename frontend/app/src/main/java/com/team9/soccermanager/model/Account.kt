@@ -86,11 +86,12 @@ object Account {
         Firebase.firestore.collection("users").document(auth.currentUser?.uid!!).get()
             .addOnSuccessListener {
                 GS.user = it.toObject(User::class.java)
+                GS.user?.id = it.id
                 println(GS.user?.type)
                 then()
             }
             .addOnFailureListener{
-            error("Failed to fetch user")
+                error("Failed to fetch user")
             }
     }
 

@@ -1,10 +1,8 @@
-package com.team9.soccermanager.screens.coachScreen.forms
+package com.team9.soccermanager.screens.coachhome.forms
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.team9.soccermanager.model.Account
 import kotlinx.coroutines.*
-import com.team9.soccermanager.model.Announcement
 import com.team9.soccermanager.model.GS
 import com.team9.soccermanager.model.Team
 import com.team9.soccermanager.model.accessor.TeamAccessor

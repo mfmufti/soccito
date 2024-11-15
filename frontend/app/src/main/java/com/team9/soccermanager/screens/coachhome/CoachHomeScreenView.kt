@@ -1,10 +1,11 @@
-package com.team9.soccermanager.screens.coachScreen
+package com.team9.soccermanager.screens.coachhome
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
@@ -18,6 +19,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.*
 import com.team9.soccermanager.model.Announcement
 import com.team9.soccermanager.model.GS
@@ -39,11 +41,13 @@ fun CoachHomeScreenView(
     var announcements by remember { mutableStateOf<List<Announcement>?>(null) }
     var announcementContent by remember { mutableStateOf("") }
     var showAnnouncementForm by remember { mutableStateOf(false) }
+    var joinCode by remember { mutableStateOf("") }
 
     viewModel.getTeam {
         announcements = it.announcements.toList()
     }
     viewModel.getFullName { fullname = it }
+    viewModel.getJoinCode { joinCode = it }
 
     Scaffold (
         topBar =  {
@@ -60,8 +64,8 @@ fun CoachHomeScreenView(
                     modifier = Modifier.size(100.dp, 36.dp),
                     contentPadding = PaddingValues(3.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.Red,
-                        contentColor = Color.White
+                        containerColor = MaterialTheme.colorScheme.errorContainer,
+                        contentColor = MaterialTheme.colorScheme.onErrorContainer
                     )) {
                     Text(text = "Sign Out")
                 }
@@ -76,7 +80,7 @@ fun CoachHomeScreenView(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 IconButton(onClick = {}) {
-                    Icon(contentDescription = "Home", imageVector = Icons.Filled.Home, tint = Color.Blue)
+                    Icon(contentDescription = "Home", imageVector = Icons.Filled.Home, tint = MaterialTheme.colorScheme.surfaceTint)
                 }
                 IconButton(onClick = goToSchedule) {
                     Icon(contentDescription = "Schedule", imageVector = Icons.Filled.DateRange)
@@ -85,7 +89,7 @@ fun CoachHomeScreenView(
                     Icon(contentDescription = "Roster", imageVector = Icons.Filled.Person)
                 }
                 IconButton(onClick = goToChatSelect) {
-                    Icon(contentDescription = "Chat", imageVector = Icons.AutoMirrored.Default.Send)
+                    Icon(contentDescription = "Chat", imageVector = Icons.Filled.Forum)
                 }
             }
 
@@ -186,11 +190,11 @@ fun CoachHomeScreenView(
                 )
             }
 
-            Spacer(modifier = Modifier.height(55.dp))
+            Spacer(modifier = Modifier.height(30.dp))
 
             Text(text = "Upcoming Game shown here")
 
-            Spacer(modifier = Modifier.height(55.dp))
+            Spacer(modifier = Modifier.height(30.dp))
 
             Button(
                 onClick = goToLeagueStandings,
@@ -226,6 +230,16 @@ fun CoachHomeScreenView(
                 Text("View Forms")
             }
 
+            if (joinCode.isNotEmpty()) {
+                SelectionContainer {
+                    Text(
+                        text = joinCode,
+                        color = MaterialTheme.colorScheme.error,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+            }
         }
     }
 }

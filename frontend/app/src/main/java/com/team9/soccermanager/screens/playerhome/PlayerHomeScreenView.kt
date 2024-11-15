@@ -1,4 +1,4 @@
-package com.team9.soccermanager.screens.playerHomeScreen
+package com.team9.soccermanager.screens.playerhome
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -24,7 +24,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.*
 import com.team9.soccermanager.model.GS
-import com.team9.soccermanager.model.Announcement
 import java.text.DateFormat.getDateTimeInstance
 import java.util.Date
 
@@ -92,7 +91,7 @@ fun PlayerHomeScreenView(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 IconButton(onClick = {}) {
-                    Icon(contentDescription = "Home", imageVector = Icons.Filled.Home, tint = Color.Blue)
+                    Icon(contentDescription = "Home", imageVector = Icons.Filled.Home, tint = MaterialTheme.colorScheme.surfaceTint)
                 }
                 IconButton(onClick = goToSchedule) {
                     Icon(contentDescription = "Schedule", imageVector = Icons.Filled.DateRange)
@@ -149,11 +148,11 @@ fun PlayerHomeScreenView(
                 }
             }
 
-            Spacer(modifier = Modifier.height(55.dp))
+            Spacer(modifier = Modifier.height(30.dp))
 
             Text(text = "Upcoming Game shown here")
 
-            Spacer(modifier = Modifier.height(55.dp))
+            Spacer(modifier = Modifier.height(30.dp))
 
             Button(
                 onClick = goToLeagueStandings,
@@ -189,7 +188,7 @@ fun PlayerHomeScreenView(
                 Text("Upload a Form")
             }
 
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(5.dp))
 
             if (joinCode.isNotEmpty()) {
                 SelectionContainer {

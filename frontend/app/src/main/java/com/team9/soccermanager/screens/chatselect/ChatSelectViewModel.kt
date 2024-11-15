@@ -7,8 +7,7 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.team9.soccermanager.model.GS
-import com.team9.soccermanager.screens.playerHomeScreen.PlayerHomeScreenViewModel
-import com.team9.soccermanager.screens.playerchatscreen.Message
+import com.team9.soccermanager.screens.playerhome.PlayerHomeScreenViewModel
 
 data class Chat(val name: String, val type: String, val userRef: DocumentReference)
 

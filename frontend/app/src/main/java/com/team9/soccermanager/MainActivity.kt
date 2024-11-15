@@ -21,10 +21,9 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.team9.soccermanager.model.Account
 import com.team9.soccermanager.model.GS
-import com.google.firebase.firestore.DocumentReference
 import com.team9.soccermanager.screens.chatselect.ChatSelectView
-import com.team9.soccermanager.screens.coachScreen.CoachHomeScreenView
-import com.team9.soccermanager.screens.coachScreen.forms.CoachHomeScreenFormsView
+import com.team9.soccermanager.screens.coachhome.CoachHomeScreenView
+import com.team9.soccermanager.screens.coachhome.forms.CoachHomeScreenFormsView
 import com.team9.soccermanager.ui.theme.SoccerManagerTheme
 import com.team9.soccermanager.screens.login.LoginView
 import com.team9.soccermanager.screens.register.RegisterView
@@ -32,15 +31,15 @@ import com.team9.soccermanager.screens.home.HomeView
 import com.team9.soccermanager.screens.newadmin.NewAdminView
 import com.team9.soccermanager.screens.newcoach.NewCoachView
 import com.team9.soccermanager.screens.newplayer.NewPlayerView
-import com.team9.soccermanager.screens.playerchatscreen.PlayerChatView
-import com.team9.soccermanager.screens.playergameschedulescreen.PlayerGameScheduleView
+import com.team9.soccermanager.screens.chat.ChatView
+import com.team9.soccermanager.screens.playergameschedule.PlayerGameScheduleView
 import com.team9.soccermanager.screens.typeselect.TypeSelectView
 import com.team9.soccermanager.screens.welcome.WelcomeView
-import com.team9.soccermanager.screens.playerHomeScreen.PlayerHomeScreenView
-import com.team9.soccermanager.screens.playerrosterscreen.PlayerRosterView
-import com.team9.soccermanager.screens.rankingsScreen.RankingView
+import com.team9.soccermanager.screens.playerhome.PlayerHomeScreenView
+import com.team9.soccermanager.screens.playerroster.PlayerRosterView
+import com.team9.soccermanager.screens.rankings.RankingsView
 import com.team9.soccermanager.screens.loadscreen.LoadView
-import com.team9.soccermanager.screens.playerspecificgamescreen.PlayerSpecificGameView
+import com.team9.soccermanager.screens.playerspecificgame.PlayerSpecificGameView
 import kotlinx.serialization.Serializable
 
 @Serializable object LoadScreen
@@ -58,7 +57,7 @@ import kotlinx.serialization.Serializable
 @Serializable object LeagueStandingsScreen
 @Serializable object PlayerGameScheduleScreen
 @Serializable object PlayerRosterScreen
-@Serializable data class PlayerChatScreen(var chatID: String, var fullname: String)
+@Serializable data class ChatScreen(var chatID: String, var fullname: String)
 @Serializable object ChatSelectScreen
 @Serializable object PlayerSpecificGameScreen
 
@@ -234,7 +233,7 @@ fun App(navController: NavHostController = rememberNavController()) {
                 goToHome = { nav.clearSwitch(HomeScreen()) },
                 goToSchedule = { nav.clearSwitch(PlayerGameScheduleScreen) },
                 goToRoster = { nav.clearSwitch(PlayerRosterScreen) },
-                goToChat = { nav.clearSwitch(PlayerChatScreen) }
+                goToChat = { nav.clearSwitch(ChatScreen) }
             )
         }
         composable<PlayerRosterScreen> {
@@ -245,9 +244,9 @@ fun App(navController: NavHostController = rememberNavController()) {
                 goToChatSelect = { nav.clearSwitch(ChatSelectScreen) }
             )
         }
-        composable<PlayerChatScreen> { backStackEntry ->
-            val data: PlayerChatScreen = backStackEntry.toRoute()
-            PlayerChatView(
+        composable<ChatScreen> { backStackEntry ->
+            val data: ChatScreen = backStackEntry.toRoute()
+            ChatView(
                 chatID = data.chatID,
                 fullname = data.fullname,
                 switchToWelcome = { nav.clearSwitch(WelcomeScreen) },
@@ -258,14 +257,14 @@ fun App(navController: NavHostController = rememberNavController()) {
             )
         }
         composable<LeagueStandingsScreen> {
-            RankingView(
+            RankingsView(
                 switchBack = { nav.pop() }
             )
         }
         composable<ChatSelectScreen> {
             ChatSelectView(
                 switchToWelcome = { nav.clearSwitch(WelcomeScreen) },
-                goToChat = { chatID, fullname -> nav.switch(PlayerChatScreen(chatID, fullname))},
+                goToChat = { chatID, fullname -> nav.switch(ChatScreen(chatID, fullname))},
                 goToHome = { nav.clearSwitch(HomeScreen()) },
                 goToSchedule = { nav.clearSwitch(PlayerGameScheduleScreen) },
                 goToRoster = { nav.clearSwitch(PlayerRosterScreen) },

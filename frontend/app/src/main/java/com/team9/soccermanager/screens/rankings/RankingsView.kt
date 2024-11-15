@@ -1,4 +1,4 @@
-package com.team9.soccermanager.screens.rankingsScreen
+package com.team9.soccermanager.screens.rankings
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -19,9 +19,9 @@ import androidx.compose.ui.unit.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RankingView(
+fun RankingsView(
     switchBack: () -> Unit,
-    viewModel: RankingViewModel = RankingViewModel()
+    viewModel: RankingsViewModel = RankingsViewModel()
 ) {
 
     LaunchedEffect(Unit) {

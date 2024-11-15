@@ -74,7 +74,7 @@ fun ChatSelectView(
                     Icon(contentDescription = "Roster", imageVector = Icons.Filled.Person)
                 }
                 IconButton(onClick = {}) {
-                    Icon(contentDescription = "Chat", imageVector = Icons.Filled.Forum, tint = Color.Blue)
+                    Icon(contentDescription = "Chat", imageVector = Icons.Filled.Forum, tint = MaterialTheme.colorScheme.surfaceTint)
                 }
             }
         },
