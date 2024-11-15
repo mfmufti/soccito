@@ -7,7 +7,6 @@ import androidx.compose.foundation.shape.*
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -24,7 +23,7 @@ fun PlayerRosterView(
     switchToWelcome: () -> Unit,
     goToHome: () -> Unit,
     goToSchedule: () -> Unit,
-    goToChat: () -> Unit
+    goToChatSelect: () -> Unit
 ) {
     var teamName by remember { mutableStateOf("") }
     viewModel.getTeamName { teamName = it }
@@ -44,8 +43,8 @@ fun PlayerRosterView(
                     modifier = Modifier.size(100.dp, 36.dp),
                     contentPadding = PaddingValues(3.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.Red,
-                        contentColor = Color.White
+                        containerColor = MaterialTheme.colorScheme.errorContainer,
+                        contentColor = MaterialTheme.colorScheme.onErrorContainer
                     )) {
                     Text(text = "Sign Out")
                 }
@@ -55,7 +54,7 @@ fun PlayerRosterView(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(8.dp),
+                    .padding(8.dp, 0.dp, 8.dp, 8.dp),
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -68,8 +67,8 @@ fun PlayerRosterView(
                 IconButton(onClick = {}) {
                     Icon(contentDescription = "Roster", imageVector = Icons.Filled.Person, tint = Color.Blue)
                 }
-                IconButton(onClick = goToChat) {
-                    Icon(contentDescription = "Chat", imageVector = Icons.AutoMirrored.Default.Send)
+                IconButton(onClick = goToChatSelect) {
+                    Icon(contentDescription = "Chat", imageVector = Icons.Filled.Forum)
                 }
             }
 

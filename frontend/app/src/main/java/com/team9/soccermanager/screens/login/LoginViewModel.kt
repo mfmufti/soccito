@@ -22,6 +22,7 @@ class LoginViewModel {
                 failure(when (status) {
                     LoginError.NOT_EXIST -> "No user with this email exists."
                     LoginError.BAD_CREDENTIALS -> "Invalid username or password."
+                    LoginError.BROKEN_ACCOUNT -> "Broken account, plz fix frfr"
                     else -> "Unknown error occurred."
                 })
             }

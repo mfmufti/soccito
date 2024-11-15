@@ -12,7 +12,7 @@ enum class RegisterError {
 }
 
 enum class LoginError {
-    NONE, NOT_EXIST, BAD_CREDENTIALS, UNKNOWN
+    NONE, NOT_EXIST, BAD_CREDENTIALS, UNKNOWN, BROKEN_ACCOUNT
 }
 
 object Account {
@@ -56,6 +56,7 @@ object Account {
                         .set(userProfile)
                     Firebase.firestore.collection("users").document(auth.currentUser?.uid!!).get().addOnSuccessListener {
                         GS.user = it.toObject(User::class.java)
+                        GS.user!!.id = it.id
                         then(RegisterError.NONE)
                     }.addOnFailureListener({
                         then(RegisterError.UNKNOWN)
@@ -85,7 +86,13 @@ object Account {
                     //val user = auth.currentUser
                     Firebase.firestore.collection("users").document(auth.currentUser?.uid!!).get().addOnSuccessListener {
                         GS.user = it.toObject(User::class.java)
-                        then(LoginError.NONE)
+                        if (GS.user == null) {
+                            signOut()
+                            then(LoginError.BROKEN_ACCOUNT)
+                        } else {
+                            GS.user!!.id = it.id
+                            then(LoginError.NONE)
+                        }
                     }.addOnFailureListener({
                         then(LoginError.UNKNOWN)
                     })

@@ -18,15 +18,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.*
-import androidx.compose.ui.window.Dialog
-import com.team9.soccermanager.model.Account
 import com.team9.soccermanager.model.Announcement
 import com.team9.soccermanager.model.GS
-import com.team9.soccermanager.model.Team
 import java.text.DateFormat.getDateTimeInstance
-import java.text.SimpleDateFormat
 import java.util.Date
 
 @Composable
@@ -36,7 +31,7 @@ fun CoachHomeScreenView(
     goToLeagueStandings: () -> Unit,
     goToSchedule: () -> Unit,
     goToRoster: () -> Unit,
-    goToChat: () -> Unit
+    goToChatSelect: () -> Unit
 ) {
     var teamName by remember { mutableStateOf("") }
     var fullname by remember { mutableStateOf("") }
@@ -88,7 +83,7 @@ fun CoachHomeScreenView(
                 IconButton(onClick = goToRoster) {
                     Icon(contentDescription = "Roster", imageVector = Icons.Filled.Person)
                 }
-                IconButton(onClick = goToChat) {
+                IconButton(onClick = goToChatSelect) {
                     Icon(contentDescription = "Chat", imageVector = Icons.AutoMirrored.Default.Send)
                 }
             }

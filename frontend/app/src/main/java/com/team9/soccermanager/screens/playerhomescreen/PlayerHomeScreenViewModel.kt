@@ -75,4 +75,28 @@ open class PlayerHomeScreenViewModel : ViewModel() {
     fun getFullName(then: (String) -> Unit): Unit {
         then(GS.user!!.fullname)
     }
+
+    fun getJoinCode(then: (String) -> Unit): Unit {
+        CoroutineScope(Dispatchers.Default).launch {
+            if (Firebase.auth.currentUser == null) {
+                return@launch
+            }
+            val email = GS.user!!.email
+            val query = Firebase.firestore.collection("users").whereEqualTo("email", email).get().await()
+            val id = query.documents[0].id
+            println("The id is $id")
+            val query2 = Firebase.firestore.collection("teams").whereArrayContains("coachIds", id).get().await()
+            if (!query2.isEmpty) {
+                then("Team invite code:\n ${query2.documents[0].id}")
+            } else {
+                val query3 = Firebase.firestore.collection("leagues").whereArrayContains("adminIds", id).get().await()
+                if (!query3.isEmpty) {
+                    then("League invite code:\n ${query3.documents[0].id}")
+                } else {
+                    then("No invite code for player")
+                }
+            }
+        }
+    }
+
 }

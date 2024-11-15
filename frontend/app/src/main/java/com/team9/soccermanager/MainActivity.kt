@@ -16,6 +16,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.google.firebase.firestore.DocumentReference
+import com.team9.soccermanager.screens.chatselect.ChatSelectView
 import com.team9.soccermanager.screens.coachScreen.CoachHomeScreenView
 import com.team9.soccermanager.ui.theme.SoccerManagerTheme
 import com.team9.soccermanager.screens.login.LoginView
@@ -46,7 +48,8 @@ import kotlinx.serialization.Serializable
 @Serializable object LeagueStandingsScreen
 @Serializable object PlayerGameScheduleScreen
 @Serializable object PlayerRosterScreen
-@Serializable object PlayerChatScreen
+@Serializable data class PlayerChatScreen(var chatID: String, var fullname: String)
+@Serializable object ChatSelectScreen
 
 class MainActivity : ComponentActivity() {
     @SuppressLint("SourceLockedOrientationActivity")
@@ -104,11 +107,11 @@ fun App(navController: NavHostController = rememberNavController()) {
                 switchToRegister = { nav.popSwitch(RegisterScreen, WelcomeScreen) },
                 switchToSpecific = {
                     if (it == "player") {
-                        nav.switch(PlayerHomeScreen)
+                        nav.clearSwitch(PlayerHomeScreen)
                     } else if (it == "admin") {
-                        nav.switch(PlayerHomeScreen)
+                        nav.clearSwitch(PlayerHomeScreen)
                     } else {
-                        nav.switch(CoachHomeScreen)
+                        nav.clearSwitch(CoachHomeScreen)
                     }
                 }
                 // For testing player screen, uncomment below line (and comment above line) and login as player:
@@ -170,7 +173,7 @@ fun App(navController: NavHostController = rememberNavController()) {
                 goToLeagueStandings = { nav.switch(LeagueStandingsScreen) },
                 goToSchedule = { nav.clearSwitch(PlayerGameScheduleScreen) },
                 goToRoster = { nav.clearSwitch(PlayerRosterScreen) },
-                goToChat = { nav.clearSwitch(PlayerChatScreen) }
+                goToChatSelect = { nav.clearSwitch(ChatSelectScreen) }
             )
         }
         composable<CoachHomeScreen> {
@@ -179,7 +182,7 @@ fun App(navController: NavHostController = rememberNavController()) {
                 goToLeagueStandings = { nav.switch(LeagueStandingsScreen) },
                 goToSchedule = { nav.clearSwitch(PlayerGameScheduleScreen) },
                 goToRoster = { nav.clearSwitch(PlayerRosterScreen) },
-                goToChat = { nav.clearSwitch(PlayerChatScreen) }
+                goToChatSelect = { nav.clearSwitch(ChatSelectScreen) }
             )
         }
         composable<PlayerGameScheduleScreen> {
@@ -187,7 +190,7 @@ fun App(navController: NavHostController = rememberNavController()) {
                 switchToWelcome = { nav.clearSwitch(WelcomeScreen) },
                 goToHome = { nav.clearSwitch(PlayerHomeScreen) },
                 goToRoster = { nav.clearSwitch(PlayerRosterScreen) },
-                goToChat = { nav.clearSwitch(PlayerChatScreen) }
+                goToChatSelect = { nav.clearSwitch(ChatSelectScreen) }
             )
         }
         composable<PlayerRosterScreen> {
@@ -195,12 +198,16 @@ fun App(navController: NavHostController = rememberNavController()) {
                 switchToWelcome = { nav.clearSwitch(WelcomeScreen) },
                 goToHome = { nav.clearSwitch(PlayerHomeScreen) },
                 goToSchedule = { nav.clearSwitch(PlayerGameScheduleScreen) },
-                goToChat = { nav.clearSwitch(PlayerChatScreen) }
+                goToChatSelect = { nav.clearSwitch(ChatSelectScreen) }
             )
         }
-        composable<PlayerChatScreen> {
+        composable<PlayerChatScreen> { backStackEntry ->
+            val data: PlayerChatScreen = backStackEntry.toRoute()
             PlayerChatView(
+                chatID = data.chatID,
+                fullname = data.fullname,
                 switchToWelcome = { nav.clearSwitch(WelcomeScreen) },
+                switchBack = { nav.pop() },
                 goToHome = { nav.clearSwitch(PlayerHomeScreen) },
                 goToSchedule = { nav.clearSwitch(PlayerGameScheduleScreen) },
                 goToRoster = { nav.clearSwitch(PlayerRosterScreen) },
@@ -209,6 +216,15 @@ fun App(navController: NavHostController = rememberNavController()) {
         composable<LeagueStandingsScreen> {
             RankingView(
                 switchBack = { nav.popSwitch(PlayerHomeScreen, LeagueStandingsScreen) }
+            )
+        }
+        composable<ChatSelectScreen> {
+            ChatSelectView(
+                switchToWelcome = { nav.clearSwitch(WelcomeScreen) },
+                goToChat = { chatID, fullname -> nav.switch(PlayerChatScreen(chatID, fullname))},
+                goToHome = { nav.clearSwitch(PlayerHomeScreen) },
+                goToSchedule = { nav.clearSwitch(PlayerGameScheduleScreen) },
+                goToRoster = { nav.clearSwitch(PlayerRosterScreen) },
             )
         }
 
