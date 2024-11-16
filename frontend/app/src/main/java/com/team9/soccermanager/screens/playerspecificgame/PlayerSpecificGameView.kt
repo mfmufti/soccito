@@ -3,14 +3,12 @@ package com.team9.soccermanager.screens.playerspecificgame
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
@@ -24,7 +22,7 @@ fun PlayerSpecificGameView(
     goToHome: () -> Unit,
     goToSchedule: () -> Unit,
     goToRoster: () -> Unit,
-    goToChat: () -> Unit
+    goToChatScreen: () -> Unit
 ) {
     var teamName by remember { mutableStateOf("") }
     viewModel.getTeamName { teamName = it }
@@ -69,7 +67,7 @@ fun PlayerSpecificGameView(
                 IconButton(onClick = goToRoster) {
                     Icon(contentDescription = "Roster", imageVector = Icons.Filled.Person)
                 }
-                IconButton(onClick = goToChat) {
+                IconButton(onClick = goToChatScreen) {
                     Icon(contentDescription = "Chat", imageVector = Icons.Filled.Forum)
                 }
             }

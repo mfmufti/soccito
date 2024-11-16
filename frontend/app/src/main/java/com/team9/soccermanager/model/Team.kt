@@ -9,9 +9,9 @@ data class Announcement (val content: String, val authorName: String, val datePo
 }
 
 data class Team (
-    val id: String,
-    val name: String,
-    val code: String,
+    var id: String,
+    var name: String,
+    var code: String,
     val playerIds: MutableList<String>,
     val coachIds: MutableList<String>,
     val leagueId: String,

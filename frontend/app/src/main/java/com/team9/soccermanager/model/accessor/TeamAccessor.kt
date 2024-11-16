@@ -21,7 +21,7 @@ object TeamAccessor : TeamDao {
 
     override suspend fun getTeamById(id: String): Team?  {
         if(_lastAccessedTeam?.id != id) {
-            println("wrong id")
+//            println("wrong id")
             try {
                 val query = Firebase.firestore.collection(TEAM_COL).whereEqualTo("id", id).get().await()
                 _lastAccessedTeam = query.documents[0].toObject<Team>()
@@ -30,7 +30,7 @@ object TeamAccessor : TeamDao {
                 _lastAccessedTeam = null
             }
         }
-        println("returning ...")
+//        println("returning ...")
         return _lastAccessedTeam
     }
 

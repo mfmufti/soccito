@@ -1,5 +1,8 @@
 package com.team9.soccermanager
 
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.firestore
+import com.google.firebase.firestore.toObject
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.runBlocking
 import kotlin.test.*
@@ -7,8 +10,9 @@ import kotlin.test.assertEquals
 import com.team9.soccermanager.model.accessor.TeamAccessor
 import com.team9.soccermanager.model.Team
 import io.mockk.*
+import kotlinx.coroutines.tasks.await
 
-class TestTeam {
+class TeamTest {
     val testInvite = "kzOcrvvilvTOU1VzxF9x"
 
     @BeforeTest
@@ -36,6 +40,7 @@ class TestTeam {
 
         val team = TeamAccessor.getTeamByInviteCode(testInvite)
         assertEquals("Barcelona", team?.name)
+        println("hello there")
     }
 
     @AfterTest

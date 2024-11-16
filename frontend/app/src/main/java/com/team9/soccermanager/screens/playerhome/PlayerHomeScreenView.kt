@@ -179,13 +179,15 @@ fun PlayerHomeScreenView(
                 }
             }
 
-            Button(
-                onClick = { pickFileLauncher.launch("application/*") },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-            ) {
-                Text("Upload a Form")
+            if (GS.user!!.type == "player") {
+                Button(
+                    onClick = { pickFileLauncher.launch("application/*") },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                ) {
+                    Text("Upload a Form")
+                }
             }
 
             Spacer(modifier = Modifier.height(5.dp))

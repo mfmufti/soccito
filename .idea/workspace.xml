@@ -10,28 +10,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e3032951-07d6-40b1-be00-4b24d3b4c02b" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/frontend/app/src/test/java/com/team9/soccermanager/model/accessor/TeamAccessorTest.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/build.gradle.kts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/MainActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/model/Account.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/model/Account.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/model/Team.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/model/Team.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/model/accessor/TeamAccessor.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/model/accessor/TeamAccessor.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/chatselect/ChatSelectView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/chatselect/ChatSelectView.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/chatselect/ChatSelectViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/chatselect/ChatSelectViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/coachScreen/CoachHomeScreenView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/coachhome/CoachHomeScreenView.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/coachScreen/CoachHomeScreenViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/coachhome/CoachHomeScreenViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/coachScreen/forms/CoachHomeScreenFormsView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/coachhome/forms/CoachHomeScreenFormsView.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/coachScreen/forms/CoachHomeScreenFormsViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/coachhome/forms/CoachHomeScreenFormsViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/playerchatscreen/PlayerChatView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/chat/ChatView.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/playerchatscreen/PlayerChatViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/chat/ChatViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/playergameschedulescreen/PlayerGameScheduleView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/playergameschedule/PlayerGameScheduleView.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/playergameschedulescreen/PlayerGameScheduleViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/playergameschedule/PlayerGameScheduleViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/playerhomescreen/PlayerHomeScreenView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/playerhome/PlayerHomeScreenView.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/playerhomescreen/PlayerHomeScreenViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/playerhome/PlayerHomeScreenViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/playerrosterscreen/PlayerRosterView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/playerroster/PlayerRosterView.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/playerrosterscreen/PlayerRosterViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/playerroster/PlayerRosterViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/playerspecificgamescreen/PlayerSpecificGameView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/playerspecificgame/PlayerSpecificGameView.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/playerspecificgamescreen/PlayerSpecificGameViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/playerspecificgame/PlayerSpecificGameViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/rankingsscreen/RankingView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/rankings/RankingsView.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/rankingsscreen/RankingViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/rankings/RankingsViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/playerhome/PlayerHomeScreenView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/playerhome/PlayerHomeScreenView.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/playerspecificgame/PlayerSpecificGameView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/playerspecificgame/PlayerSpecificGameView.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/src/test/java/com/team9/soccermanager/TestTeam.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/test/java/com/team9/soccermanager/TeamTest.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,7 +28,7 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[DeviceId(pluginId=PhysicalDevice, isTemplate=false, identifier=serial=320226215454)]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$/frontend">
       <ProjectState />
@@ -93,6 +80,7 @@
       <list>
         <option value="Kotlin File" />
         <option value="Kotlin Class" />
+        <option value="JUnit5 Test Class" />
       </list>
     </option>
   </component>
@@ -136,6 +124,7 @@
   "keyToString": {
     "Android App.app.executor": "Run",
     "Gradle./home/mfmufti/AndroidStudioProjects/SoccerManager/frontend/app [testDebugUnitTest].executor": "Run",
+    "Gradle.frontend:app [testReleaseUnitTest].executor": "Run",
     "JUnit.ExampleUnitTest.executor": "Run",
     "JUnit.TestTeam.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -144,8 +133,11 @@
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
     "com.google.services.firebase.aqiPopupShown": "true",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
     "git-widget-placeholder": "sprint3",
     "kotlin-language-version-configured": "true",
+    "last_directory_selection": "/home/mfmufti/AndroidStudioProjects/SoccerManager/frontend/app/src/test/java/com/team9/soccermanager",
     "last_opened_file_path": "/home/mfmufti/AndroidStudioProjects/SoccerManager/frontend/settings.gradle.kts",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.17",
@@ -153,7 +145,15 @@
     "settings.editor.selected.configurable": "preferences.pluginManager"
   }
 }]]></component>
-  <component name="RunManager" selected="Android App.app">
+  <component name="RecentsManager">
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="com.team9.soccermanager.model.accessor" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Gradle.frontend:app [testReleaseUnitTest]">
     <configuration name="app" type="AndroidRunConfigurationType" factoryName="Android App" activateToolWindowBeforeRun="false">
       <module name="Soccer_Manager.app.main" />
       <option name="DEPLOY" value="true" />
@@ -244,8 +244,31 @@
       <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
+    <configuration name="frontend:app [testReleaseUnitTest]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/frontend/app" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="testReleaseUnitTest" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.frontend:app [testReleaseUnitTest]" />
         <item itemvalue="Gradle./home/mfmufti/AndroidStudioProjects/SoccerManager/frontend/app [testDebugUnitTest]" />
       </list>
     </recent_temporary>

@@ -233,7 +233,7 @@ fun App(navController: NavHostController = rememberNavController()) {
                 goToHome = { nav.clearSwitch(HomeScreen()) },
                 goToSchedule = { nav.clearSwitch(PlayerGameScheduleScreen) },
                 goToRoster = { nav.clearSwitch(PlayerRosterScreen) },
-                goToChat = { nav.clearSwitch(ChatScreen) }
+                goToChatScreen = { nav.clearSwitch(ChatSelectScreen) }
             )
         }
         composable<PlayerRosterScreen> {
