@@ -11,7 +11,8 @@ import com.team9.soccermanager.screens.playerhome.PlayerHomeScreenViewModel
 
 data class Message(val right: Boolean, var text: String)
 
-class ChatViewModel(val chatID: String): PlayerHomeScreenViewModel() {
+class
+ChatViewModel(val chatID: String): PlayerHomeScreenViewModel() {
     private val messages = mutableStateListOf<Message>()
     private var loading = mutableStateOf(true)
 
