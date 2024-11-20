@@ -16,6 +16,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.draw.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.*
+import com.team9.soccermanager.model.GS
 
 @Composable
 fun PlayerRosterView(
@@ -27,6 +28,9 @@ fun PlayerRosterView(
 ) {
     var teamName by remember { mutableStateOf("") }
     viewModel.getTeamName { teamName = it }
+
+    val availablilityList = remember { viewModel.getPlayerAvailabilityList() }
+    val loading by remember { viewModel.isLoading() }
 
     Scaffold (
         topBar =  {
@@ -87,47 +91,38 @@ fun PlayerRosterView(
                     verticalArrangement = Arrangement.Top,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    data class Player(val name: String, val email: String)
-
-                    var data = listOf(
-                        Player("First", "first@firsty.com"),
-                        Player("First", "first@firsty.com"),
-                        Player("First", "first@firsty.com"),
-                        Player("First", "first@firsty.com"),
-                        Player("First", "first@firsty.com"),
-                        Player("First", "first@firsty.com"),
-                        Player("First", "first@firsty.com"),
-                        Player("First", "first@firsty.com"),
-                        Player("First", "first@firsty.com"),
-                        Player("First", "first@firsty.com"),
-                        Player("Another", "justanother@x.com")
-                    )
-
-                    for (player in data) {
-                        Box(
-                            modifier = Modifier
-                                .clip(shape = RoundedCornerShape(15.dp, 15.dp, 15.dp, 15.dp))
-                                .background(MaterialTheme.colorScheme.inverseOnSurface)
-                                .padding(16.dp)
-                                .fillMaxWidth()
-                        ) {
-                            Column(
-                                horizontalAlignment = Alignment.CenterHorizontally,
+                    if (loading) {
+                        Box(modifier = Modifier.padding(20.dp)) {
+                            CircularProgressIndicator(modifier = Modifier.size(60.dp))
+                        }
+                    } else {
+                        for (index in 0..<availablilityList.size) {
+                            val playeravail = availablilityList[index]
+                            Box(
                                 modifier = Modifier
+                                    .clip(shape = RoundedCornerShape(15.dp, 15.dp, 15.dp, 15.dp))
+                                    .background(MaterialTheme.colorScheme.inverseOnSurface)
+                                    .padding(16.dp)
                                     .fillMaxWidth()
                             ) {
-                                Text(
-                                    text = player.name,
-                                    fontSize = 30.sp
-                                )
-                                Text(
-                                    text = player.email,
-                                    fontSize = 12.sp
-                                )
+                                Column(
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                ) {
+                                    Text(
+                                        text = playeravail.name,
+                                        fontSize = 30.sp
+                                    )
+                                    Text(
+                                        text = playeravail.availability,
+                                        fontSize = 12.sp
+                                    )
+                                }
                             }
-                        }
 
-                        Spacer(modifier = Modifier.height(8.dp))
+                            Spacer(modifier = Modifier.height(8.dp))
+                        }
                     }
                 }
             }
