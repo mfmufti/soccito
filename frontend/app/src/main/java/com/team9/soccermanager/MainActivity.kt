@@ -19,11 +19,15 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.google.firebase.firestore.FirebaseFirestoreSettings
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.team9.soccermanager.model.Account
 import com.team9.soccermanager.model.GS
+import com.team9.soccermanager.screens.adminhome.AdminHomeView
 import com.team9.soccermanager.screens.chatselect.ChatSelectView
-import com.team9.soccermanager.screens.coachhome.CoachHomeScreenView
-import com.team9.soccermanager.screens.coachhome.forms.CoachHomeScreenFormsView
+import com.team9.soccermanager.screens.coachhome.CoachHomeView
+import com.team9.soccermanager.screens.coachhome.forms.CoachHomeFormsView
 import com.team9.soccermanager.ui.theme.SoccerManagerTheme
 import com.team9.soccermanager.screens.login.LoginView
 import com.team9.soccermanager.screens.register.RegisterView
@@ -35,7 +39,7 @@ import com.team9.soccermanager.screens.chat.ChatView
 import com.team9.soccermanager.screens.playergameschedule.PlayerGameScheduleView
 import com.team9.soccermanager.screens.typeselect.TypeSelectView
 import com.team9.soccermanager.screens.welcome.WelcomeView
-import com.team9.soccermanager.screens.playerhome.PlayerHomeScreenView
+import com.team9.soccermanager.screens.playerhome.PlayerHomeView
 import com.team9.soccermanager.screens.playerroster.PlayerRosterView
 import com.team9.soccermanager.screens.rankings.RankingsView
 import com.team9.soccermanager.screens.loadscreen.LoadView
@@ -53,6 +57,7 @@ import kotlinx.serialization.Serializable
 @Serializable object HomeScreen
 @Serializable object PlayerHomeScreen
 @Serializable object CoachHomeScreen
+@Serializable object AdminHomeScreen
 @Serializable object CoachHomeScreenForms
 @Serializable object LeagueStandingsScreen
 @Serializable object PlayerGameScheduleScreen
@@ -121,8 +126,10 @@ fun App(navController: NavHostController = rememberNavController()) {
     val HomeScreen: () -> Any = {
         if (GS.user!!.type == "coach") {
             CoachHomeScreen
-        } else {
+        } else if (GS.user!!.type == "player") {
             PlayerHomeScreen
+        } else {
+            AdminHomeScreen
         }
     }
 
@@ -195,7 +202,7 @@ fun App(navController: NavHostController = rememberNavController()) {
             )
         }
         composable<PlayerHomeScreen> {
-            PlayerHomeScreenView(
+            PlayerHomeView(
                 switchToWelcome = { nav.clearSwitch(WelcomeScreen) },
                 goToLeagueStandings = { nav.switch(LeagueStandingsScreen) },
                 goToSchedule = { nav.clearSwitch(PlayerGameScheduleScreen) },
@@ -204,7 +211,7 @@ fun App(navController: NavHostController = rememberNavController()) {
             )
         }
         composable<CoachHomeScreen> {
-            CoachHomeScreenView(
+            CoachHomeView(
                 switchToWelcome = { nav.clearSwitch(WelcomeScreen) },
                 goToLeagueStandings = { nav.switch(LeagueStandingsScreen) },
                 goToSchedule = { nav.clearSwitch(PlayerGameScheduleScreen) },
@@ -214,8 +221,17 @@ fun App(navController: NavHostController = rememberNavController()) {
             )
         }
         composable<CoachHomeScreenForms> {
-            CoachHomeScreenFormsView(
+            CoachHomeFormsView(
                 switchBack = { nav.pop() }
+            )
+        }
+        composable<AdminHomeScreen> {
+            AdminHomeView(
+                switchToWelcome = { nav.clearSwitch(WelcomeScreen) },
+                goToLeagueStandings = { nav.switch(LeagueStandingsScreen) },
+                goToSchedule = { nav.clearSwitch(PlayerGameScheduleScreen) },
+                goToRoster = { nav.clearSwitch(PlayerRosterScreen) },
+                goToChatSelect = { nav.clearSwitch(ChatSelectScreen) }
             )
         }
         composable<PlayerGameScheduleScreen> {

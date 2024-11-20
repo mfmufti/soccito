@@ -7,12 +7,12 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.team9.soccermanager.model.GS
-import com.team9.soccermanager.screens.playerhome.PlayerHomeScreenViewModel
+import com.team9.soccermanager.screens.playerhome.PlayerHomeViewModel
 
 data class Message(val right: Boolean, var text: String)
 
 class
-ChatViewModel(val chatID: String): PlayerHomeScreenViewModel() {
+ChatViewModel(val chatID: String): PlayerHomeViewModel() {
     private val messages = mutableStateListOf<Message>()
     private var loading = mutableStateOf(true)
 
@@ -31,10 +31,10 @@ ChatViewModel(val chatID: String): PlayerHomeScreenViewModel() {
 
     init {
         val document = Firebase.firestore.collection("chats").document(chatID)
-        document.get().addOnSuccessListener({
+        document.get().addOnSuccessListener{
             processData(it.data)
             loading.value = false
-        })
+        }
         document.addSnapshotListener({ snapshot, e ->
             if (e != null) {
                 return@addSnapshotListener

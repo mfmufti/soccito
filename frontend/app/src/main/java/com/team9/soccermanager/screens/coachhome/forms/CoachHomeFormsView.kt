@@ -23,8 +23,8 @@ import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CoachHomeScreenFormsView(
-    viewModel: CoachHomeScreenFormsViewModel = CoachHomeScreenFormsViewModel(),
+fun CoachHomeFormsView(
+    viewModel: CoachHomeFormsViewModel = CoachHomeFormsViewModel(),
     switchBack: () -> Unit
 ) {
 

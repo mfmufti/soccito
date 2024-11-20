@@ -1,6 +1,6 @@
 package com.team9.soccermanager.screens.playergameschedule
 
-import com.team9.soccermanager.screens.playerhome.PlayerHomeScreenViewModel
+import com.team9.soccermanager.screens.playerhome.PlayerHomeViewModel
 
-class PlayerGameScheduleViewModel: PlayerHomeScreenViewModel() {
+class PlayerGameScheduleViewModel: PlayerHomeViewModel() {
 }

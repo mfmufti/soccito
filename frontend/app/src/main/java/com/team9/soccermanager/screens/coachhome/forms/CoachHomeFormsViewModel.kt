@@ -7,7 +7,7 @@ import com.team9.soccermanager.model.GS
 import com.team9.soccermanager.model.Team
 import com.team9.soccermanager.model.accessor.TeamAccessor
 
-open class CoachHomeScreenFormsViewModel : ViewModel() {
+open class CoachHomeFormsViewModel : ViewModel() {
     fun getTeam(then: (Team) -> Unit): Unit {
         val teamId = GS.user?.teamID
         viewModelScope.launch(Dispatchers.IO) {

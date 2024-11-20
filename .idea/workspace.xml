@@ -10,22 +10,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e3032951-07d6-40b1-be00-4b24d3b4c02b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/assetWizardSettings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/app/src/main/res/mipmap-hdpi/ic_launcher.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/app/src/main/res/mipmap-mdpi/ic_launcher.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/app/src/main/res/mipmap-xhdpi/ic_launcher.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/app/src/main/res/mipmap-xxhdpi/ic_launcher.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/caches/deviceStreaming.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/deviceStreaming.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/adminhome/AdminHomeView.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/adminhome/AdminHomeViewModel.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/MainActivity.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/chat/ChatViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/chat/ChatViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/res/mipmap-hdpi/ic_launcher.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/res/mipmap-mdpi/ic_launcher.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/res/mipmap-xhdpi/ic_launcher.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/res/mipmap-xxhdpi/ic_launcher.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/res/values/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/chatselect/ChatSelectView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/chatselect/ChatSelectView.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/chatselect/ChatSelectViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/chatselect/ChatSelectViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/coachhome/CoachHomeScreenView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/coachhome/CoachHomeView.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/coachhome/CoachHomeScreenViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/coachhome/CoachHomeViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/coachhome/forms/CoachHomeScreenFormsView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/coachhome/forms/CoachHomeFormsView.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/coachhome/forms/CoachHomeScreenFormsViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/coachhome/forms/CoachHomeFormsViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/playergameschedule/PlayerGameScheduleViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/playergameschedule/PlayerGameScheduleViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/playerhome/PlayerHomeScreenView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/playerhome/PlayerHomeView.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/playerhome/PlayerHomeScreenViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/playerhome/PlayerHomeViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/playerroster/PlayerRosterViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/playerroster/PlayerRosterViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/playerspecificgame/PlayerSpecificGameViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/playerspecificgame/PlayerSpecificGameViewModel.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,9 +62,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Kotlin File" />
-        <option value="Kotlin Class" />
         <option value="JUnit5 Test Class" />
+        <option value="Kotlin Class" />
+        <option value="Kotlin File" />
       </list>
     </option>
   </component>
@@ -120,7 +120,7 @@
     "com.google.services.firebase.aqiPopupShown": "true",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "final",
     "kotlin-language-version-configured": "true",
     "last_directory_selection": "/home/mfmufti/AndroidStudioProjects/SoccerManager/frontend/app/src/test/java/com/team9/soccermanager",
     "last_opened_file_path": "/home/mfmufti/AndroidStudioProjects/SoccerManager/frontend/settings.gradle.kts",

@@ -29,8 +29,8 @@ import java.text.DateFormat.getDateTimeInstance
 import java.util.Date
 
 @Composable
-fun PlayerHomeScreenView(
-    viewModel: PlayerHomeScreenViewModel = PlayerHomeScreenViewModel(),
+fun PlayerHomeView(
+    viewModel: PlayerHomeViewModel = PlayerHomeViewModel(),
     switchToWelcome: () -> Unit,
     goToLeagueStandings: () -> Unit,
     goToSchedule: () -> Unit,
@@ -188,15 +188,13 @@ fun PlayerHomeScreenView(
                 }
             }
 
-            if (GS.user!!.type == "player") {
-                Button(
-                    onClick = { pickFileLauncher.launch("application/*") },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp)
-                ) {
-                    Text("Upload a Form")
-                }
+            Button(
+                onClick = { pickFileLauncher.launch("application/*") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            ) {
+                Text("Upload a Form")
             }
 
             Spacer(modifier = Modifier.height(5.dp))

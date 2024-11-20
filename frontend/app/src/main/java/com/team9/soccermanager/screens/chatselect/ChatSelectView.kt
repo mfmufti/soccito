@@ -16,9 +16,11 @@ import androidx.compose.ui.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.draw.*
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.*
 import com.team9.soccermanager.model.GS
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChatSelectView(
     viewModel: ChatSelectViewModel = remember { ChatSelectViewModel() },
@@ -33,6 +35,8 @@ fun ChatSelectView(
 
     val chats = remember { viewModel.getChats() }
     val loading by remember { viewModel.isLoading() }
+    val error by remember { viewModel.isError() }
+    val errorLoadingChat by remember { viewModel.isErrorLoadingChat() }
 
     Scaffold (
         topBar =  {
@@ -92,8 +96,13 @@ fun ChatSelectView(
                     verticalArrangement = Arrangement.Top,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    if (GS.user!!.type == "admin") {
-                        Text("No chat for your administrative kind")
+                    if (error) {
+                        Text(
+                            text = "There was an error loading the chat list",
+                            color = MaterialTheme.colorScheme.error,
+                            fontSize = 16.sp,
+                            textAlign = TextAlign.Center
+                        )
                     } else if (loading) {
                         Box(modifier = Modifier.padding(20.dp)) {
                             CircularProgressIndicator(modifier = Modifier.size(60.dp))
@@ -129,6 +138,16 @@ fun ChatSelectView(
                         }
                     }
                 }
+            }
+            if (errorLoadingChat) {
+                AlertDialog(
+                    onDismissRequest = { viewModel.resetErrorLoadingChat() },
+                    title = { Text(text = "Error loading chat") },
+                    text = { Text(text = "There was an error loading that chat. Please check your connection.") },
+                    confirmButton = {
+                        TextButton(onClick = { viewModel.resetErrorLoadingChat() }) { Text("Ok") }
+                    },
+                )
             }
         }
     )

@@ -13,7 +13,7 @@ import com.team9.soccermanager.model.Team
 import com.team9.soccermanager.model.accessor.TeamAccessor
 import kotlinx.coroutines.tasks.await
 
-open class CoachHomeScreenViewModel : ViewModel() {
+open class CoachHomeViewModel : ViewModel() {
 
     var signedOut = false;
 

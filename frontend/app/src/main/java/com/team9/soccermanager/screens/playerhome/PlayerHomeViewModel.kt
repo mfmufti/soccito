@@ -17,7 +17,7 @@ import com.team9.soccermanager.model.GS
 import com.team9.soccermanager.model.Team
 import com.team9.soccermanager.model.accessor.TeamAccessor
 
-open class PlayerHomeScreenViewModel : ViewModel() {
+open class PlayerHomeViewModel : ViewModel() {
 
     var signedOut = false;
 
@@ -105,6 +105,7 @@ open class PlayerHomeScreenViewModel : ViewModel() {
             }
             val email = GS.user!!.email
             val query = Firebase.firestore.collection("users").whereEqualTo("email", email).get().await()
+            if (query.documents.isEmpty()) return@launch
             val id = query.documents[0].id
             println("The id is $id")
             val query2 = Firebase.firestore.collection("teams").whereArrayContains("coachIds", id).get().await()
