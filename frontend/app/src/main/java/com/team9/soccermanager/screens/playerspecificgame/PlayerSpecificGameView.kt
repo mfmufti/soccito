@@ -1,6 +1,8 @@
 package com.team9.soccermanager.screens.playerspecificgame
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -10,10 +12,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.unit.*
+import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
+import com.google.maps.android.compose.rememberCameraPositionState
 
 @Composable
 fun PlayerSpecificGameView(
@@ -79,32 +83,32 @@ fun PlayerSpecificGameView(
             )
             Box(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding()
+                    .fillMaxWidth()
+                    .height(500.dp)
+                    .padding(paddingValues),
+                contentAlignment = Alignment.TopCenter
             ) {
-                val places = listOf(
-                    // Your list of Place objects
-                    Place("Leverkusen", LatLng(51.0459, 7.0192)),
-                    Place("Chelsea", LatLng(51.4869, 0.1700)),
-                    // ... more places
-                )
+                val gamelocation = Place("Leverkusen", LatLng(51.0459, 7.0192))
+
 
                 // Add GoogleMap here
                 GoogleMap(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(paddingValues),
+                        .fillMaxHeight()
+                        .padding(0.dp, 20.dp, 0.dp, 0.dp),
+                    cameraPositionState = rememberCameraPositionState { // Update camera position
+                        position = CameraPosition.fromLatLngZoom(gamelocation.location, 10f)
+                    },
                     onMapLoaded = { isMapLoaded = true }
                 ) {
-                    places.forEach { place ->
-                        Marker(
-                            state = MarkerState(position = place.location),
-                            title = place.name,
-                            snippet = "Marker for ${place.name}"
-                        )
 
-                        // ...
-                    }
+                    Marker(
+                        state = MarkerState(position = gamelocation.location),
+                        title = gamelocation.name,
+                        snippet = "Marker for ${gamelocation.name}"
+                    )
+                    // ..
 
                 }
             }
