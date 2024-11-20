@@ -3,6 +3,7 @@ package com.team9.soccermanager.screens.rankings
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -12,23 +13,21 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.*
+import com.team9.soccermanager.model.GS
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RankingsView(
     switchBack: () -> Unit,
-    viewModel: RankingsViewModel = RankingsViewModel()
+    viewModel: RankingsViewModel = remember { RankingsViewModel() }
 ) {
-
-    LaunchedEffect(Unit) {
-        viewModel.getScreenData()
-    }
-
-    var currViewModel by remember { mutableStateOf(viewModel) }
+    val teams =  remember { viewModel.getList() }
+    val loading = remember { viewModel.getLoading() }
 
     Scaffold (
         modifier = Modifier.padding(16.dp),
@@ -43,7 +42,7 @@ fun RankingsView(
                         )
                     }
                 },
-                actions = {Text(text = currViewModel.leagueName + " Standings", fontSize = 20.sp, fontWeight = FontWeight.Bold)}
+                actions = {Text(text = GS.user?.leagueName + " Standings", fontSize = 20.sp, fontWeight = FontWeight.Bold)}
             )
         }
     ) { padding ->
@@ -54,45 +53,67 @@ fun RankingsView(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top,
         ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp)
-                    .background(MaterialTheme.colorScheme.primary)
-            ) {
-                Text("Pos", modifier = Modifier.weight(1f), textAlign = TextAlign.Center, color = Color.White)
-                Text("Team", modifier = Modifier.weight(2f), textAlign = TextAlign.Center, color = Color.White)
-                Text("GP", modifier = Modifier.weight(1f), textAlign = TextAlign.Center, color = Color.White)
-                Text("W", modifier = Modifier.weight(1f), textAlign = TextAlign.Center, color = Color.White)
-                Text("L", modifier = Modifier.weight(1f), textAlign = TextAlign.Center, color = Color.White)
-                Text("D", modifier = Modifier.weight(1f), textAlign = TextAlign.Center, color = Color.White)
-                Text("Pts", modifier = Modifier.weight(1f), textAlign = TextAlign.Center, color = Color.White)
-            }
+
             Spacer(modifier = Modifier.height(10.dp))
-            LazyColumn(
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                items(currViewModel.teamsList.size) { index ->
-                    val team = currViewModel.teamsList[index]
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 8.dp)
-                            .height(45.dp)
-                            .background(
-                                color = if (team?.id == currViewModel.teamId) Color.Yellow else Color.Transparent
-                            )
-                            .border(1.dp, Color.Gray, shape = RoundedCornerShape(4.dp)),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text((index + 1).toString(), modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
-                        Text(team?.name ?: "", modifier = Modifier.weight(2f), textAlign = TextAlign.Center)
-                        Text(team?.gamesPlayed.toString(), modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
-                        Text(team?.wins.toString(), modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
-                        Text(team?.losses.toString(), modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
-                        Text(team?.draws.toString(), modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
-                        Text(team?.points.toString(), modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
+
+            if (loading.value) {
+                CircularProgressIndicator(
+                    modifier = Modifier.width(90.dp).padding(top = 100.dp),
+                    color = MaterialTheme.colorScheme.secondary,
+                    trackColor = MaterialTheme.colorScheme.surfaceVariant,
+                )
+            } else {
+                val scrollState = rememberScrollState()
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .horizontalScroll(scrollState)
+                ) {
+                    LazyColumn {
+                        item {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 8.dp)
+                                    .height(40.dp)
+                                    .background(MaterialTheme.colorScheme.primary),
+                                horizontalArrangement = Arrangement.spacedBy(7.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text("Pos", modifier = Modifier.width(70.dp), textAlign = TextAlign.Center, color = Color.White)
+                                Text("Team", modifier = Modifier.width(180.dp), textAlign = TextAlign.Center, color = Color.White)
+                                Text("Pts", modifier = Modifier.width(70.dp), textAlign = TextAlign.Center, color = Color.White, fontWeight = FontWeight.Bold)
+                                Text("GP", modifier = Modifier.width(70.dp), textAlign = TextAlign.Center, color = Color.White)
+                                Text("W", modifier = Modifier.width(70.dp), textAlign = TextAlign.Center, color = Color.White)
+                                Text("L", modifier = Modifier.width(70.dp), textAlign = TextAlign.Center, color = Color.White)
+                                Text("D", modifier = Modifier.width(70.dp), textAlign = TextAlign.Center, color = Color.White)
+                            }
+                        }
+
+                        // Team rows
+                        items(teams.size) { index ->
+                            val team = teams[index]
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .border(1.dp, Color.Gray)
+                                    .height(40.dp)
+                                    .background(
+                                        color = if (GS.user?.teamID == team.id) MaterialTheme.colorScheme.onSecondary else Color.Transparent
+                                )
+                                .border(1.dp, Color.Gray, shape = RoundedCornerShape(8.dp)),
+                                horizontalArrangement = Arrangement.spacedBy(7.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(text = (index + 1).toString(), modifier = Modifier.width(70.dp), textAlign = TextAlign.Center)
+                                Text(text = team.teamName, modifier = Modifier.width(180.dp), textAlign = TextAlign.Center)
+                                Text(text = team.pts.toString(), modifier = Modifier.width(70.dp), textAlign = TextAlign.Center, fontWeight = FontWeight.Bold)
+                                Text(text = team.gp.toString(), modifier = Modifier.width(70.dp), textAlign = TextAlign.Center)
+                                Text(text = team.wins.toString(), modifier = Modifier.width(70.dp), textAlign = TextAlign.Center)
+                                Text(text = team.losses.toString(), modifier = Modifier.width(70.dp), textAlign = TextAlign.Center)
+                                Text(text = team.draws.toString(), modifier = Modifier.width(70.dp), textAlign = TextAlign.Center)
+                            }
+                        }
                     }
                 }
             }

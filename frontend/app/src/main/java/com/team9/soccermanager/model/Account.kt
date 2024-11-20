@@ -73,13 +73,20 @@ object Account {
     }
 
     fun joinTeam(teamId: String) {
-        GS.user?.teamID = teamId
-        updateRemoteUser()
+        Firebase.firestore.collection("teams").document(teamId).get().addOnSuccessListener {
+            GS.user?.teamID = teamId
+            GS.user?.teamName = it.data?.get("name").toString()
+            updateRemoteUser()
+        }
+
     }
 
     fun joinLeague(leagueId: String) {
-        GS.user?.leagueID = leagueId
-        updateRemoteUser()
+        Firebase.firestore.collection("leagues").document(leagueId).get().addOnSuccessListener {
+            GS.user?.leagueID = leagueId
+            GS.user?.leagueName = it.data?.get("name").toString()
+            updateRemoteUser()
+        }
     }
 
     fun setupGS(then: () -> Unit) {
