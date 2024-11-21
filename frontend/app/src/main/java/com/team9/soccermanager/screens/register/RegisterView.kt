@@ -36,15 +36,16 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun RegisterView(
     type: String,
+    other: Map<String, String>,
     switchBack: () -> Unit,
     switchToLogin: () -> Unit,
-    switchToSpecific: (type: String) -> Unit,
-    viewModel: RegisterViewModel = RegisterViewModel()
+    switchToHome: () -> Unit,
+    viewModel: RegisterViewModel = remember { RegisterViewModel(type, other) },
 ) {
-    var fullname by remember { mutableStateOf("") }
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var error by remember { mutableStateOf("") }
+    var fullname by remember { viewModel.getFullname() }
+    var email by remember { viewModel.getEmail() }
+    var password by remember { viewModel.getPassword() }
+    val error by remember { viewModel.getError() }
 
     Scaffold(
         modifier = Modifier.
@@ -110,9 +111,7 @@ fun RegisterView(
             Spacer(modifier = Modifier.height(16.dp))
 
             Button(
-                onClick = { viewModel.handleRegister(
-                    type, fullname, email, password, success = { switchToSpecific(type) }, failure = { error = it }
-                ) },
+                onClick = { viewModel.handleRegister(switchToHome) },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Register")

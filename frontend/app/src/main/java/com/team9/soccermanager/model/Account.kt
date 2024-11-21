@@ -6,15 +6,6 @@ import com.google.firebase.auth.*
 import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.tasks.await
 
-
-enum class RegisterError {
-    NONE, WEAK_PASSWORD, BAD_EMAIL, USER_EXISTS, UNKNOWN
-}
-
-enum class LoginError {
-    NONE, NOT_EXIST, BAD_CREDENTIALS, UNKNOWN, BROKEN_ACCOUNT
-}
-
 object Account {
     private val TAG = "Model"
     private var auth: FirebaseAuth = Firebase.auth

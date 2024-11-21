@@ -12,11 +12,14 @@ import com.team9.soccermanager.model.Account
 import com.team9.soccermanager.model.FormFile
 import com.team9.soccermanager.model.GS
 import com.team9.soccermanager.model.Team
+import com.team9.soccermanager.model.TeamCodeError
+import com.team9.soccermanager.model.TeamError
 import kotlinx.coroutines.tasks.await
 import java.util.UUID
 
 object TeamAccessor : TeamDao {
     private const val TEAM_COL = "teams"
+    private const val LEAGUE_COL = "leagues"
     private var _lastAccessedTeam : Team? = null
 
     override suspend fun getTeamById(id: String): Team?  {
@@ -56,6 +59,50 @@ object TeamAccessor : TeamDao {
             // TODO: add proper logging of error here
             e.printStackTrace()
             return null
+        }
+    }
+
+    override suspend fun teamExists(teamName: String, leagueID: String): TeamError {
+        return try {
+            val doc = Firebase.firestore.collection(LEAGUE_COL).document(leagueID).get().await()
+            if (doc.metadata.isFromCache) {
+                TeamError.NETWORK
+            } else if (!doc.exists()) {
+                TeamError.BAD_JOIN_CODE
+            } else {
+                var ret = TeamError.NONE
+                for (teamID in doc["teamIds"] as List<*>) {
+                    val doc2 = Firebase.firestore.collection(TEAM_COL).document(teamID as String).get().await()
+                    if (doc.metadata.isFromCache) {
+                        ret = TeamError.NETWORK
+                        break
+                    } else if (doc2.exists() && doc2["name"] == teamName) {
+                        ret = TeamError.EXISTS
+                        break
+                    }
+                }
+                ret
+            }
+
+        } catch (e: Exception) {
+            println(e)
+            TeamError.UNKNOWN
+        }
+    }
+
+    override suspend fun teamCodeExists(teamCode: String): TeamCodeError {
+        return try {
+            val doc = Firebase.firestore.collection(TEAM_COL).document(teamCode).get().await()
+            if (doc.metadata.isFromCache) {
+                TeamCodeError.NETWORK
+            } else if (doc.exists()) {
+                TeamCodeError.NONE
+            } else {
+                TeamCodeError.NOT_EXIST
+            }
+        } catch (e: Exception) {
+            println(e)
+            TeamCodeError.UNKNOWN
         }
     }
 

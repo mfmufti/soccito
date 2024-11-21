@@ -11,12 +11,12 @@ import androidx.compose.ui.unit.*
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewAdminView(
-    switchToHome: () -> Unit,
+    switchToRegister: (String) -> Unit,
     switchBack: () -> Unit,
-    viewModel: NewAdminViewModel = NewAdminViewModel()
+    viewModel: NewAdminViewModel = remember { NewAdminViewModel() }
 ) {
-    var league by remember { mutableStateOf("") }
-    var error by remember { mutableStateOf("") }
+    var league by remember { viewModel.getLeague() }
+    val error by remember { viewModel.getError() }
 
     Scaffold (
         modifier = Modifier.padding(16.dp),
@@ -62,7 +62,7 @@ fun NewAdminView(
             Spacer(modifier = Modifier.height(16.dp))
 
             Button(
-                onClick = { viewModel.createLeague(league, onSuccess = switchToHome, onError = { error = it }) },
+                onClick = { viewModel.checkLeague(switchToRegister) },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Create")

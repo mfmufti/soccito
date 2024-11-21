@@ -1,37 +1,26 @@
 package com.team9.soccermanager.screens.newplayer
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.Firebase
-import com.google.firebase.auth.auth
-import com.team9.soccermanager.model.Account
+import com.team9.soccermanager.model.TeamCodeError
 import com.team9.soccermanager.model.accessor.TeamAccessor
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class NewPlayerViewModel : ViewModel() {
+    private var teamCode = mutableStateOf("")
+    private var error = mutableStateOf("")
 
-    fun joinTeam(teamCode: String, onSuccess: () -> Unit, onError: (String) -> Unit) {
-        if (teamCode.isEmpty()) {
-            onError("Please leave no fields blank.")
-            return
-        }
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                // TODO: restructure error handling, should not deal with them both here and in accessors
-                val team = TeamAccessor.getTeamByInviteCode(teamCode)
-                    ?: throw Exception("Team not found")
-                team.playerIds.add(Firebase.auth.uid ?: throw Exception("Player not logged in"))
-                TeamAccessor.updateTeam(team)
-                Account.joinTeam(team.id)
-                Account.joinLeague(team.leagueId)
-                withContext(Dispatchers.Main) {
-                    onSuccess()
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-                onError("There was an error joining that team.")
+    fun getTeamCode() = teamCode
+    fun getError() = error
+
+    fun checkTeamCode(success: (String) -> Unit) {
+        viewModelScope.launch {
+            when (TeamAccessor.teamCodeExists(teamCode.value)) {
+                TeamCodeError.NONE -> success(teamCode.value)
+                TeamCodeError.NETWORK -> error.value = "Network error occurred"
+                TeamCodeError.NOT_EXIST -> error.value = "Invalid team join code"
+                TeamCodeError.UNKNOWN -> error.value = "Unknown error occurred"
             }
         }
     }

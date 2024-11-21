@@ -19,9 +19,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import com.google.firebase.firestore.FirebaseFirestoreSettings
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import com.team9.soccermanager.model.Account
 import com.team9.soccermanager.model.GS
 import com.team9.soccermanager.screens.adminhome.AdminHomeView
@@ -49,7 +46,13 @@ import kotlinx.serialization.Serializable
 @Serializable object LoadScreen
 @Serializable object WelcomeScreen
 @Serializable object LoginScreen
-@Serializable data class RegisterScreen(var type: String)
+@Serializable data class RegisterScreen(
+    var type: String,
+    var leagueName: String = "",
+    var leagueCode: String = "",
+    var teamName: String = "",
+    var teamCode: String = ""
+)
 @Serializable object TypeSelectScreen
 @Serializable object NewAdminScreen
 @Serializable object NewCoachScreen
@@ -157,43 +160,44 @@ fun App(navController: NavHostController = rememberNavController()) {
             val data: RegisterScreen = backStackEntry.toRoute()
             RegisterView(
                 type = data.type,
+                other = mapOf(
+                    "leagueName" to data.leagueName,
+                    "leagueCode" to data.leagueCode,
+                    "teamName" to data.teamName,
+                    "teamCode" to data.teamCode,
+                ),
                 switchBack = { nav.pop() },
                 switchToLogin = { nav.popSwitch(LoginScreen, WelcomeScreen) },
-                switchToSpecific = {
-                    if (it == "player") {
-                        nav.switch(NewPlayerScreen)
-                    } else if (it == "admin") {
-                        nav.switch(NewAdminScreen)
-                    } else {
-                        nav.switch(NewCoachScreen)
-                    }
-                }
+                switchToHome = { nav.clearSwitch(HomeScreen()) }
             )
         }
         composable<TypeSelectScreen> {
             TypeSelectView(
                 switchBack = { nav.pop() },
-                switchToPlayer = { nav.switch(RegisterScreen("player")) },
-                switchToCoach = { nav.switch(RegisterScreen("coach")) },
-                switchToAdmin = { nav.switch(RegisterScreen("admin")) }
+                switchToPlayer = { nav.switch(NewPlayerScreen) },
+                switchToAdmin = { nav.switch(NewAdminScreen) },
+                switchToCoach = { nav.switch(NewCoachScreen) }
             )
         }
         composable<NewAdminScreen> {
             NewAdminView(
-                switchToHome = { nav.clearSwitch(HomeScreen()) },
-                switchBack = { nav.pop() }
+                switchToRegister = { leagueName ->
+                    nav.switch(RegisterScreen("admin", leagueName = leagueName))
+                }, switchBack = { nav.pop() }
             )
         }
         composable<NewCoachScreen> {
             NewCoachView(
-                switchToHome = { nav.clearSwitch(HomeScreen()) },
-                switchBack = { nav.pop() }
+                switchToRegister = { leagueCode, teamName ->
+                    nav.switch(RegisterScreen("coach", leagueCode = leagueCode, teamName = teamName))
+                }, switchBack = { nav.pop() }
             )
         }
         composable<NewPlayerScreen> {
             NewPlayerView(
-                switchToHome = { nav.clearSwitch(HomeScreen()) },
-                switchBack = { nav.pop() }
+                switchToRegister = { teamCode ->
+                    nav.switch(RegisterScreen("player", teamCode = teamCode))
+                }, switchBack = { nav.pop() }
             )
         }
         composable<HomeScreen> {

@@ -53,7 +53,7 @@ fun LoadView() {
             Spacer(modifier = Modifier.height(50.dp))
 
             Text(
-                text = "Soccer Manager",
+                text = "Soccito",
                 fontSize = 32.sp, // Large font size
                 fontWeight = FontWeight.Bold, // Bold text
                 fontFamily = FontFamily.Serif,

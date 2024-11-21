@@ -107,6 +107,12 @@ fun ChatSelectView(
                         Box(modifier = Modifier.padding(20.dp)) {
                             CircularProgressIndicator(modifier = Modifier.size(60.dp))
                         }
+                    } else if (chats.isEmpty()) {
+                        Text(
+                            text = "No users to chat with",
+                            fontSize = 16.sp,
+                            textAlign = TextAlign.Center,
+                        )
                     } else {
                         for (index in 0..chats.size - 1) {
                             val chat = chats[index]

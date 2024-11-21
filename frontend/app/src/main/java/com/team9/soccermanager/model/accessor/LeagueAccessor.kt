@@ -5,6 +5,8 @@ import com.google.firebase.auth.auth
 import com.google.firebase.firestore.firestore
 import com.google.firebase.firestore.toObject
 import com.team9.soccermanager.model.League
+import com.team9.soccermanager.model.LeagueError
+import com.team9.soccermanager.model.TeamError
 import kotlinx.coroutines.tasks.await
 
 object LeagueAccessor : LeagueDao {
@@ -45,6 +47,22 @@ object LeagueAccessor : LeagueDao {
             // TODO: add proper logging of error here
             e.printStackTrace()
             return null
+        }
+    }
+
+    override suspend fun leagueExists(leagueName: String) : LeagueError {
+        return try {
+            val res = Firebase.firestore.collection(LEAGUE_COL).whereEqualTo("name", leagueName).get().await()
+            if (res.metadata.isFromCache) {
+                LeagueError.NETWORK
+            } else if (res.isEmpty) {
+                LeagueError.NONE
+            } else {
+                LeagueError.EXISTS
+            }
+        } catch (e: Exception) {
+            println(e)
+            LeagueError.UNKNOWN
         }
     }
 

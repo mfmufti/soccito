@@ -110,7 +110,10 @@ class ChatSelectViewModel: PlayerHomeViewModel() {
         val myRef = db.collection("users").document(GS.user!!.id)
         val userRef = chats[index].userRef
         db.collection("chats").whereArrayContains("users", userRef).get().addOnSuccessListener {
-            println("I'm innnnnnnnnnn bruh")
+            if (it.metadata.isFromCache) {
+                errorLoadingChat.value = true
+                return@addOnSuccessListener
+            }
             var found = ""
 
             for (d in it.documents) {
@@ -131,6 +134,6 @@ class ChatSelectViewModel: PlayerHomeViewModel() {
             } else {
                 switchToChat(found, chats[index].name)
             }
-        }.addOnFailureListener({ println("failed yessir"); errorLoadingChat.value = true })
+        }.addOnFailureListener({ errorLoadingChat.value = true })
     }
 }

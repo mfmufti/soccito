@@ -11,12 +11,12 @@ import androidx.compose.ui.unit.*
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewPlayerView(
-    switchToHome: () -> Unit,
+    switchToRegister: (String) -> Unit,
     switchBack: () -> Unit,
-    viewModel: NewPlayerViewModel = NewPlayerViewModel()
+    viewModel: NewPlayerViewModel = remember { NewPlayerViewModel() }
 ) {
-    var team by remember { mutableStateOf("") }
-    var error by remember { mutableStateOf("") }
+    var team by remember { viewModel.getTeamCode() }
+    var error by remember { viewModel.getError() }
 
     Scaffold (
         modifier = Modifier.padding(16.dp),
@@ -62,7 +62,7 @@ fun NewPlayerView(
             Spacer(modifier = Modifier.height(16.dp))
 
             Button(
-                onClick = { viewModel.joinTeam(team, onSuccess = switchToHome, onError = { error = it }) },
+                onClick = { viewModel.checkTeamCode(switchToRegister) },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Join")

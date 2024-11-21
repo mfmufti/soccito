@@ -11,13 +11,13 @@ import androidx.compose.ui.unit.*
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewCoachView(
-    switchToHome: () -> Unit,
+    switchToRegister: (String, String) -> Unit,
     switchBack: () -> Unit,
-    viewModel: NewCoachViewModel = NewCoachViewModel()
+    viewModel: NewCoachViewModel = remember { NewCoachViewModel() }
 ) {
-    var league by remember { mutableStateOf("") }
-    var team by remember { mutableStateOf("") }
-    var error by remember { mutableStateOf("") }
+    var league by remember { viewModel.getLeagueCode() }
+    var team by remember { viewModel.getTeam() }
+    val error by remember { viewModel.getError() }
 
     Scaffold (
         modifier = Modifier.padding(16.dp),
@@ -72,9 +72,7 @@ fun NewCoachView(
             Spacer(modifier = Modifier.height(16.dp))
 
             Button(
-                onClick = { viewModel.createTeam(
-                    league, team, onSuccess = switchToHome, onError = { error = it }
-                ) },
+                onClick = { viewModel.checkTeam(switchToRegister) },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Create")
