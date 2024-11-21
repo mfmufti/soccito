@@ -3,6 +3,7 @@ package com.team9.soccermanager.model.accessor
 import androidx.compose.runtime.mutableStateListOf
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.team9.soccermanager.model.GS
@@ -122,7 +123,7 @@ object ChatAccessor: ChatDao {
         }.addOnFailureListener { sendError() }
     }
 
-    override fun loadAndListenChat(chatID: String, onLoad: (List<Message>) -> Unit) {
+    override fun loadAndListenChat(chatID: String, onLoad: (List<Message>) -> Unit): ListenerRegistration {
         val messages = mutableStateListOf<Message>()
 
         fun processData(data: Map<String, Any>?) {
@@ -143,7 +144,7 @@ object ChatAccessor: ChatDao {
             processData(it.data)
             onLoad(messages)
         }
-        document.addSnapshotListener({ snapshot, e ->
+        return document.addSnapshotListener({ snapshot, e ->
             if (e != null) {
                 return@addSnapshotListener
             }

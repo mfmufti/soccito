@@ -24,8 +24,8 @@ fun PlayerGameScheduleView(
     goToRoster: () -> Unit,
     goToChatSelect: () -> Unit
     ) {
-        var teamName by remember { mutableStateOf("") }
-        viewModel.getTeamName { teamName = it }
+    var teamName by remember { mutableStateOf("") }
+    viewModel.getTeamName { teamName = it }
     var isMapLoaded by remember { mutableStateOf(false) }
 
     Scaffold (

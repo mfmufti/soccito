@@ -38,6 +38,12 @@ fun ChatSelectView(
     val error by remember { viewModel.isError() }
     val errorLoadingChat by remember { viewModel.isErrorLoadingChat() }
 
+//    DisposableEffect() {
+//        onDispose {
+//            println("ok at least it should happen here, right?")
+//        }
+//    }
+
     Scaffold (
         topBar =  {
             Row(

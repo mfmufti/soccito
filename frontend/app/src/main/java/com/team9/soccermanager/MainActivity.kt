@@ -14,6 +14,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -33,6 +36,7 @@ import com.team9.soccermanager.screens.newadmin.NewAdminView
 import com.team9.soccermanager.screens.newcoach.NewCoachView
 import com.team9.soccermanager.screens.newplayer.NewPlayerView
 import com.team9.soccermanager.screens.chat.ChatView
+import com.team9.soccermanager.screens.chat.ChatViewModel
 import com.team9.soccermanager.screens.playergameschedule.PlayerGameScheduleView
 import com.team9.soccermanager.screens.typeselect.TypeSelectView
 import com.team9.soccermanager.screens.welcome.WelcomeView
@@ -267,6 +271,7 @@ fun App(navController: NavHostController = rememberNavController()) {
         composable<ChatScreen> { backStackEntry ->
             val data: ChatScreen = backStackEntry.toRoute()
             ChatView(
+                viewModel = viewModel(factory = viewModelFactory { initializer { ChatViewModel(data.chatID) } }),
                 chatID = data.chatID,
                 fullname = data.fullname,
                 switchToWelcome = { nav.clearSwitch(WelcomeScreen) },
@@ -283,6 +288,7 @@ fun App(navController: NavHostController = rememberNavController()) {
         }
         composable<ChatSelectScreen> {
             ChatSelectView(
+                viewModel = viewModel(),
                 switchToWelcome = { nav.clearSwitch(WelcomeScreen) },
                 goToChat = { chatID, fullname -> nav.switch(ChatScreen(chatID, fullname))},
                 goToHome = { nav.clearSwitch(HomeScreen()) },
