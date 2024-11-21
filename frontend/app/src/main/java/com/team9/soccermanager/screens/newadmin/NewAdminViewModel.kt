@@ -20,6 +20,10 @@ class NewAdminViewModel : ViewModel() {
     fun getError() = error
 
     fun checkLeague(success: (String) -> Unit) {
+        if (league.value.isEmpty()) {
+            error.value = "Please enter a league name"
+            return
+        }
         viewModelScope.launch {
             when (LeagueAccessor.leagueExists(league.value)) {
                 LeagueError.NONE -> success(league.value)

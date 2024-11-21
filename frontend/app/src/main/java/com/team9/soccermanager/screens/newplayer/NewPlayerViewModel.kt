@@ -15,6 +15,10 @@ class NewPlayerViewModel : ViewModel() {
     fun getError() = error
 
     fun checkTeamCode(success: (String) -> Unit) {
+        if (teamCode.value.isEmpty()) {
+            error.value = "Please enter a team code"
+            return
+        }
         viewModelScope.launch {
             when (TeamAccessor.teamCodeExists(teamCode.value)) {
                 TeamCodeError.NONE -> success(teamCode.value)

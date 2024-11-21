@@ -19,8 +19,8 @@ fun WelcomeView(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Welcome to Soccer Manager!",
-            fontSize = 20.sp
+            text = "Welcome to Soccito!",
+            fontSize = 26.sp
         )
 
         Spacer(

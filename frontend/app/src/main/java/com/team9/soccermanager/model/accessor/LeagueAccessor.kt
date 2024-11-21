@@ -6,7 +6,6 @@ import com.google.firebase.firestore.firestore
 import com.google.firebase.firestore.toObject
 import com.team9.soccermanager.model.League
 import com.team9.soccermanager.model.LeagueError
-import com.team9.soccermanager.model.TeamError
 import kotlinx.coroutines.tasks.await
 
 object LeagueAccessor : LeagueDao {
@@ -61,8 +60,12 @@ object LeagueAccessor : LeagueDao {
                 LeagueError.EXISTS
             }
         } catch (e: Exception) {
-            println(e)
-            LeagueError.UNKNOWN
+            if (e.message != null && e.message!!.contains("offline")) {
+                LeagueError.NETWORK
+            } else {
+                println(e)
+                LeagueError.UNKNOWN
+            }
         }
     }
 

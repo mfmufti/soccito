@@ -3,17 +3,15 @@ package com.team9.soccermanager.screens.playerroster
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.team9.soccermanager.model.GS
-import com.team9.soccermanager.screens.chatselect.Chat
 import com.team9.soccermanager.screens.playerhome.PlayerHomeViewModel
 
-class PlayerAvailablility(val name: String, val availability: String)
+class PlayerAvailability(val name: String, val availability: String)
 
 class PlayerRosterViewModel: PlayerHomeViewModel() {
-    private val playerAvailabilityList = mutableStateListOf<PlayerAvailablility>()
+    private val playerAvailabilityList = mutableStateListOf<PlayerAvailability>()
     private var loading = mutableStateOf(true)
 
     init {
@@ -30,7 +28,7 @@ class PlayerRosterViewModel: PlayerHomeViewModel() {
                             for (player in it.data!!["playerIds"] as List<*>) {
                                 db.collection("users").document(player as String).get().addOnSuccessListener {
                                     if (it.data != null && it.id != myId) {
-                                        playerAvailabilityList.add(PlayerAvailablility(it.data!!["fullname"] as String, "Available"))
+                                        playerAvailabilityList.add(PlayerAvailability(it.data!!["fullname"] as String, "Available"))
                                     }
                                 }
                             }
@@ -46,7 +44,7 @@ class PlayerRosterViewModel: PlayerHomeViewModel() {
         return loading
     }
 
-    fun getPlayerAvailabilityList(): MutableList<PlayerAvailablility> {
+    fun getPlayerAvailabilityList(): MutableList<PlayerAvailability> {
         return playerAvailabilityList
     }
 

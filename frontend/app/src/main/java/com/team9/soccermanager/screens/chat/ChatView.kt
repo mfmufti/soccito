@@ -18,11 +18,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.*
+import com.team9.soccermanager.model.accessor.Message
 
 @Composable
 fun ChatView(
@@ -143,8 +143,7 @@ fun Chat(paddingValues: PaddingValues, messages: MutableList<Message>, viewModel
             items(messages.size) { index ->
                 val m = messages[messages.size - index - 1]
                 val arrangement = if (m.right) Arrangement.End else Arrangement.Start
-                val color =
-                    if (m.right) MaterialTheme.colorScheme.inversePrimary else MaterialTheme.colorScheme.inverseOnSurface
+                val color = if (m.right) MaterialTheme.colorScheme.inversePrimary else MaterialTheme.colorScheme.inverseOnSurface
 
                 Row(
                     horizontalArrangement = arrangement,
@@ -159,7 +158,7 @@ fun Chat(paddingValues: PaddingValues, messages: MutableList<Message>, viewModel
                     ) {
                         Text(
                             text = m.text,
-                            fontSize = 16.sp
+                            fontSize = 16.sp,
                         )
                     }
                 }

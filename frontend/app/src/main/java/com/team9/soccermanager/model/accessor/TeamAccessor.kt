@@ -15,6 +15,7 @@ import com.team9.soccermanager.model.Team
 import com.team9.soccermanager.model.TeamCodeError
 import com.team9.soccermanager.model.TeamError
 import kotlinx.coroutines.tasks.await
+import java.io.IOException
 import java.util.UUID
 
 object TeamAccessor : TeamDao {
@@ -85,8 +86,12 @@ object TeamAccessor : TeamDao {
             }
 
         } catch (e: Exception) {
-            println(e)
-            TeamError.UNKNOWN
+            if (e.message != null && e.message!!.contains("offline")) {
+                TeamError.NETWORK
+            } else {
+                println(e)
+                TeamError.UNKNOWN
+            }
         }
     }
 
@@ -101,8 +106,12 @@ object TeamAccessor : TeamDao {
                 TeamCodeError.NOT_EXIST
             }
         } catch (e: Exception) {
-            println(e)
-            TeamCodeError.UNKNOWN
+            if (e.message != null && e.message!!.contains("offline")) {
+                TeamCodeError.NETWORK
+            } else {
+                println(e)
+                TeamCodeError.UNKNOWN
+            }
         }
     }
 

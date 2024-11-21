@@ -17,6 +17,10 @@ class NewCoachViewModel : ViewModel() {
     fun getError() = error
 
     fun checkTeam(success: (String, String) -> Unit) {
+        if (leagueCode.value.isEmpty() || team.value.isEmpty()) {
+            error.value = "Please fill all fields"
+            return
+        }
         viewModelScope.launch {
             when (TeamAccessor.teamExists(team.value, leagueCode.value)) {
                 TeamError.NONE -> success(team.value, leagueCode.value)

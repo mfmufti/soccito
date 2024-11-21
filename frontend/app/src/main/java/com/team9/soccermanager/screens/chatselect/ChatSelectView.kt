@@ -98,7 +98,7 @@ fun ChatSelectView(
                 ) {
                     if (error) {
                         Text(
-                            text = "There was an error loading the chat list",
+                            text = "There was an error loading the chat list. Please check your network connection.",
                             color = MaterialTheme.colorScheme.error,
                             fontSize = 16.sp,
                             textAlign = TextAlign.Center
@@ -114,7 +114,7 @@ fun ChatSelectView(
                             textAlign = TextAlign.Center,
                         )
                     } else {
-                        for (index in 0..chats.size - 1) {
+                        for (index in 0..<chats.size) {
                             val chat = chats[index]
                             Button(
                                 modifier = Modifier
