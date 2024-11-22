@@ -27,3 +27,7 @@ enum class GameError {
 enum class MainScreens {
     HOME, SCHEDULE, ROSTER, CHAT, BACK, NONE
 }
+
+enum class Winner {
+    UNKNOWN, FIRST, SECOND
+}

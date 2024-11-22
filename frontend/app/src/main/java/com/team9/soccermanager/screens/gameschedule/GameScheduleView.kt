@@ -3,6 +3,8 @@ package com.team9.soccermanager.screens.gameschedule
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -10,9 +12,13 @@ import androidx.compose.ui.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.*
+import com.team9.soccermanager.model.GS
 import com.team9.soccermanager.model.MainScreens
 import com.team9.soccermanager.model.accessor.Game
 import com.team9.soccermanager.ui.composable.BarsWrapper
+import java.text.DateFormat.getDateTimeInstance
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -35,7 +41,7 @@ fun GameScheduleView(
         signOut = { viewModel.signOut(); switchToWelcome() },
         switchMainScreen = switchMainScreen,
     ) { paddingValues ->
-        Surface(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
@@ -111,6 +117,24 @@ fun GameScheduleView(
                     }
                 }
             }
+
+            if (GS.user!!.type == "admin") {
+                SmallFloatingActionButton(
+                    onClick = { },
+                    containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                    contentColor = MaterialTheme.colorScheme.secondary,
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd) // Align it to the bottom-end (right bottom corner)
+                        .padding(16.dp)
+                        .size(60.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Add,
+                        contentDescription ="Add a game",
+                        modifier = Modifier.size(30.dp)
+                    )
+                }
+            }
         }
     }
 }
@@ -138,7 +162,8 @@ private fun GameList(games: List<Game>, goToSpecificGame: (Int) -> Unit) {
                 )
                 Spacer(modifier = Modifier.height(5.dp))
                 Text(
-                    text = "${game.timestamp.toDate()}",
+//                    text = getDateTimeInstance().format(game.timestamp.toDate()),
+                    text = SimpleDateFormat("MMM d, y 'at' hh:mm a zzz", Locale.US).format(game.timestamp.toDate()),
                     textAlign = TextAlign.Center
                 )
             }

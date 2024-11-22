@@ -3,6 +3,7 @@ package com.team9.soccermanager.model.accessor
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.auth
+import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.firestore
 import com.google.firebase.firestore.toObject
@@ -96,18 +97,7 @@ object LeagueAccessor : LeagueDao {
             if (gamesRaw != null) {
                 for ((index, gameRaw) in gamesRaw.withIndex()) {
                     val gameMap = gameRaw as Map<*, *>
-                    games.add(Game(
-                        index = index,
-                        address = gameMap["address"] as String,
-                        geopoint = gameMap["geopoint"] as GeoPoint,
-                        team1ID = gameMap["team1ID"] as String,
-                        team2ID = gameMap["team2ID"] as String,
-                        team1Name = gameMap["team1Name"] as String,
-                        team2Name = gameMap["team2Name"] as String,
-                        timestamp = gameMap["timestamp"] as Timestamp,
-                        winnerID = gameMap["winnerID"] as String?,
-                        winnerName = gameMap["winnerName"] as String?
-                    ))
+                    games.add(Game(index, gameMap))
                 }
             }
             lastLoadedGames = games
@@ -134,5 +124,20 @@ object LeagueAccessor : LeagueDao {
 
     override fun getGameFromLoaded(index: Int): Game {
         return lastLoadedGames!![index]
+    }
+
+    override suspend fun writeGame(id: String, game: Game): GameError {
+        try {
+            FieldPath.of("games", game.index.toString())
+            Firebase.firestore.collection(LEAGUE_COL).document(id).update(game.toMap())
+            return GameError.NONE
+        } catch (e: Exception) {
+            if (e.message != null &&  e.message!!.contains("offline")) {
+                return GameError.NETWORK
+            } else {
+                println(e)
+                return GameError.UNKNOWN
+            }
+        }
     }
 }

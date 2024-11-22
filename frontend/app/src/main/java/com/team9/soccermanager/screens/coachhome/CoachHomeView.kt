@@ -80,7 +80,7 @@ fun CoachHomeView(
                         .padding(16.dp),
                     contentAlignment = Alignment.TopStart
                 ) {
-                    if(announcements == null) Text( text = "", style = TextStyle(fontSize = 16.sp))
+                    if (announcements == null) Text( text = "", style = TextStyle(fontSize = 16.sp))
                     else LazyColumn(Modifier.fillMaxWidth()) {
                         items(announcements!!.reversed()) {
                             announcement -> ListItem(
