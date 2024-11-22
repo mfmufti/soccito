@@ -3,6 +3,7 @@ package com.team9.soccermanager.model.accessor
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FieldPath
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.firestore
 import com.google.firebase.firestore.toObject
 import com.team9.soccermanager.model.GS
@@ -75,7 +76,7 @@ object LeagueAccessor : LeagueDao {
 
     override suspend fun updateLeague(league: League): Boolean {
         try {
-            Firebase.firestore.collection(LEAGUE_COL).document(league.id).set(league).await()
+            Firebase.firestore.collection(LEAGUE_COL).document(league.id).set(league, SetOptions.merge()).await()
             return true
         } catch (e: Exception) {
             e.printStackTrace()

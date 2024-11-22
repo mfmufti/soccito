@@ -6,17 +6,16 @@ import android.provider.OpenableColumns
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.ListenerRegistration
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.firestore
 import com.google.firebase.firestore.toObject
 import com.google.firebase.storage.FirebaseStorage
-import com.team9.soccermanager.model.Account
 import com.team9.soccermanager.model.FormFile
 import com.team9.soccermanager.model.GS
 import com.team9.soccermanager.model.Team
 import com.team9.soccermanager.model.TeamCodeError
 import com.team9.soccermanager.model.TeamError
 import kotlinx.coroutines.tasks.await
-import java.io.IOException
 import java.util.UUID
 
 object TeamAccessor : TeamDao {
@@ -120,7 +119,7 @@ object TeamAccessor : TeamDao {
     // TODO update function replaces entire document, instead add update Fns to change specific fields
     override suspend fun updateTeam(team: Team): Boolean {
         try {
-            Firebase.firestore.collection(TEAM_COL).document(team.id).set(team).await()
+            Firebase.firestore.collection(TEAM_COL).document(team.id).set(team, SetOptions.merge()).await()
             _lastAccessedTeam = team
             return true
         } catch (e: Exception) {
@@ -150,6 +149,7 @@ object TeamAccessor : TeamDao {
             }
         }
         val folderRef = FirebaseStorage.getInstance().getReference("teams")
+        _lastAccessedTeam = getTeamById(GS.user!!.teamID)
         val ref = folderRef.child("${_lastAccessedTeam?.id}/${UUID.randomUUID()}_${result}")
 
         val inputStream = contentResolver.openInputStream(uri)
