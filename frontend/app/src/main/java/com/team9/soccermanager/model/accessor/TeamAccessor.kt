@@ -5,6 +5,7 @@ import android.net.Uri
 import android.provider.OpenableColumns
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.firestore
 import com.google.firebase.firestore.toObject
 import com.google.firebase.storage.FirebaseStorage
@@ -161,10 +162,10 @@ object TeamAccessor : TeamDao {
         }
     }
 
-    override suspend fun listenForUpdates(onResult: (Team) -> Unit) {
-        val id = getTeamById(GS.user?.teamID!!)?.id ?: return
+    override suspend fun listenForUpdates(onResult: (Team) -> Unit): ListenerRegistration? {
+        val id = getTeamById(GS.user?.teamID!!)?.id ?: return null
         val docRef = Firebase.firestore.collection(TEAM_COL).document(id)
-        docRef.addSnapshotListener { snapshot, e ->
+        return docRef.addSnapshotListener { snapshot, e ->
             if (e != null) {
                 return@addSnapshotListener
             }

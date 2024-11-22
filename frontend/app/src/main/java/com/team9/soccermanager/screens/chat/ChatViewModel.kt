@@ -2,6 +2,7 @@ package com.team9.soccermanager.screens.chat
 
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.ListenerRegistration
 import com.team9.soccermanager.model.accessor.ChatAccessor
 import com.team9.soccermanager.model.accessor.Message

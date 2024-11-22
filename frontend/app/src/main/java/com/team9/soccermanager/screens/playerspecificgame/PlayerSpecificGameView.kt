@@ -3,9 +3,6 @@ package com.team9.soccermanager.screens.playerspecificgame
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -18,100 +15,59 @@ import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
+import com.team9.soccermanager.model.MainScreens
+import com.team9.soccermanager.ui.composable.BarsWrapper
 
 @Composable
 fun PlayerSpecificGameView(
     viewModel: PlayerSpecificGameViewModel = PlayerSpecificGameViewModel(),
     switchToWelcome: () -> Unit,
-    goToHome: () -> Unit,
-    goToSchedule: () -> Unit,
-    goToRoster: () -> Unit,
-    goToChatScreen: () -> Unit
+    switchMainScreen: (MainScreens) -> Unit,
 ) {
     var teamName by remember { mutableStateOf("") }
     viewModel.getTeamName { teamName = it }
     var isMapLoaded by remember { mutableStateOf(false) }
 
-    Scaffold (
-        topBar =  {
-            Row(
+    BarsWrapper(
+        title = "X vs. Y?",
+        activeScreen = MainScreens.SCHEDULE,
+        signOut = { viewModel.signOut(); switchToWelcome() },
+        switchMainScreen = switchMainScreen,
+        allowBack = true,
+    ) { paddingValues ->
+        data class Place(
+            val name: String,
+            val location: LatLng
+        )
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(500.dp)
+                .padding(paddingValues),
+            contentAlignment = Alignment.TopCenter
+        ) {
+            val gameLocation = Place("Leverkusen", LatLng(51.0459, 7.0192))
+
+            // Add GoogleMap here
+            GoogleMap(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 40.dp, start = 16.dp, end = 16.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
+                    .fillMaxSize()
+                    .fillMaxHeight()
+                    .padding(0.dp, 20.dp, 0.dp, 0.dp),
+                cameraPositionState = rememberCameraPositionState { // Update camera position
+                    position = CameraPosition.fromLatLngZoom(gameLocation.location, 10f)
+                },
+                onMapLoaded = { isMapLoaded = true }
             ) {
-                Text(text = teamName)
-                Button(
-                    onClick = { viewModel.signOut(); switchToWelcome() },
-                    modifier = Modifier.size(100.dp, 36.dp),
-                    contentPadding = PaddingValues(3.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.errorContainer,
-                        contentColor = MaterialTheme.colorScheme.onErrorContainer
-                    )) {
-                    Text(text = "Sign Out")
-                }
-            }
-        },
-        bottomBar = {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp),
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                IconButton(onClick = goToHome) {
-                    Icon(contentDescription = "Home", imageVector = Icons.Filled.Home)
-                }
-                IconButton(onClick = goToSchedule) {
-                    Icon(contentDescription = "Schedule", imageVector = Icons.Filled.DateRange)
-                }
-                IconButton(onClick = goToRoster) {
-                    Icon(contentDescription = "Roster", imageVector = Icons.Filled.Person)
-                }
-                IconButton(onClick = goToChatScreen) {
-                    Icon(contentDescription = "Chat", imageVector = Icons.Filled.Forum)
-                }
-            }
-        },
-        content = { paddingValues ->
-            data class Place(
-                val name: String,
-                val location: LatLng
-            )
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(500.dp)
-                    .padding(paddingValues),
-                contentAlignment = Alignment.TopCenter
-            ) {
-                val gamelocation = Place("Leverkusen", LatLng(51.0459, 7.0192))
 
+                Marker(
+                    state = MarkerState(position = gameLocation.location),
+                    title = gameLocation.name,
+                    snippet = "Marker for ${gameLocation.name}"
+                )
+                // ..
 
-                // Add GoogleMap here
-                GoogleMap(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .fillMaxHeight()
-                        .padding(0.dp, 20.dp, 0.dp, 0.dp),
-                    cameraPositionState = rememberCameraPositionState { // Update camera position
-                        position = CameraPosition.fromLatLngZoom(gamelocation.location, 10f)
-                    },
-                    onMapLoaded = { isMapLoaded = true }
-                ) {
-
-                    Marker(
-                        state = MarkerState(position = gamelocation.location),
-                        title = gamelocation.name,
-                        snippet = "Marker for ${gamelocation.name}"
-                    )
-                    // ..
-
-                }
             }
         }
-    )
+    }
 }

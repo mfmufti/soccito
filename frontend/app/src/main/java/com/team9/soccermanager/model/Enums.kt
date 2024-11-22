@@ -19,3 +19,7 @@ enum class TeamError {
 enum class TeamCodeError {
     NONE, NOT_EXIST, NETWORK, UNKNOWN
 }
+
+enum class MainScreens {
+    HOME, SCHEDULE, ROSTER, CHAT, BACK, NONE
+}

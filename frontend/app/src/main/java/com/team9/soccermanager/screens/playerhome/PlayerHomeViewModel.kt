@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.firestore
 import com.team9.soccermanager.model.Account
 import kotlinx.coroutines.*
@@ -18,14 +19,13 @@ import com.team9.soccermanager.model.Team
 import com.team9.soccermanager.model.accessor.TeamAccessor
 
 open class PlayerHomeViewModel : ViewModel() {
-
-    var signedOut = false;
-
+    var signedOut = false
     var announcements = mutableStateOf<List<Announcement>?>(null)
+    private var listener: ListenerRegistration? = null
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            TeamAccessor.listenForUpdates {
+            listener = TeamAccessor.listenForUpdates {
                 viewModelScope.launch(Dispatchers.Main) {
                     announcements.value = it.announcements.toList()
                 }
@@ -122,4 +122,8 @@ open class PlayerHomeViewModel : ViewModel() {
         }
     }
 
+    override fun onCleared() {
+        super.onCleared()
+        listener?.remove()
+    }
 }

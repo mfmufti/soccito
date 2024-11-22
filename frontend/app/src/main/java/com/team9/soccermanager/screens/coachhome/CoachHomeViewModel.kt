@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.firestore
 import com.team9.soccermanager.model.Account
 import kotlinx.coroutines.*
@@ -14,12 +15,12 @@ import com.team9.soccermanager.model.accessor.TeamAccessor
 import kotlinx.coroutines.tasks.await
 
 open class CoachHomeViewModel : ViewModel() {
-
-    var signedOut = false;
+    var signedOut = false
+    private var listener: ListenerRegistration? = null
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            TeamAccessor.listenForUpdates {
+            listener = TeamAccessor.listenForUpdates {
                 // If there's any live components that need to update, do it here
             }
         }
@@ -94,5 +95,10 @@ open class CoachHomeViewModel : ViewModel() {
                 }
             }
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        listener?.remove()
     }
 }

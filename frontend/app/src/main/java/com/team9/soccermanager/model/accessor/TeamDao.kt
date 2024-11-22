@@ -2,6 +2,7 @@ package com.team9.soccermanager.model.accessor
 
 import android.content.ContentResolver
 import android.net.Uri
+import com.google.firebase.firestore.ListenerRegistration
 import com.team9.soccermanager.model.Team
 import com.team9.soccermanager.model.TeamCodeError
 import com.team9.soccermanager.model.TeamError
@@ -14,5 +15,5 @@ interface TeamDao {
     suspend fun teamCodeExists(teamCode: String): TeamCodeError
     suspend fun updateTeam(team: Team) : Boolean
     suspend fun uploadForm(uri: Uri, contentResolver: ContentResolver) : Unit
-    suspend fun listenForUpdates(onResult: (Team) -> Unit)
+    suspend fun listenForUpdates(onResult: (Team) -> Unit): ListenerRegistration?
 }

@@ -25,82 +25,33 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.*
 import com.team9.soccermanager.model.GS
+import com.team9.soccermanager.model.MainScreens
+import com.team9.soccermanager.ui.composable.BarsWrapper
 import java.text.DateFormat.getDateTimeInstance
 import java.util.Date
 
 @Composable
 fun AdminHomeView(
-    viewModel: AdminHomeViewModel = AdminHomeViewModel(),
+    viewModel: AdminHomeViewModel = remember { AdminHomeViewModel() },
     switchToWelcome: () -> Unit,
+    switchMainScreen: (MainScreens) -> Unit,
     goToLeagueStandings: () -> Unit,
-    goToSchedule: () -> Unit,
-    goToRoster: () -> Unit,
-    goToChatSelect: () -> Unit
 ) {
-    var teamName by remember { mutableStateOf("") }
     var fullname by remember { mutableStateOf("") }
     var joinCode by remember { mutableStateOf("") }
 
-    val ctx = LocalContext.current
-
-    viewModel.getTeam {
-        viewModel.announcements.value = it.announcements.toList()
-    }
-
-    //viewModel.getTeamName { teamName = it }
     viewModel.getFullName { fullname = it }
-
     viewModel.getJoinCode { joinCode = it }
 
-    Scaffold (
-        topBar =  {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 40.dp, start = 16.dp, end = 16.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(text = teamName)
-                Button(
-                    onClick = { viewModel.signOut(); switchToWelcome() },
-                    modifier = Modifier.size(100.dp, 36.dp),
-                    contentPadding = PaddingValues(3.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.errorContainer,
-                        contentColor = MaterialTheme.colorScheme.onErrorContainer
-                    )) {
-                    Text(text = "Sign Out")
-                }
-            }
-        },
-        bottomBar = {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp, 0.dp, 8.dp, 8.dp),
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                IconButton(onClick = {}) {
-                    Icon(contentDescription = "Home", imageVector = Icons.Filled.Home, tint = MaterialTheme.colorScheme.surfaceTint)
-                }
-                IconButton(onClick = goToSchedule) {
-                    Icon(contentDescription = "Schedule", imageVector = Icons.Filled.DateRange)
-                }
-                IconButton(onClick = goToRoster) {
-                    Icon(contentDescription = "Roster", imageVector = Icons.Filled.Person)
-                }
-                IconButton(onClick = goToChatSelect) {
-                    Icon(contentDescription = "Chat", imageVector = Icons.Filled.Forum)
-                }
-            }
-
-        }
-    ) { padding ->
+    BarsWrapper(
+        title = "Home",
+        activeScreen = MainScreens.HOME,
+        signOut = { viewModel.signOut(); switchToWelcome() },
+        switchMainScreen = switchMainScreen,
+    ) { paddingValues ->
         Column(
             modifier = Modifier
-                .padding(padding)
+                .padding(paddingValues)
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center

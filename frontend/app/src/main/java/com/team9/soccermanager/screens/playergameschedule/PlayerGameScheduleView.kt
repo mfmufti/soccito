@@ -1,5 +1,7 @@
 package com.team9.soccermanager.screens.playergameschedule
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -14,70 +16,59 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.*
+import com.team9.soccermanager.model.MainScreens
+import com.team9.soccermanager.ui.composable.BarsWrapper
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PlayerGameScheduleView(
     viewModel: PlayerGameScheduleViewModel = PlayerGameScheduleViewModel(),
     switchToWelcome: () -> Unit,
+    switchMainScreen: (MainScreens) -> Unit,
     goToSpecificGame: () -> Unit,
-    goToHome: () -> Unit,
-    goToRoster: () -> Unit,
-    goToChatSelect: () -> Unit
-    ) {
-    var teamName by remember { mutableStateOf("") }
-    viewModel.getTeamName { teamName = it }
-    var isMapLoaded by remember { mutableStateOf(false) }
+) {
+//    var teamName by remember { mutableStateOf("") }
+//    viewModel.getTeamName { teamName = it }
 
-    Scaffold (
-        topBar =  {
-            Row(
+    BarsWrapper(
+        title = "Game Schedule",
+        activeScreen = MainScreens.SCHEDULE,
+        signOut = { viewModel.signOut(); switchToWelcome() },
+        switchMainScreen = switchMainScreen,
+    ) { paddingValues ->
+        Surface(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+        ) {
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 40.dp, start = 16.dp, end = 16.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
+                    .fillMaxSize(),
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(text = teamName)
-                Button(
-                    onClick = { viewModel.signOut(); switchToWelcome() },
-                    modifier = Modifier.size(100.dp, 36.dp),
-                    contentPadding = PaddingValues(3.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.errorContainer,
-                        contentColor = MaterialTheme.colorScheme.onErrorContainer
-                    )) {
-                    Text(text = "Sign Out")
+                var state by remember { mutableIntStateOf(0) }
+                val titles = listOf("Upcoming", "Completed")
+
+                SecondaryTabRow(selectedTabIndex = state) {
+                    titles.forEachIndexed { index, title ->
+                        Tab(selected = index == state, onClick = { state = index }) {
+                            Column(
+                                Modifier
+                                    .padding(20.dp)
+                                    .fillMaxWidth(),
+                                verticalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Text(
+                                    text = title,
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                                )
+                            }
+                        }
+                    }
                 }
-            }
-        },
-        bottomBar = {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp, 0.dp, 8.dp, 8.dp),
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                IconButton(onClick = goToHome) {
-                    Icon(contentDescription = "Home", imageVector = Icons.Filled.Home)
-                }
-                IconButton(onClick = {}) {
-                    Icon(contentDescription = "Schedule", imageVector = Icons.Filled.DateRange, tint = MaterialTheme.colorScheme.surfaceTint)
-                }
-                IconButton(onClick = goToRoster) {
-                    Icon(contentDescription = "Roster", imageVector = Icons.Filled.Person)
-                }
-                IconButton(onClick = goToChatSelect) {
-                    Icon(contentDescription = "Chat", imageVector = Icons.Filled.Forum)
-                }
-            }
-        },
-        content = { paddingValues ->
-            Surface(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues)
-            ) {
+
                 Column(
                     modifier = Modifier
                         .verticalScroll(rememberScrollState())
@@ -88,7 +79,7 @@ fun PlayerGameScheduleView(
                 ) {
                     data class Game(val home: String, val away: String)
 
-                    var data = listOf(
+                    val data = listOf(
                         Game("Leverkusen", "Bayern"),
                         Game("Chelsea", "Leverkusen"),
                         Game("Leverkusen", "Berlin"),
@@ -125,6 +116,6 @@ fun PlayerGameScheduleView(
                 }
             }
         }
-    )
+    }
 }
 
