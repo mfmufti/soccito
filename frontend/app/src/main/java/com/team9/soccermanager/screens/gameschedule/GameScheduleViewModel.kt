@@ -24,7 +24,7 @@ class GameScheduleViewModel: PlayerHomeViewModel() {
 
     init {
         viewModelScope.launch {
-            val gameData = LeagueAccessor.getGames(GS.user!!.leagueID)
+            val gameData = LeagueAccessor.getGames()
             val gameError = gameData.first
 
             if (gameError == GameError.NETWORK) {

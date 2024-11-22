@@ -10,8 +10,8 @@ interface LeagueDao {
     suspend fun createLeague(leagueName: String) : League?
     suspend fun leagueExists(leagueName: String) : LeagueError
     suspend fun updateLeague(league: League) : Boolean
-    suspend fun getGames(id: String): Pair<GameError, List<Game>>
-    suspend fun getGame(id: String, index: Int): Pair<GameError, Game>
+    suspend fun getGames(): Pair<GameError, List<Game>>
+    suspend fun getGame(index: Int): Pair<GameError, Game>
     fun getGameFromLoaded(index: Int): Game
-    suspend fun writeGame(id: String, game: Game): GameError
+    suspend fun writeGame(game: Game): GameError
 }

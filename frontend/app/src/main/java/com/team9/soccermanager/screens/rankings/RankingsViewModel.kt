@@ -40,10 +40,10 @@ class RankingsViewModel {
         val db = Firebase.firestore
         try {
             val leagueDocument = db.collection("leagues").document(leagueId!!).get().await()
-            val tList = leagueDocument.data?.get("teamIds") as? List<String>
+            val tList = leagueDocument.data?.get("teamIds") as? List<*>
             if (tList != null) {
                 for (t in tList) {
-                    val teamDocument = db.collection("teams").document(t).get().await()
+                    val teamDocument = db.collection("teams").document(t as String).get().await()
                     if (teamDocument.data != null) {
                         val tid = teamDocument.data!!["id"] as String
                         val currName = teamDocument.data!!["name"] as String

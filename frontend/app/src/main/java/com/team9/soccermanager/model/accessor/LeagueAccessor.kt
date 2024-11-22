@@ -1,12 +1,11 @@
 package com.team9.soccermanager.model.accessor
 
 import com.google.firebase.Firebase
-import com.google.firebase.Timestamp
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FieldPath
-import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.firestore
 import com.google.firebase.firestore.toObject
+import com.team9.soccermanager.model.GS
 import com.team9.soccermanager.model.GameError
 import com.team9.soccermanager.model.League
 import com.team9.soccermanager.model.LeagueError
@@ -84,9 +83,9 @@ object LeagueAccessor : LeagueDao {
         }
     }
 
-    override suspend fun getGames(id: String): Pair<GameError, List<Game>> {
+    override suspend fun getGames(): Pair<GameError, List<Game>> {
         try {
-            val doc = Firebase.firestore.collection(LEAGUE_COL).document(id).get().await()
+            val doc = Firebase.firestore.collection(LEAGUE_COL).document(GS.user!!.leagueID).get().await()
             if (doc.metadata.isFromCache) {
                 return Pair(GameError.NETWORK, listOf())
             } else if (doc["games"] == null) {
@@ -111,8 +110,8 @@ object LeagueAccessor : LeagueDao {
         }
     }
 
-    override suspend fun getGame(id: String, index: Int): Pair<GameError, Game> {
-        val games = getGames(id)
+    override suspend fun getGame(index: Int): Pair<GameError, Game> {
+        val games = getGames()
         return if (games.first != GameError.NONE) {
             Pair(games.first, Game())
         } else if (index < 0 || index >= games.second.size) {
@@ -126,10 +125,10 @@ object LeagueAccessor : LeagueDao {
         return lastLoadedGames!![index]
     }
 
-    override suspend fun writeGame(id: String, game: Game): GameError {
+    override suspend fun writeGame(game: Game): GameError {
         try {
             FieldPath.of("games", game.index.toString())
-            Firebase.firestore.collection(LEAGUE_COL).document(id).update(game.toMap())
+            Firebase.firestore.collection(LEAGUE_COL).document(GS.user!!.leagueID).update(game.toMap())
             return GameError.NONE
         } catch (e: Exception) {
             if (e.message != null &&  e.message!!.contains("offline")) {
