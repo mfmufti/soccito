@@ -38,7 +38,7 @@ import com.team9.soccermanager.screens.newcoach.NewCoachView
 import com.team9.soccermanager.screens.newplayer.NewPlayerView
 import com.team9.soccermanager.screens.chat.ChatView
 import com.team9.soccermanager.screens.chat.ChatViewModel
-import com.team9.soccermanager.screens.playergameschedule.PlayerGameScheduleView
+import com.team9.soccermanager.screens.gameschedule.GameScheduleView
 import com.team9.soccermanager.screens.typeselect.TypeSelectView
 import com.team9.soccermanager.screens.welcome.WelcomeView
 import com.team9.soccermanager.screens.playerhome.PlayerHomeView
@@ -72,7 +72,7 @@ import kotlinx.serialization.Serializable
 @Serializable object PlayerRosterScreen
 @Serializable data class ChatScreen(var chatID: String, var fullname: String)
 @Serializable object ChatSelectScreen
-@Serializable object PlayerSpecificGameScreen
+@Serializable data class PlayerSpecificGameScreen(val index: Int)
 
 class MainActivity : ComponentActivity() {
     @SuppressLint("SourceLockedOrientationActivity")
@@ -169,9 +169,6 @@ fun App(navController: NavHostController = rememberNavController()) {
                 switchBack = { nav.pop() },
                 switchToRegister = { nav.popSwitch(TypeSelectScreen, WelcomeScreen) },
                 switchToSpecific = { nav.clearSwitch(HomeScreen()) },
-                // For testing player screen, uncomment below line (and comment above line) and login as player:
-                // email: pt1@test.com, pwd: abc123
-                // switchToHome = { nav.clearSwitch(PlayerHomeScreen) }
             )
         }
         composable<RegisterScreen> { backStackEntry ->
@@ -253,14 +250,16 @@ fun App(navController: NavHostController = rememberNavController()) {
             )
         }
         composable<PlayerGameScheduleScreen> {
-            PlayerGameScheduleView(
+            GameScheduleView(
                 switchToWelcome = { nav.clearSwitch(WelcomeScreen) },
                 switchMainScreen = switchMainScreen,
-                goToSpecificGame = { nav.switch(PlayerSpecificGameScreen) },
+                goToSpecificGame = { index -> nav.switch(PlayerSpecificGameScreen(index)) },
             )
         }
-        composable<PlayerSpecificGameScreen> {
+        composable<PlayerSpecificGameScreen> { backStackEntry ->
+            val data: PlayerSpecificGameScreen = backStackEntry.toRoute()
             PlayerSpecificGameView(
+                gameIndex = data.index,
                 switchToWelcome = { nav.clearSwitch(WelcomeScreen) },
                 switchMainScreen = switchMainScreen,
             )

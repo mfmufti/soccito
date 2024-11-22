@@ -1,6 +1,6 @@
 package com.team9.soccermanager.model
 
-data class League (
+data class League(
     val id: String,
     val name: String,
     val code: String,
@@ -8,5 +8,5 @@ data class League (
     val adminIds: MutableList<String>
 ) {
     // need to provide no-arg constructor to support deserialization with Firebase
-    constructor() : this("", "", "", mutableListOf(), mutableListOf())
+    constructor(): this("", "", "", mutableListOf(), mutableListOf())
 }

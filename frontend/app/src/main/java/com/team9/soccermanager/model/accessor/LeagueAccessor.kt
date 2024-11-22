@@ -1,15 +1,19 @@
 package com.team9.soccermanager.model.accessor
 
 import com.google.firebase.Firebase
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.auth
+import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.firestore
 import com.google.firebase.firestore.toObject
+import com.team9.soccermanager.model.GameError
 import com.team9.soccermanager.model.League
 import com.team9.soccermanager.model.LeagueError
 import kotlinx.coroutines.tasks.await
 
 object LeagueAccessor : LeagueDao {
     private const val LEAGUE_COL = "leagues"
+    private var lastLoadedGames: List<Game>? = null
 
     override suspend fun getLeagueById(id: String): League? {
         try {
@@ -77,5 +81,58 @@ object LeagueAccessor : LeagueDao {
             e.printStackTrace()
             return false
         }
+    }
+
+    override suspend fun getGames(id: String): Pair<GameError, List<Game>> {
+        try {
+            val doc = Firebase.firestore.collection(LEAGUE_COL).document(id).get().await()
+            if (doc.metadata.isFromCache) {
+                return Pair(GameError.NETWORK, listOf())
+            } else if (doc["games"] == null) {
+                return Pair(GameError.NONE, listOf())
+            }
+            val games = mutableListOf<Game>()
+            val gamesRaw = doc["games"] as? List<*>
+            if (gamesRaw != null) {
+                for ((index, gameRaw) in gamesRaw.withIndex()) {
+                    val gameMap = gameRaw as Map<*, *>
+                    games.add(Game(
+                        index = index,
+                        address = gameMap["address"] as String,
+                        geopoint = gameMap["geopoint"] as GeoPoint,
+                        team1ID = gameMap["team1ID"] as String,
+                        team2ID = gameMap["team2ID"] as String,
+                        team1Name = gameMap["team1Name"] as String,
+                        team2Name = gameMap["team2Name"] as String,
+                        timestamp = gameMap["timestamp"] as Timestamp,
+                        winnerID = gameMap["winnerID"] as String?,
+                        winnerName = gameMap["winnerName"] as String?
+                    ))
+                }
+            }
+            lastLoadedGames = games
+            return Pair(GameError.NONE, games)
+        } catch (e: Exception) {
+            return if (e.message != null && e.message!!.contains("offline")) {
+                Pair(GameError.NETWORK, listOf())
+            } else {
+                Pair(GameError.UNKNOWN, listOf())
+            }
+        }
+    }
+
+    override suspend fun getGame(id: String, index: Int): Pair<GameError, Game> {
+        val games = getGames(id)
+        return if (games.first != GameError.NONE) {
+            Pair(games.first, Game())
+        } else if (index < 0 || index >= games.second.size) {
+            Pair(GameError.UNKNOWN, Game())
+        } else {
+            Pair(GameError.NONE, games.second[index])
+        }
+    }
+
+    override fun getGameFromLoaded(index: Int): Game {
+        return lastLoadedGames!![index]
     }
 }
