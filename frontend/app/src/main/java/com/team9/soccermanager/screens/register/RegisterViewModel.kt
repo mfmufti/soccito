@@ -31,7 +31,6 @@ class RegisterViewModel(val type: String, val other: Map<String, String>): ViewM
 
     fun handleRegister(success: () -> Unit) {
         if (fullname.isEmpty() || email.isEmpty() || password.isEmpty()) {
-            println("am here bro")
             error = "Please fill all fields"
             return
         }

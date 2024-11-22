@@ -23,7 +23,7 @@ class NewCoachViewModel : ViewModel() {
         }
         viewModelScope.launch {
             when (TeamAccessor.teamExists(team.value, leagueCode.value)) {
-                TeamError.NONE -> success(team.value, leagueCode.value)
+                TeamError.NONE -> success(leagueCode.value, team.value)
                 TeamError.EXISTS -> error.value = "A team with this name already exists"
                 TeamError.NETWORK -> error.value = "Network error occurred"
                 TeamError.BAD_JOIN_CODE -> error.value = "Invalid league join code"
