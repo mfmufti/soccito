@@ -31,3 +31,7 @@ enum class MainScreens {
 enum class Winner {
     UNKNOWN, FIRST, SECOND
 }
+
+enum class Availability {
+    AVAILABLE, UNAVAILABLE
+}

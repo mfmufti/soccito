@@ -38,6 +38,7 @@ import com.team9.soccermanager.screens.newcoach.NewCoachView
 import com.team9.soccermanager.screens.newplayer.NewPlayerView
 import com.team9.soccermanager.screens.chat.ChatView
 import com.team9.soccermanager.screens.chat.ChatViewModel
+import com.team9.soccermanager.screens.coachroster.CoachRosterView
 import com.team9.soccermanager.screens.gameschedule.GameScheduleView
 import com.team9.soccermanager.screens.typeselect.TypeSelectView
 import com.team9.soccermanager.screens.welcome.WelcomeView
@@ -63,6 +64,7 @@ import kotlinx.serialization.Serializable
 @Serializable object NewCoachScreen
 @Serializable object NewPlayerScreen
 @Serializable object HomeScreen
+@Serializable object RosterScreen
 @Serializable object PlayerHomeScreen
 @Serializable object CoachHomeScreen
 @Serializable object AdminHomeScreen
@@ -72,6 +74,7 @@ import kotlinx.serialization.Serializable
 @Serializable object PlayerRosterScreen
 @Serializable data class ChatScreen(var chatID: String, var fullname: String)
 @Serializable object ChatSelectScreen
+@Serializable object CoachRosterScreen
 @Serializable data class PlayerSpecificGameScreen(val index: Int)
 
 class MainActivity : ComponentActivity() {
@@ -131,6 +134,14 @@ fun App(navController: NavHostController = rememberNavController()) {
         start = WelcomeScreen
     }
 
+    val RosterScreen: () -> Any = {
+        if (GS.user!!.type == "player") {
+            PlayerRosterScreen
+        } else {
+            CoachRosterScreen
+        }
+    }
+
     val HomeScreen: () -> Any = {
         if (GS.user!!.type == "coach") {
             CoachHomeScreen
@@ -146,7 +157,7 @@ fun App(navController: NavHostController = rememberNavController()) {
             nav.pop()
         } else {
             nav.clearSwitch(when (newScreen) {
-                MainScreens.ROSTER -> PlayerRosterScreen
+                MainScreens.ROSTER -> RosterScreen()
                 MainScreens.CHAT -> ChatSelectScreen
                 MainScreens.SCHEDULE -> PlayerGameScheduleScreen
                 else -> HomeScreen()
@@ -268,6 +279,12 @@ fun App(navController: NavHostController = rememberNavController()) {
             PlayerRosterView(
                 switchToWelcome = { nav.clearSwitch(WelcomeScreen) },
                 switchMainScreen = switchMainScreen,
+            )
+        }
+        composable<CoachRosterScreen> {
+            CoachRosterView(
+                switchToWelcome = { nav.clearSwitch(WelcomeScreen) },
+                switchMainScreen = switchMainScreen
             )
         }
         composable<ChatScreen> { backStackEntry ->

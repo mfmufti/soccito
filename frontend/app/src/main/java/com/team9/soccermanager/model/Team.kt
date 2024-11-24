@@ -8,6 +8,12 @@ data class Announcement (val content: String, val authorName: String, val datePo
     constructor() : this("", "",0)
 }
 
+data class AvailView (val playerId: String, val playerName: String, var playerAvail: PlrAvail) {
+    constructor() : this("", "", PlrAvail())
+}
+
+data class RankingView(val id: String, val teamName: String, val gp: Long, val wins: Long, val losses: Long, val draws: Long, val pts: Long)
+
 data class Team (
     var id: String,
     var name: String,
@@ -23,6 +29,8 @@ data class Team (
     val announcements: MutableList<Announcement>,
     val forms: MutableList<FormFile>
 ) {
+
     // need to provide no-arg constructor to support deserialization with Firebase
-    constructor() : this("", "", "", mutableListOf(), mutableListOf(), "", 0, 0, 0, 0, 0, mutableListOf(), mutableListOf())
+    constructor() : this("", "", "", mutableListOf(), mutableListOf(),
+        "", 0, 0, 0, 0, 0, mutableListOf(), mutableListOf())
 }

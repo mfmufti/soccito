@@ -3,6 +3,7 @@ package com.team9.soccermanager.model.accessor
 import android.content.ContentResolver
 import android.net.Uri
 import android.provider.OpenableColumns
+import androidx.compose.runtime.mutableStateListOf
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.ListenerRegistration
@@ -10,8 +11,12 @@ import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.firestore
 import com.google.firebase.firestore.toObject
 import com.google.firebase.storage.FirebaseStorage
+import com.team9.soccermanager.model.AvailView
+import com.team9.soccermanager.model.Availability
 import com.team9.soccermanager.model.FormFile
 import com.team9.soccermanager.model.GS
+import com.team9.soccermanager.model.PlrAvail
+import com.team9.soccermanager.model.RankingView
 import com.team9.soccermanager.model.Team
 import com.team9.soccermanager.model.TeamCodeError
 import com.team9.soccermanager.model.TeamError
@@ -21,6 +26,7 @@ import java.util.UUID
 object TeamAccessor : TeamDao {
     private const val TEAM_COL = "teams"
     private const val LEAGUE_COL = "leagues"
+    private const val USER_COL = "users"
     private var _lastAccessedTeam : Team? = null
 
     override suspend fun getTeamById(id: String): Team?  {
@@ -50,9 +56,7 @@ object TeamAccessor : TeamDao {
 
     override suspend fun createTeam(teamName: String, leagueId: String): Team? {
         val teamDoc = Firebase.firestore.collection(TEAM_COL).document()
-
         val team = Team(teamDoc.id, teamName, teamDoc.id, mutableListOf(), mutableListOf(Firebase.auth.uid ?: ""), leagueId, 0, 0, 0, 0, 0, mutableListOf(), mutableListOf())
-
         try {
             teamDoc.set(team).await()
             return team
@@ -175,5 +179,75 @@ object TeamAccessor : TeamDao {
                 onResult(_lastAccessedTeam!!)
             }
         }
+    }
+
+    override fun updateUserAvail(id: String, avail: Availability, reason: String) {
+        val db = Firebase.firestore
+        val doc = db.collection(USER_COL).document(id)
+        val newAvailValue = PlrAvail(avail, reason)
+        doc.update("playerAvail", newAvailValue).addOnSuccessListener {
+            println("Successfully updated availability")
+        }.addOnFailureListener {
+            println("Failed update availability")
+        }
+    }
+
+    override suspend fun getPlayerAvail(onResult: (List<AvailView>) -> Unit, onError: (TeamError) -> Unit) {
+        try {
+            val tid = GS.user!!.teamID
+            val db = Firebase.firestore
+            val currTeam = db.collection(TEAM_COL).document(tid).get().await()
+            if (currTeam.metadata.isFromCache) {
+                onError(TeamError.NETWORK)
+                return
+            }
+            if (currTeam.data == null) {
+                onError(TeamError.UNKNOWN)
+                return
+            }
+            val res: MutableList<AvailView> = mutableListOf()
+            for(pid in currTeam.data!!["playerIds"] as List<*>) {
+                val currPid = pid as String
+                val currPlr = db.collection(USER_COL).document(currPid).get().await()
+                if (currPlr.data == null) {
+                    onError(TeamError.UNKNOWN)
+                    return
+                }
+                val currPlrName = currPlr.data!!["fullname"] as String
+                val currPlrAvail = PlrAvail(currPlr.data!!["playerAvail"] as Map<*, *>)
+                res.add(AvailView(currPid, currPlrName, currPlrAvail))
+            }
+            onResult(res)
+        } catch(e: Exception) {
+            onError(TeamError.UNKNOWN)
+        }
+    }
+
+    override suspend fun getRankingsData(onResult: (List<RankingView>) -> Unit) {
+        val db = Firebase.firestore
+        val teamsList = mutableStateListOf<RankingView>()
+        try {
+            val leagueDocument = db.collection(LEAGUE_COL).document(GS.user!!.leagueID).get().await()
+            val tList = leagueDocument.data?.get("teamIds") as? List<*>
+            if (tList != null) {
+                for (t in tList) {
+                    val teamDocument = db.collection("teams").document(t as String).get().await()
+                    if (teamDocument.data != null) {
+                        val tid = teamDocument.data!!["id"] as String
+                        val currName = teamDocument.data!!["name"] as String
+                        val gp = teamDocument.data!!["gamesPlayed"] as Long
+                        val wins = teamDocument.data!!["wins"] as Long
+                        val losses = teamDocument.data!!["losses"] as Long
+                        val draws = teamDocument.data!!["draws"] as Long
+                        val pts = teamDocument.data!!["points"] as Long
+                        teamsList.add(RankingView(tid, currName, gp, wins, losses, draws, pts))
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            println("Error: ${e.message}")
+        }
+        teamsList.sortByDescending { it.pts }
+        onResult(teamsList)
     }
 }

@@ -10,6 +10,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
 import com.team9.soccermanager.model.GS
+import com.team9.soccermanager.model.RankingView
 import com.team9.soccermanager.model.accessor.TeamAccessor
 import com.team9.soccermanager.model.accessor.LeagueAccessor
 import com.team9.soccermanager.model.Team
@@ -19,53 +20,21 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
 
-data class TeamView(val id: String, val teamName: String, val gp: Long, val wins: Long, val losses: Long, val draws: Long, val pts: Long)
-
 class RankingsViewModel {
 
     //var teamsList = mutableStateListOf<TeamView>()
-    var leagueId = GS.user?.leagueID
     private val loading = mutableStateOf(true)
-    private val teamsList = mutableStateListOf<TeamView>()
+    private val teamsList = mutableStateListOf<RankingView>()
 
-    fun getList(): SnapshotStateList<TeamView> {
-        return teamsList
-    }
-
-    fun getLoading(): MutableState<Boolean> {
-        return loading
-    }
-
-    private suspend fun getScreenData() {
-        val db = Firebase.firestore
-        try {
-            val leagueDocument = db.collection("leagues").document(leagueId!!).get().await()
-            val tList = leagueDocument.data?.get("teamIds") as? List<*>
-            if (tList != null) {
-                for (t in tList) {
-                    val teamDocument = db.collection("teams").document(t as String).get().await()
-                    if (teamDocument.data != null) {
-                        val tid = teamDocument.data!!["id"] as String
-                        val currName = teamDocument.data!!["name"] as String
-                        val gp = teamDocument.data!!["gamesPlayed"] as Long
-                        val wins = teamDocument.data!!["wins"] as Long
-                        val losses = teamDocument.data!!["losses"] as Long
-                        val draws = teamDocument.data!!["draws"] as Long
-                        val pts = teamDocument.data!!["points"] as Long
-                        teamsList.add(TeamView(tid, currName, gp, wins, losses, draws, pts))
-                    }
-                }
-            }
-        } catch (e: Exception) {
-            println("Error: ${e.message}")
-        }
-        teamsList.sortByDescending { it.pts }
-        loading.value = false
-    }
+    fun getList() = teamsList
+    fun getLoading() = loading
 
     init {
         CoroutineScope(Dispatchers.IO).launch {
-            getScreenData()
+            TeamAccessor.getRankingsData {
+                teamsList.addAll(it)
+                loading.value = false
+            }
         }
         // Don't know if we really need the listeners for real time updates...
         /*

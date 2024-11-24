@@ -9,6 +9,9 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.team9.soccermanager.model.Account
+import com.team9.soccermanager.model.Availability
+import com.team9.soccermanager.model.GS
+import com.team9.soccermanager.model.PlrAvail
 import com.team9.soccermanager.model.RegisterError
 import com.team9.soccermanager.model.accessor.LeagueAccessor
 import com.team9.soccermanager.model.accessor.TeamAccessor

@@ -28,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.team9.soccermanager.model.GS
 import com.team9.soccermanager.model.MainScreens
 
 @Composable
@@ -84,8 +85,10 @@ fun BarsWrapper(
                 IconButton(onClick = { switchMainScreen(MainScreens.SCHEDULE) }) {
                     Icon(contentDescription = "Schedule", imageVector = Icons.Filled.DateRange, tint = getTint(MainScreens.SCHEDULE, activeScreen))
                 }
-                IconButton(onClick = { switchMainScreen(MainScreens.ROSTER) }) {
-                    Icon(contentDescription = "Roster", imageVector = Icons.Filled.Person, tint = getTint(MainScreens.ROSTER, activeScreen))
+                if (GS.user!!.type != "admin") {
+                    IconButton(onClick = { switchMainScreen(MainScreens.ROSTER) }) {
+                        Icon(contentDescription = "Roster", imageVector = Icons.Filled.Person, tint = getTint(MainScreens.ROSTER, activeScreen))
+                    }
                 }
                 IconButton(onClick = { switchMainScreen(MainScreens.CHAT) }) {
                     Icon(contentDescription = "Chat", imageVector = Icons.Filled.Forum, tint = getTint(MainScreens.CHAT, activeScreen))

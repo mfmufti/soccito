@@ -3,6 +3,7 @@ package com.team9.soccermanager.model
 import android.util.Log
 import com.google.firebase.Firebase
 import com.google.firebase.auth.*
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.tasks.await
 
