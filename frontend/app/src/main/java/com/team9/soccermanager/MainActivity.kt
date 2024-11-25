@@ -25,19 +25,20 @@ import androidx.navigation.toRoute
 import com.team9.soccermanager.model.Account
 import com.team9.soccermanager.model.GS
 import com.team9.soccermanager.model.MainScreens
+import com.team9.soccermanager.screens.coachforms.CoachFormsView
 import com.team9.soccermanager.screens.adminhome.AdminHomeView
 import com.team9.soccermanager.screens.chatselect.ChatSelectView
 import com.team9.soccermanager.screens.coachhome.CoachHomeView
-import com.team9.soccermanager.screens.coachhome.forms.CoachHomeFormsView
+import com.team9.soccermanager.screens.formspecific.FormSpecificView
 import com.team9.soccermanager.ui.theme.SoccerManagerTheme
 import com.team9.soccermanager.screens.login.LoginView
 import com.team9.soccermanager.screens.register.RegisterView
-import com.team9.soccermanager.screens.home.HomeView
 import com.team9.soccermanager.screens.newadmin.NewAdminView
 import com.team9.soccermanager.screens.newcoach.NewCoachView
 import com.team9.soccermanager.screens.newplayer.NewPlayerView
 import com.team9.soccermanager.screens.chat.ChatView
 import com.team9.soccermanager.screens.chat.ChatViewModel
+import com.team9.soccermanager.screens.formspecific.FormSpecificViewModel
 import com.team9.soccermanager.screens.gameschedule.GameScheduleView
 import com.team9.soccermanager.screens.typeselect.TypeSelectView
 import com.team9.soccermanager.screens.welcome.WelcomeView
@@ -45,6 +46,7 @@ import com.team9.soccermanager.screens.playerhome.PlayerHomeView
 import com.team9.soccermanager.screens.playerroster.PlayerRosterView
 import com.team9.soccermanager.screens.rankings.RankingsView
 import com.team9.soccermanager.screens.loadscreen.LoadView
+import com.team9.soccermanager.screens.playerforms.PlayerFormsView
 import com.team9.soccermanager.screens.playerspecificgame.PlayerSpecificGameView
 import kotlinx.serialization.Serializable
 
@@ -64,9 +66,11 @@ import kotlinx.serialization.Serializable
 @Serializable object NewPlayerScreen
 @Serializable object HomeScreen
 @Serializable object PlayerHomeScreen
+@Serializable object PlayerFormsScreen
 @Serializable object CoachHomeScreen
+@Serializable object CoachFormsScreen
+@Serializable data class FormSpecificView(val id: Int, val title: String)
 @Serializable object AdminHomeScreen
-@Serializable object CoachHomeScreenForms
 @Serializable object LeagueStandingsScreen
 @Serializable object PlayerGameScheduleScreen
 @Serializable object PlayerRosterScreen
@@ -100,7 +104,9 @@ class Navigator(val navController: NavHostController) {
         }
     }
     fun pop() {
-        navController.popBackStack()
+        if (navController.previousBackStackEntry != null) {
+            navController.popBackStack()
+        }
     }
     fun clearSwitch(dest: Any) {
         navController.navigate(dest) {
@@ -215,17 +221,20 @@ fun App(navController: NavHostController = rememberNavController()) {
                 }, switchBack = { nav.pop() }
             )
         }
-        composable<HomeScreen> {
-            HomeView(
-                switchToWelcome = { nav.clearSwitch(HomeScreen()) }
-            )
-        }
         composable<PlayerHomeScreen> {
             PlayerHomeView(
                 viewModel = viewModel(),
                 switchToWelcome = { nav.clearSwitch(WelcomeScreen) },
                 switchMainScreen = switchMainScreen,
                 goToLeagueStandings = { nav.switch(LeagueStandingsScreen) },
+                goToForms = { nav.switch(PlayerFormsScreen) },
+            )
+        }
+        composable<PlayerFormsScreen> {
+            PlayerFormsView(
+                viewModel = viewModel(),
+                switchToWelcome = { nav.clearSwitch(WelcomeScreen) },
+                switchMainScreen = switchMainScreen,
             )
         }
         composable<CoachHomeScreen> {
@@ -234,12 +243,25 @@ fun App(navController: NavHostController = rememberNavController()) {
                 switchToWelcome = { nav.clearSwitch(WelcomeScreen) },
                 switchMainScreen = switchMainScreen,
                 goToLeagueStandings = { nav.switch(LeagueStandingsScreen) },
-                goToForms = { nav.switch(CoachHomeScreenForms) }
+                goToForms = { nav.switch(CoachFormsScreen) }
             )
         }
-        composable<CoachHomeScreenForms> {
-            CoachHomeFormsView(
-                switchBack = { nav.pop() }
+        composable<CoachFormsScreen> {
+            CoachFormsView(
+                viewModel = viewModel(),
+                switchToWelcome = { nav.clearSwitch(WelcomeScreen) },
+                switchMainScreen = switchMainScreen,
+                goToSpecificForm = { id, title -> nav.switch(FormSpecificView(id, title)) }
+            )
+        }
+        composable<FormSpecificView> { backStackEntry ->
+            val data: FormSpecificView = backStackEntry.toRoute()
+            FormSpecificView(
+                id = data.id,
+                title = data.title,
+                viewModel = viewModel(factory = viewModelFactory { initializer { FormSpecificViewModel(data.id) } }),
+                switchToWelcome = { nav.clearSwitch(WelcomeScreen) },
+                switchMainScreen = switchMainScreen,
             )
         }
         composable<AdminHomeScreen> {

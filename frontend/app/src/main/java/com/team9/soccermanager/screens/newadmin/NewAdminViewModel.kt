@@ -28,7 +28,7 @@ class NewAdminViewModel : ViewModel() {
             when (LeagueAccessor.leagueExists(league.value)) {
                 LeagueError.NONE -> success(league.value)
                 LeagueError.EXISTS -> error.value = "A league with this name already exists"
-                LeagueError.NETWORK -> error.value = "Network error occurred"
+                LeagueError.NETWORK -> error.value = "Failed to connect to the network"
                 LeagueError.UNKNOWN -> error.value = "Unknown error occurred"
             }
         }

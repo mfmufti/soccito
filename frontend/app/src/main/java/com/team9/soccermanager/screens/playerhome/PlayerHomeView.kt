@@ -36,35 +36,15 @@ fun PlayerHomeView(
     switchToWelcome: () -> Unit,
     switchMainScreen: (MainScreens) -> Unit,
     goToLeagueStandings: () -> Unit,
+    goToForms: () -> Unit,
 ) {
-    var teamName by remember { mutableStateOf("") }
     var fullname by remember { mutableStateOf("") }
     var joinCode by remember { mutableStateOf("") }
-
-    val ctx = LocalContext.current
-    val contentResolver = ctx.contentResolver
-    val pickFileLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent(),
-        onResult = { uri: Uri? ->
-            uri?.let {
-                // The user selected a file, you can now open it or read from it
-                val mimeType = contentResolver.getType(uri)
-                if (mimeType == "application/pdf" || mimeType == "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
-                    // The file is a PDF or DOCX, proceed with the upload
-                    viewModel.uploadForm(it, contentResolver)
-                } else {
-                    Toast.makeText(ctx, "Invalid Form Type (must be PDF or DOCX).", Toast.LENGTH_SHORT).show()
-                }
-
-            }
-        }
-    )
 
     viewModel.getTeam {
         viewModel.announcements.value = it.announcements.toList()
     }
 
-    //viewModel.getTeamName { teamName = it }
     viewModel.getFullName { fullname = it }
 
     viewModel.getJoinCode { joinCode = it }
@@ -149,7 +129,8 @@ fun PlayerHomeView(
             }
 
             Button(
-                onClick = { pickFileLauncher.launch("application/*") },
+//                onClick = { pickFileLauncher.launch("application/*") },
+                onClick = goToForms,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)

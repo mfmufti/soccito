@@ -10,9 +10,48 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e3032951-07d6-40b1-be00-4b24d3b4c02b" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/coachforms/CoachFormsView.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/coachforms/CoachFormsViewModel.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/playerforms/PlayerFormsView.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/playerforms/PlayerFormsViewModel.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/model/accessor/LeagueAccessor.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/model/accessor/LeagueAccessor.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/.attach_pid223803" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/.attach_pid224205" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/.attach_pid225052" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/.attach_pid225365" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/.attach_pid226097" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/.attach_pid226445" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/.attach_pid226631" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/.attach_pid228072" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/.attach_pid228560" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/.attach_pid228835" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/.attach_pid229307" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/.attach_pid230181" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/.attach_pid230393" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/.attach_pid230714" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/.attach_pid457825" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/MainActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/model/Account.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/model/Account.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/model/Enums.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/model/Enums.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/model/Team.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/model/Team.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/model/accessor/TeamAccessor.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/model/accessor/TeamAccessor.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/model/accessor/TeamDao.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/model/accessor/TeamDao.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/chatselect/ChatSelectView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/chatselect/ChatSelectView.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/coachhome/forms/CoachHomeFormsView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/formspecific/FormSpecificView.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/coachhome/forms/CoachHomeFormsViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/formspecific/FormSpecificViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/gameschedule/GameScheduleView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/gameschedule/GameScheduleView.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/gameschedule/GameScheduleViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/gameschedule/GameScheduleViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/home/HomeView.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/home/HomeViewModel.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/login/LoginViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/login/LoginViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/newadmin/NewAdminViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/newadmin/NewAdminViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/newcoach/NewCoachViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/newcoach/NewCoachViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/newplayer/NewPlayerViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/newplayer/NewPlayerViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/playerhome/PlayerHomeView.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/playerhome/PlayerHomeView.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/playerhome/PlayerHomeViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/playerhome/PlayerHomeViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/register/RegisterViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/register/RegisterViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/ui/theme/Color.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/ui/theme/Color.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/ui/theme/Theme.kt" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/ui/theme/Theme.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -107,7 +146,7 @@
     &quot;com.google.services.firebase.aqiPopupShown&quot;: &quot;true&quot;,
     &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
     &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;final&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;formupload&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_directory_selection&quot;: &quot;/home/mfmufti/AndroidStudioProjects/SoccerManager/frontend/app/src/test/java/com/team9/soccermanager&quot;,
     &quot;last_opened_file_path&quot;: &quot;/home/mfmufti/AndroidStudioProjects/SoccerManager/frontend/settings.gradle.kts&quot;,
@@ -120,6 +159,10 @@
   <component name="RecentsManager">
     <key name="CreateTestDialog.Recents.Supers">
       <recent name="" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/formsall" />
+      <recent name="$PROJECT_DIR$/frontend/app/src/main/java/com/team9/soccermanager/screens/" />
     </key>
     <key name="CreateTestDialog.RecentsKey">
       <recent name="com.team9.soccermanager.model.accessor" />

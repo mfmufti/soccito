@@ -1,6 +1,5 @@
 package com.team9.soccermanager.screens.register
 
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -9,10 +8,10 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.team9.soccermanager.model.Account
+import com.team9.soccermanager.model.GS
 import com.team9.soccermanager.model.RegisterError
 import com.team9.soccermanager.model.accessor.LeagueAccessor
 import com.team9.soccermanager.model.accessor.TeamAccessor
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -46,6 +45,7 @@ class RegisterViewModel(val type: String, val other: Map<String, String>): ViewM
                     RegisterError.BAD_EMAIL -> "Bad email provided"
                     RegisterError.USER_EXISTS -> "A user with this email already exists"
                     RegisterError.WEAK_PASSWORD -> "The password provided is weak"
+                    RegisterError.NETWORK -> "Failed to connect to the network"
                     else -> "Unknown error occurred"
                 }
             }
@@ -63,6 +63,7 @@ class RegisterViewModel(val type: String, val other: Map<String, String>): ViewM
                 val team = TeamAccessor.getTeamByInviteCode(teamCode)
                     ?: throw Exception("Team not found")
                 team.playerIds.add(Firebase.auth.uid ?: throw Exception("Player not logged in"))
+                team.playerNames.add(GS.user!!.fullname)
                 TeamAccessor.updateTeam(team)
                 Account.joinTeam(team.id)
                 Account.joinLeague(team.leagueId)
