@@ -143,12 +143,14 @@ fun CoachRosterView(
                             ) {
                                 Text(
                                     text = playeravail.playerName,
-                                    fontSize = 25.sp
+                                    fontSize = 25.sp,
+                                    fontWeight = FontWeight.Bold
                                 )
                                 Spacer(modifier = Modifier.height(11.dp))
                                 Text(
                                     text = playeravail.playerAvail.avail.toString(),
-                                    fontSize = 14.sp
+                                    fontSize = 14.sp,
+                                    fontStyle = FontStyle.Italic
                                 )
                                 if (playeravail.playerAvail.reason.isNotEmpty()) {
                                     Spacer(modifier = Modifier.height(10.dp))
@@ -167,6 +169,7 @@ fun CoachRosterView(
                                 ) {
                                     Icon(
                                         imageVector = Icons.Default.Edit,
+                                        tint = MaterialTheme.colorScheme.primary,
                                         contentDescription = "Edit availability"
                                     )
                                 }

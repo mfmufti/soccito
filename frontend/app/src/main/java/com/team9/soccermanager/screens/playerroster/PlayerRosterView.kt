@@ -13,6 +13,7 @@ import androidx.compose.ui.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.draw.*
 import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.*
 import com.team9.soccermanager.model.GS
@@ -92,12 +93,14 @@ fun PlayerRosterView(
                             ) {
                                 Text(
                                     text = playeravail.playerName,
-                                    fontSize = 25.sp
+                                    fontSize = 25.sp,
+                                    fontWeight = FontWeight.Bold
                                 )
                                 Spacer(modifier = Modifier.height(11.dp))
                                 Text(
                                     text = playeravail.playerAvail.avail.toString(),
-                                    fontSize = 14.sp
+                                    fontSize = 14.sp,
+                                    fontStyle = FontStyle.Italic
                                 )
                                 if (playeravail.playerAvail.reason.isNotEmpty()) {
                                     Spacer(modifier = Modifier.height(10.dp))
