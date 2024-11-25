@@ -16,6 +16,6 @@ interface TeamDao {
     suspend fun teamExists(teamName: String, leagueID: String): TeamError
     suspend fun teamCodeExists(teamCode: String): TeamCodeError
     suspend fun updateTeam(team: Team) : Boolean
-    suspend fun uploadForm(uri: Uri, contentResolver: ContentResolver, id: Int, progressListener: (Double) -> Unit = {}) : Unit
+    suspend fun uploadForm(uri: Uri, contentResolver: ContentResolver, id: Int, progressListener: (Double) -> Unit = {}, canceler: (() -> Unit) -> Unit = {})
     suspend fun listenForUpdates(onResult: (Team) -> Unit): ListenerRegistration?
 }

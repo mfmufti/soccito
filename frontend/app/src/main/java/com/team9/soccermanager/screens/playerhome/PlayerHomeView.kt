@@ -129,7 +129,6 @@ fun PlayerHomeView(
             }
 
             Button(
-//                onClick = { pickFileLauncher.launch("application/*") },
                 onClick = goToForms,
                 modifier = Modifier
                     .fillMaxWidth()

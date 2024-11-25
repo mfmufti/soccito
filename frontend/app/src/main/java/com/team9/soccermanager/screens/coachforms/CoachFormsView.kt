@@ -1,6 +1,7 @@
 package com.team9.soccermanager.screens.coachforms
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,6 +16,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -55,7 +57,10 @@ fun CoachFormsView(
     val error by remember { viewModel.getError() }
     var addingNew by remember { viewModel.getAddingNew() }
     var newName by remember { viewModel.getNewName() }
-    var errorAdding by remember { viewModel.getErrorAdding() }
+    val errorModifyingTitle by remember { viewModel.getErrorModifyingTitle() }
+    var errorModifying by remember { viewModel.getErrorModifying() }
+    var deleteConfirming by remember { viewModel.getDeleteConfirming() }
+    var deleteId by remember { viewModel.getDeleteId() }
 
     BarsWrapper(
         title = "Form Dropboxes",
@@ -82,15 +87,7 @@ fun CoachFormsView(
                 Box(modifier = Modifier.padding(20.dp)) {
                     CircularProgressIndicator(modifier = Modifier.size(60.dp))
                 }
-            } else if (forms.isEmpty()) {
-                Text(
-                    text = "No form dropboxes exist",
-                    fontSize = 16.sp,
-                    textAlign = TextAlign.Center,
-                )
             } else {
-                FormList(goToSpecificForm, forms)
-
                 SmallFloatingActionButton(
                     onClick = { addingNew = true },
                     containerColor = MaterialTheme.colorScheme.secondaryContainer,
@@ -105,6 +102,17 @@ fun CoachFormsView(
                         contentDescription = "Add a dropbox",
                         modifier = Modifier.size(30.dp)
                     )
+                }
+
+                if (forms.isEmpty()) {
+                    Text(
+                        text = "No form dropboxes exist",
+                        fontSize = 16.sp,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                } else {
+                    FormList(goToSpecificForm, { deleteConfirming = true; deleteId = it }, forms)
                 }
             }
 
@@ -136,22 +144,46 @@ fun CoachFormsView(
                 )
             }
 
-            if (errorAdding.isNotEmpty()) {
+            if (errorModifying.isNotEmpty()) {
                 AlertDialog(
                     title = { Text(
-                        text = "Error Creating Dropbox",
+                        text = errorModifyingTitle,
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Center,
                     ) },
                     text = { Text(
-                        text = errorAdding,
+                        text = errorModifying,
+                        modifier = Modifier.fillMaxWidth(),
+                    ) },
+                    onDismissRequest = { errorModifying = "" },
+                    confirmButton = {
+                        TextButton(onClick = { errorModifying = "" }) {
+                            Text("Ok")
+                        }
+                    }
+                )
+            }
+
+            if (deleteConfirming) {
+                AlertDialog(
+                    title = { Text(
+                        text = "Deleting Dropbox",
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Center,
                     ) },
-                    onDismissRequest = { errorAdding = "" },
+                    text = { Text(
+                        text = "The dropbox and all related data will be deleted.",
+                        modifier = Modifier.fillMaxWidth(),
+                    ) },
+                    onDismissRequest = { deleteConfirming = false },
+                    dismissButton = {
+                        TextButton(onClick = { deleteConfirming = false }) {
+                            Text("Cancel")
+                        }
+                    },
                     confirmButton = {
-                        TextButton(onClick = { errorAdding = "" }) {
-                            Text("Ok")
+                        TextButton(onClick = { viewModel.deleteDropBox() }) {
+                            Text("Delete")
                         }
                     }
                 )
@@ -161,7 +193,7 @@ fun CoachFormsView(
 }
 
 @Composable
-private fun FormList(goToSpecificForm: (Int, String) -> Unit, forms: List<Form>) {
+private fun FormList(goToSpecificForm: (Int, String) -> Unit, askDelete: (Int) -> Unit, forms: List<Form>) {
     Column(
         modifier = Modifier
             .verticalScroll(rememberScrollState())
@@ -194,6 +226,16 @@ private fun FormList(goToSpecificForm: (Int, String) -> Unit, forms: List<Form>)
                         Text("View Uploads")
                     }
                 }
+
+                Icon(
+                    imageVector = Icons.Filled.Delete,
+                    contentDescription = "Delete this dropbox",
+                    modifier = Modifier
+                        .size(30.dp)
+                        .align(Alignment.TopEnd)
+                        .clickable { askDelete(form.id) },
+                    tint = MaterialTheme.colorScheme.error,
+                )
             }
             Spacer(modifier = Modifier.height(10.dp))
         }

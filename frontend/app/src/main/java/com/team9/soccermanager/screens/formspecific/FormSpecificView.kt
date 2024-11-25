@@ -54,7 +54,7 @@ fun FormSpecificView(
                     color = MaterialTheme.colorScheme.error,
                     fontSize = 16.sp,
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 )
             } else if (loading) {
                 Box(modifier = Modifier.padding(20.dp)) {
@@ -65,6 +65,7 @@ fun FormSpecificView(
                     text = "Upload list is empty",
                     fontSize = 16.sp,
                     textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth(),
                 )
             } else {
                 UploadList(uploads)

@@ -1,6 +1,7 @@
 package com.team9.soccermanager.model.accessor
 
 import android.content.ContentResolver
+import android.database.Cursor
 import android.net.Uri
 import android.provider.OpenableColumns
 import com.google.firebase.Firebase
@@ -29,7 +30,6 @@ object TeamAccessor : TeamDao {
 
     override suspend fun getTeamById(id: String, requireConnection: Boolean): Team?  {
         if(_lastAccessedTeam?.id != id) {
-//            println("wrong id")
             try {
                 val query = Firebase.firestore.collection(TEAM_COL).whereEqualTo("id", id).get().await()
                 _lastAccessedTeam = query.documents[0].toObject<Team>()
@@ -139,15 +139,21 @@ object TeamAccessor : TeamDao {
         }
     }
 
-    override suspend fun uploadForm(uri: Uri, contentResolver: ContentResolver, id: Int, progressListener: (Double) -> Unit) {
+    override suspend fun uploadForm(uri: Uri, contentResolver: ContentResolver, id: Int, progressListener: (Double) -> Unit, canceler: (() -> Unit) -> Unit) {
+        println("Ok I have been called...")
         // original java code: https://stackoverflow.com/questions/5568874/how-to-extract-the-file-name-from-uri-returned-from-intent-action-get-content/25005243#25005243
         var result: String? = null
         if (uri.scheme.equals("content")) {
-            val cursor = contentResolver.query(uri, null, null, null, null)
+            var cursor: Cursor? = null
             try {
+                cursor = contentResolver.query(uri, null, null, null, null)
                 if (cursor != null && cursor.moveToFirst()) {
-                    result = cursor.getString(cursor.getColumnIndexOrThrow(OpenableColumns.DISPLAY_NAME))
+                    result =
+                        cursor.getString(cursor.getColumnIndexOrThrow(OpenableColumns.DISPLAY_NAME))
                 }
+            } catch (e: Exception) {
+                println("stupid error is")
+                e.printStackTrace()
             } finally {
                 cursor?.close()
             }
@@ -162,11 +168,11 @@ object TeamAccessor : TeamDao {
         val folderRef = FirebaseStorage.getInstance().getReference("teams")
         _lastAccessedTeam = getTeamById(GS.user!!.teamID)
         val ref = folderRef.child("${_lastAccessedTeam?.id}/${UUID.randomUUID()}_${result}")
-
         val inputStream = contentResolver.openInputStream(uri)
         inputStream.use {
             val uploadTask = ref.putBytes(inputStream!!.readBytes())
             uploadTask.addOnProgressListener({progressListener(1.0 * it.bytesTransferred / it.totalByteCount)})
+            canceler({ uploadTask.cancel() })
             val downloadUrl = uploadTask.await().storage.downloadUrl.await().toString()
             val newFormUpload = FormUpload(downloadUrl, GS.user!!.id, GS.user!!.fullname, Timestamp.now())
             _lastAccessedTeam!!.forms.first { it.id == id }.apply {

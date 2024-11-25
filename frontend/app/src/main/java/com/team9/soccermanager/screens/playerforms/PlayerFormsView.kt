@@ -63,6 +63,7 @@ fun PlayerFormsView(
     val error by remember { viewModel.getError() }
     val uploading by remember { viewModel.getUploading()}
     val progress by remember { viewModel.getProgress() }
+    var uploadError by remember { viewModel.getUploadError() }
 
     BarsWrapper(
         title = "Upload a Form",
@@ -93,6 +94,7 @@ fun PlayerFormsView(
                     text = "No form dropboxes exist",
                     fontSize = 16.sp,
                     textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth(),
                 )
             } else {
                 FormList(formUploads, { uri, contentResolver, id -> viewModel.uploadForm(uri, contentResolver, id) })
@@ -115,8 +117,29 @@ fun PlayerFormsView(
                             )
                         } },
                         confirmButton = {
-                            TextButton(onClick = { }) { Text("Cancel") }
+                            TextButton(onClick = { viewModel.cancelUpload() }) { Text("Cancel") }
                         },
+                    )
+                }
+
+                if (uploadError.isNotEmpty()) {
+                    AlertDialog(
+                        title = { Text(
+                            text = "Error Uploading Form",
+                            modifier = Modifier.fillMaxWidth(),
+                            textAlign = TextAlign.Center,
+                        ) },
+                        text = { Text(
+                            text = uploadError,
+                            modifier = Modifier.fillMaxWidth(),
+                            textAlign = TextAlign.Center,
+                        ) },
+                        onDismissRequest = { uploadError = "" },
+                        confirmButton = {
+                            TextButton(onClick = { uploadError = "" }) {
+                                Text("Ok")
+                            }
+                        }
                     )
                 }
             }
@@ -129,26 +152,13 @@ fun FormList(formUploads: List<SimpleFormUpload>, uploadForm: (Uri, ContentResol
     val ctx = LocalContext.current
     val contentResolver = ctx.contentResolver
     var curId by remember { mutableIntStateOf(0) }
-    val pickFileLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent(),
-        onResult = { uri: Uri? ->
-            uri?.let {
-                // The user selected a file, you can now open it or read from it
-                val mimeType = contentResolver.getType(uri)
-                if (mimeType == "application/pdf" || mimeType == "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
-                    // The file is a PDF or DOCX, proceed with the upload
-                    uploadForm(it, contentResolver, curId)
-                } else {
-                    Toast.makeText(ctx, "Invalid Form Type (must be PDF or DOCX).", Toast.LENGTH_SHORT).show()
-                }
-            }
+    val pickFileLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        uri?.let {
+            // The user selected a file, you can now open it or read from it
+            uploadForm(it, contentResolver, curId)
         }
-    )
+    }
 
-//    val names = listOf("Health Forms", "Passport", "Driver's License", "Trash", "Trash", "Trash", "Trash", "Trash")
-//    val uploaded = false
-//    val uploading = false
-//    val progress = 0.7876
     Column(
         modifier = Modifier
             .verticalScroll(rememberScrollState())
@@ -197,7 +207,9 @@ fun FormList(formUploads: List<SimpleFormUpload>, uploadForm: (Uri, ContentResol
                     }
                     Spacer(modifier = Modifier.height(4.dp))
                     Button(
-                        onClick = { curId = formUpload.formId; pickFileLauncher.launch("application/*") },
+                        onClick = {
+                            curId = formUpload.formId; pickFileLauncher.launch("application/*")
+                        },
                         colors = ButtonDefaults.filledTonalButtonColors()
                     ) {
                         Text(if (formUpload.uploaded) "Reupload" else "Upload")
@@ -208,14 +220,3 @@ fun FormList(formUploads: List<SimpleFormUpload>, uploadForm: (Uri, ContentResol
         }
     }
 }
-
-//@Composable
-//fun rememberGetContentActivityResult() {
-//    var uri by rememberSaveable { mutableStateOf<Uri?>(null) }
-//    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent(), onResult = {
-//        uri = it
-//    })
-//    return remember(launcher, uri) {
-//        GetContentActivityResult(launcher, uri)
-//    }
-//}
