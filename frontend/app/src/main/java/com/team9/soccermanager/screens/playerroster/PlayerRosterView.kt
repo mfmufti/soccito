@@ -12,10 +12,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.draw.*
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.*
+import com.team9.soccermanager.model.Availability
 import com.team9.soccermanager.model.GS
 import com.team9.soccermanager.model.MainScreens
 import com.team9.soccermanager.ui.composable.BarsWrapper
@@ -100,8 +102,10 @@ fun PlayerRosterView(
                                 Text(
                                     text = playeravail.playerAvail.avail.toString(),
                                     fontSize = 14.sp,
-                                    fontStyle = FontStyle.Italic
+                                    fontStyle = FontStyle.Italic,
+                                    color = if (playeravail.playerAvail.avail == Availability.AVAILABLE) Color(87, 207, 119) else MaterialTheme.colorScheme.error
                                 )
+
                                 if (playeravail.playerAvail.reason.isNotEmpty()) {
                                     Spacer(modifier = Modifier.height(10.dp))
                                     Text(
