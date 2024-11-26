@@ -28,7 +28,6 @@ fun PlayerRosterView(
     switchToWelcome: () -> Unit,
     switchMainScreen: (MainScreens) -> Unit,
 ) {
-
     val availList = remember { viewModel.getAvailList() }
     val loading = remember { viewModel.getLoading() }
     val error = remember { viewModel.getError() }
@@ -52,11 +51,12 @@ fun PlayerRosterView(
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-
                 if (error.value.isNotEmpty()) {
                     Text(
                         text = error.value,
-                        color = MaterialTheme.colorScheme.error
+                        color = MaterialTheme.colorScheme.error,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth(),
                     )
                 }
 

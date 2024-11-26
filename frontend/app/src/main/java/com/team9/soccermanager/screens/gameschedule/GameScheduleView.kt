@@ -94,7 +94,7 @@ fun GameScheduleView(
 //                    )
                     if (error.isNotEmpty()) {
                         Text(
-                            text = "There was an error loading the chat list. Please check your network connection.",
+                            text = error,
                             color = MaterialTheme.colorScheme.error,
                             fontSize = 16.sp,
                             textAlign = TextAlign.Center
@@ -143,7 +143,7 @@ fun GameScheduleView(
 private fun GameList(games: List<Game>, goToSpecificGame: (Int) -> Unit) {
     for (game in games) {
         Button(
-            onClick = { goToSpecificGame(game.index) },
+            onClick = { goToSpecificGame(game.id) },
             modifier = Modifier
                 .padding(5.dp)
                 .fillMaxWidth()

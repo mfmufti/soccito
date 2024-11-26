@@ -79,7 +79,7 @@ import kotlinx.serialization.Serializable
 @Serializable data class ChatScreen(var chatID: String, var fullname: String)
 @Serializable object ChatSelectScreen
 @Serializable object CoachRosterScreen
-@Serializable data class PlayerSpecificGameScreen(val index: Int)
+@Serializable data class PlayerSpecificGameScreen(val id: Int)
 
 class MainActivity : ComponentActivity() {
     @SuppressLint("SourceLockedOrientationActivity")
@@ -286,13 +286,13 @@ fun App(navController: NavHostController = rememberNavController()) {
             GameScheduleView(
                 switchToWelcome = { nav.clearSwitch(WelcomeScreen) },
                 switchMainScreen = switchMainScreen,
-                goToSpecificGame = { index -> nav.switch(PlayerSpecificGameScreen(index)) },
+                goToSpecificGame = { id -> nav.switch(PlayerSpecificGameScreen(id)) },
             )
         }
         composable<PlayerSpecificGameScreen> { backStackEntry ->
             val data: PlayerSpecificGameScreen = backStackEntry.toRoute()
             PlayerSpecificGameView(
-                gameIndex = data.index,
+                gameId = data.id,
                 switchToWelcome = { nav.clearSwitch(WelcomeScreen) },
                 switchMainScreen = switchMainScreen,
             )

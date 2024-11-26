@@ -95,9 +95,9 @@ object LeagueAccessor : LeagueDao {
             val games = mutableListOf<Game>()
             val gamesRaw = doc["games"] as? List<*>
             if (gamesRaw != null) {
-                for ((index, gameRaw) in gamesRaw.withIndex()) {
+                for (gameRaw in gamesRaw) {
                     val gameMap = gameRaw as Map<*, *>
-                    games.add(Game(index, gameMap))
+                    games.add(Game(gameMap))
                 }
             }
             lastLoadedGames = games
@@ -106,19 +106,23 @@ object LeagueAccessor : LeagueDao {
             return if (e.message != null && e.message!!.contains("offline")) {
                 Pair(GameError.NETWORK, listOf())
             } else {
+                e.printStackTrace()
                 Pair(GameError.UNKNOWN, listOf())
             }
         }
     }
 
-    override suspend fun getGame(index: Int): Pair<GameError, Game> {
+    override suspend fun getGame(id: Int): Pair<GameError, Game> {
         val games = getGames()
         return if (games.first != GameError.NONE) {
             Pair(games.first, Game())
-        } else if (index < 0 || index >= games.second.size) {
-            Pair(GameError.UNKNOWN, Game())
         } else {
-            Pair(GameError.NONE, games.second[index])
+            val game = games.second.find { it.id == id }
+            if (game == null) {
+                Pair(GameError.UNKNOWN, Game())
+            } else {
+                Pair(GameError.NONE, game)
+            }
         }
     }
 
@@ -126,16 +130,40 @@ object LeagueAccessor : LeagueDao {
         return lastLoadedGames!![index]
     }
 
-    override suspend fun writeGame(game: Game): GameError {
+    override suspend fun writeGame(game: Game, newGame: Boolean): GameError {
         try {
-            FieldPath.of("games", game.index.toString())
-            Firebase.firestore.collection(LEAGUE_COL).document(GS.user!!.leagueID).update(game.toMap())
+            println(1)
+            val docRef = Firebase.firestore.collection(LEAGUE_COL).document(GS.user!!.leagueID)
+            val doc = docRef.get().await()
+            var games = doc["games"] as List<*>
+            println(2)
+            if (newGame) {
+                val id = if (games.isEmpty()) 0 else games.maxOf { (it as Map<*, *>)["id"] as Long }
+                game.id = id.toInt()
+                games += game
+            } else {
+                var found = false
+                for ((i, curGame) in games.withIndex()) {
+                    val gameMap = curGame as Map<*, *>
+                    if ((gameMap["id"] as Long).toInt() == game.id) {
+                        found = true
+                        println("found1")
+                        games = games.mapIndexed({ index, elem -> if (index == i) {println("found2"); game.toMap()} else elem })
+                        break
+                    }
+                }
+                if (!found) {
+                    games += game
+                }
+            }
+            println(games)
+            docRef.update("games", games)
             return GameError.NONE
         } catch (e: Exception) {
+            e.printStackTrace()
             if (e.message != null &&  e.message!!.contains("offline")) {
                 return GameError.NETWORK
             } else {
-                println(e)
                 return GameError.UNKNOWN
             }
         }

@@ -104,7 +104,9 @@ fun CoachRosterView(
                 if (error.value.isNotEmpty()) {
                     Text(
                         text = error.value,
-                        color = MaterialTheme.colorScheme.error
+                        color = MaterialTheme.colorScheme.error,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth(),
                     )
                 }
 
