@@ -13,7 +13,9 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -21,6 +23,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -66,6 +69,7 @@ fun PlayerSpecificGameView(
     var editing by remember { viewModel.getEditing() }
     val coachsNotes by remember { viewModel.getCoachsNotes() }
     var coachsNotesEditing by remember { viewModel.getCoachsNotesEditing() }
+    var errorEditing by remember { viewModel.getErrorEditing() }
 
     viewModel.getTeamName { teamName = it }
 
@@ -90,12 +94,38 @@ fun PlayerSpecificGameView(
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(
-                    text = game.address,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth(),
-                    style = MaterialTheme.typography.bodyLarge,
-                )
+                Box(
+                    modifier = Modifier
+                        .padding(5.dp)
+                        .fillMaxWidth()
+                        .height(100.dp)
+                        .clip(MaterialTheme.shapes.medium)
+                        .background(MaterialTheme.colorScheme.inverseOnSurface),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Column(
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            text = "Game Score",
+                            textAlign = TextAlign.Center,
+                            lineHeight = 12.sp
+                        )
+                        Text(
+                            text = "${game.team1Name} ${game.team1Score} - ${game.team2Score} ${game.team2Name}",
+                            fontSize = 20.sp,
+                            textAlign = TextAlign.Center,
+                            lineHeight = 30.sp
+                        )
+                        Spacer(modifier = Modifier.height(5.dp))
+                        Text(
+                            text = SimpleDateFormat("MMM d, y 'at' hh:mm a zzz", Locale.US).format(game.timestamp.toDate())
+                        )
+                    }
+                }
+                Spacer(modifier = Modifier.height(10.dp))
+
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -135,40 +165,17 @@ fun PlayerSpecificGameView(
                         }
                     }
                 }
-                Spacer(modifier = Modifier.height(10.dp))
-                Box(
-                    modifier = Modifier
-                        .padding(5.dp)
-                        .fillMaxWidth()
-                        .height(100.dp)
-                        .clip(MaterialTheme.shapes.medium)
-                        .background(MaterialTheme.colorScheme.inverseOnSurface),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    Column(
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Text(
-                            text = "Game Score",
-                            textAlign = TextAlign.Center,
-                            lineHeight = 12.sp
-                        )
-                        Text(
-                            text = "${game.team1Name} ${game.team1Score} - ${game.team2Score} ${game.team2Name}",
-                            fontSize = 20.sp,
-                            textAlign = TextAlign.Center,
-                            lineHeight = 30.sp
-                        )
-                        Spacer(modifier = Modifier.height(5.dp))
-                        Text(
-                            text = SimpleDateFormat("MMM d, y 'at' hh:mm a zzz", Locale.US).format(game.timestamp.toDate())
-                        )
-                    }
-                }
-                Spacer(modifier = Modifier.height(8.dp))
+
+                Spacer(modifier = Modifier.height(6.dp))
+                Text(
+                    text = game.address,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth(),
+                    style = MaterialTheme.typography.bodyLarge,
+                )
 
                 if (game.winner != Winner.UNKNOWN || GS.user!!.type == "admin") {
+                    Spacer(modifier = Modifier.height(30.dp))
                     Text("Coach's notes:")
                     Spacer(modifier = Modifier.height(4.dp))
 
@@ -209,7 +216,7 @@ fun PlayerSpecificGameView(
                                     )
                                     Spacer(modifier = Modifier.width(10.dp))
                                     Icon(
-                                        imageVector = Icons.Filled.Check,
+                                        imageVector = Icons.Filled.CheckCircle,
                                         contentDescription = "Finish editing",
                                         modifier = Modifier
                                             .size(30.dp)
@@ -247,17 +254,25 @@ fun PlayerSpecificGameView(
                     }
                 }
 
-//                    if (editing) {
-////                        Spacer(modifier = Modifier.height(8.dp))
-//                        Button(
-//                            onClick = { viewModel.updateCoachsNotes() },
-//                            modifier = Modifier
-//                                .padding(16.dp)
-//                                .fillMaxWidth()
-//                        ) {
-//                            Text("Submit")
-//                        }
-//                    }
+                if (errorEditing.isNotEmpty()) {
+                    AlertDialog(
+                        title = { Text(
+                            text = "Error Saving Changes",
+                            modifier = Modifier.fillMaxWidth(),
+                            textAlign = TextAlign.Center,
+                        ) },
+                        text = { Text(
+                            text = errorEditing,
+                            modifier = Modifier.fillMaxWidth(),
+                        ) },
+                        onDismissRequest = { errorEditing = "" },
+                        confirmButton = {
+                            TextButton(onClick = { errorEditing = "" }) {
+                                Text("Ok")
+                            }
+                        }
+                    )
+                }
             }
         }
     }

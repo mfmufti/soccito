@@ -132,11 +132,13 @@ object LeagueAccessor : LeagueDao {
 
     override suspend fun writeGame(game: Game, newGame: Boolean): GameError {
         try {
-            println(1)
             val docRef = Firebase.firestore.collection(LEAGUE_COL).document(GS.user!!.leagueID)
             val doc = docRef.get().await()
-            var games = doc["games"] as List<*>
-            println(2)
+            var gamesRaw = doc["games"]
+            if (gamesRaw == null) {
+                gamesRaw = listOf<Any>()
+            }
+            var games = gamesRaw as List<*>
             if (newGame) {
                 val id = if (games.isEmpty()) 0 else games.maxOf { (it as Map<*, *>)["id"] as Long }
                 game.id = id.toInt()
@@ -147,8 +149,7 @@ object LeagueAccessor : LeagueDao {
                     val gameMap = curGame as Map<*, *>
                     if ((gameMap["id"] as Long).toInt() == game.id) {
                         found = true
-                        println("found1")
-                        games = games.mapIndexed({ index, elem -> if (index == i) {println("found2"); game.toMap()} else elem })
+                        games = games.mapIndexed({ index, elem -> if (index == i) game.toMap() else elem })
                         break
                     }
                 }
@@ -156,7 +157,6 @@ object LeagueAccessor : LeagueDao {
                     games += game
                 }
             }
-            println(games)
             docRef.update("games", games)
             return GameError.NONE
         } catch (e: Exception) {

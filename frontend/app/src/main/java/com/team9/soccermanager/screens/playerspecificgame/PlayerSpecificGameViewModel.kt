@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.LatLng
 import com.team9.soccermanager.model.GS
+import com.team9.soccermanager.model.GameError
 import com.team9.soccermanager.model.accessor.LeagueAccessor
 import com.team9.soccermanager.screens.playerhome.PlayerHomeViewModel
 
@@ -31,10 +32,11 @@ class PlayerSpecificGameViewModel(
     private val _locationState = MutableStateFlow<LatLng?>(null)
     val locationState: StateFlow<LatLng?> = _locationState.asStateFlow()
 
+    private val game = LeagueAccessor.getGameFromLoaded(gameIndex)
     private val editing = mutableStateOf(false)
     private val coachsNotes = mutableStateOf("")
     private val coachsNotesEditing = mutableStateOf("")
-    private val game = LeagueAccessor.getGameFromLoaded(gameIndex)
+    private val errorEditing = mutableStateOf("")
 
     init {
         loadGameLocation()
@@ -46,10 +48,11 @@ class PlayerSpecificGameViewModel(
         coachsNotesEditing.value = coachsNotes.value
     }
 
+    fun getGame() = game
     fun getEditing() = editing
     fun getCoachsNotes() = coachsNotes
     fun getCoachsNotesEditing() = coachsNotesEditing
-    fun getGame() = game
+    fun getErrorEditing() = errorEditing
 
     private fun loadGameLocation() {
         viewModelScope.launch {
@@ -91,12 +94,18 @@ class PlayerSpecificGameViewModel(
             } else {
                 game.team2CoachsNotes = coachsNotesEditing.value
             }
-            println(coachsNotesEditing.value)
-            println("Game is:")
-            println(game)
-            println(LeagueAccessor.writeGame(game))
+            when (LeagueAccessor.writeGame(game)) {
+                GameError.NONE -> coachsNotes.value = coachsNotesEditing.value
+                GameError.NETWORK -> {
+                    errorEditing.value = "Please check your network connection."
+                    coachsNotesEditing.value = coachsNotes.value
+                }
+                GameError.UNKNOWN -> {
+                    errorEditing.value = "Unknown error occurred."
+                    coachsNotesEditing.value = coachsNotes.value
+                }
+            }
             editing.value = false
-            coachsNotes.value = coachsNotesEditing.value
         }
     }
 }
