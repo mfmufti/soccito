@@ -13,11 +13,15 @@ data class Game(
     val team1Name: String,
     val team2Name: String,
     val timestamp: Timestamp,
-    val winner: Winner
+    val score: String,
+    val winner: Winner,
+    val team1CoachsNotes: String,
+    val team2CoachsNotes: String
 ) {
+
     constructor(): this(
         -1, "", GeoPoint(0.0, 0.0), "",
-        "", "", "", Timestamp.now(), Winner.UNKNOWN
+        "", "", "", Timestamp.now(), "", Winner.UNKNOWN, "", ""
     )
 
     constructor(index: Int, gameMap: Map<*, *>): this(
@@ -29,7 +33,10 @@ data class Game(
         team1Name = gameMap["team1Name"] as String,
         team2Name = gameMap["team2Name"] as String,
         timestamp = gameMap["timestamp"] as Timestamp,
+        score = gameMap["score"] as String,
         winner = Winner.valueOf(gameMap["winner"] as String),
+        team1CoachsNotes = gameMap["team1CoachsNotes"] as String,
+        team2CoachsNotes = gameMap["team2CoachsNotes"] as String
     )
 
     fun toMap(): Map<String, Any> {
@@ -41,7 +48,11 @@ data class Game(
             "team1Name" to team1Name,
             "team2Name" to team2Name,
             "timestamp" to timestamp,
-            "winner" to winner.toString()
+            "score" to score,
+            "winner" to winner.toString(),
+            "team1CoachsNotes" to team1CoachsNotes,
+            "team2CoachsNotes" to team2CoachsNotes
+
         )
     }
 }
