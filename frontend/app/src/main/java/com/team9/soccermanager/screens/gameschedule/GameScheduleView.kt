@@ -162,7 +162,6 @@ private fun GameList(games: List<Game>, goToSpecificGame: (Int) -> Unit) {
                 )
                 Spacer(modifier = Modifier.height(5.dp))
                 Text(
-//                    text = getDateTimeInstance().format(game.timestamp.toDate()),
                     text = SimpleDateFormat("MMM d, y 'at' hh:mm a zzz", Locale.US).format(game.timestamp.toDate()),
                     textAlign = TextAlign.Center
                 )

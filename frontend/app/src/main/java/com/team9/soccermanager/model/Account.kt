@@ -2,6 +2,7 @@ package com.team9.soccermanager.model
 
 import android.util.Log
 import com.google.firebase.Firebase
+import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.*
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.firestore
@@ -58,6 +59,7 @@ object Account {
                         is FirebaseAuthWeakPasswordException -> RegisterError.WEAK_PASSWORD
                         is FirebaseAuthInvalidCredentialsException -> RegisterError.BAD_EMAIL
                         is FirebaseAuthUserCollisionException -> RegisterError.USER_EXISTS
+                        is FirebaseNetworkException -> RegisterError.NETWORK
                         else -> RegisterError.UNKNOWN
                     })
                 }
@@ -70,7 +72,6 @@ object Account {
             GS.user?.teamName = it.data?.get("name").toString()
             updateRemoteUser()
         }
-
     }
 
     fun joinLeague(leagueId: String) {
@@ -110,6 +111,7 @@ object Account {
                             then(LoginError.NONE)
                         }
                     }.addOnFailureListener({
+                        signOut()
                         then(LoginError.UNKNOWN)
                     })
                 } else {
@@ -117,6 +119,7 @@ object Account {
                     then(when (task.exception) {
                         is FirebaseAuthInvalidUserException -> LoginError.NOT_EXIST
                         is FirebaseAuthInvalidCredentialsException -> LoginError.BAD_CREDENTIALS
+                        is FirebaseNetworkException -> LoginError.NETWORK
                         else -> LoginError.UNKNOWN
                     })
                 }

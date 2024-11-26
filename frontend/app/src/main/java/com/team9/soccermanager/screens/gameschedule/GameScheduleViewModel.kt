@@ -48,6 +48,8 @@ class GameScheduleViewModel: PlayerHomeViewModel() {
                     completedGames.add(game)
                 }
             }
+            upcomingGames.sortBy { it.timestamp }
+            completedGames.sortByDescending { it.timestamp }
             loading.value = false
         }
     }

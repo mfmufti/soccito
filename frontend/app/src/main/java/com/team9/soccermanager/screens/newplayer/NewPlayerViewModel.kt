@@ -22,7 +22,7 @@ class NewPlayerViewModel : ViewModel() {
         viewModelScope.launch {
             when (TeamAccessor.teamCodeExists(teamCode.value)) {
                 TeamCodeError.NONE -> success(teamCode.value)
-                TeamCodeError.NETWORK -> error.value = "Network error occurred"
+                TeamCodeError.NETWORK -> error.value = "Failed to connect to the network"
                 TeamCodeError.NOT_EXIST -> error.value = "Invalid team join code"
                 TeamCodeError.UNKNOWN -> error.value = "Unknown error occurred"
             }

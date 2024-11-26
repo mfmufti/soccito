@@ -55,7 +55,8 @@ fun ChatSelectView(
                         text = "There was an error loading the chat list. Please check your network connection.",
                         color = MaterialTheme.colorScheme.error,
                         fontSize = 16.sp,
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
                     )
                 } else if (loading) {
                     Box(modifier = Modifier.padding(20.dp)) {
@@ -102,8 +103,16 @@ fun ChatSelectView(
         if (errorLoadingChat) {
             AlertDialog(
                 onDismissRequest = { viewModel.resetErrorLoadingChat() },
-                title = { Text(text = "Error loading chat") },
-                text = { Text(text = "There was an error loading that chat. Please check your connection.") },
+                title = { Text(
+                    text = "Error loading chat",
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center,
+                ) },
+                text = { Text(
+                    text = "There was an error loading that chat. Please check your connection.",
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center,
+                ) },
                 confirmButton = {
                     TextButton(onClick = { viewModel.resetErrorLoadingChat() }) { Text("Ok") }
                 },

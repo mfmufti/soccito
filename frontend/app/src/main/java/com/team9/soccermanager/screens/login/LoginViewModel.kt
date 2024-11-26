@@ -23,6 +23,7 @@ class LoginViewModel {
                     LoginError.NOT_EXIST -> "No user with this email exists"
                     LoginError.BAD_CREDENTIALS -> "Invalid username or password"
                     LoginError.BROKEN_ACCOUNT -> "Broken account, plz fix frfr"
+                    LoginError.NETWORK -> "Failed to connect to the network"
                     else -> "Unknown error occurred"
                 })
             }

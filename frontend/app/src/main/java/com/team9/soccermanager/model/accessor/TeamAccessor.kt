@@ -1,11 +1,15 @@
 package com.team9.soccermanager.model.accessor
 
 import android.content.ContentResolver
+import android.database.Cursor
 import android.net.Uri
 import android.provider.OpenableColumns
 import androidx.compose.runtime.mutableStateListOf
 import com.google.firebase.Firebase
+import com.google.firebase.FirebaseNetworkException
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.auth
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.firestore
@@ -13,7 +17,8 @@ import com.google.firebase.firestore.toObject
 import com.google.firebase.storage.FirebaseStorage
 import com.team9.soccermanager.model.AvailView
 import com.team9.soccermanager.model.Availability
-import com.team9.soccermanager.model.FormFile
+import com.team9.soccermanager.model.Form
+import com.team9.soccermanager.model.FormUpload
 import com.team9.soccermanager.model.GS
 import com.team9.soccermanager.model.PlrAvail
 import com.team9.soccermanager.model.RankingView
@@ -29,19 +34,25 @@ object TeamAccessor : TeamDao {
     private const val USER_COL = "users"
     private var _lastAccessedTeam : Team? = null
 
-    override suspend fun getTeamById(id: String): Team?  {
+    override suspend fun getTeamById(id: String, requireConnection: Boolean): Team?  {
         if(_lastAccessedTeam?.id != id) {
-//            println("wrong id")
             try {
                 val query = Firebase.firestore.collection(TEAM_COL).whereEqualTo("id", id).get().await()
                 _lastAccessedTeam = query.documents[0].toObject<Team>()
             } catch (e: Exception) {
+                if (requireConnection && e.message != null && e.message!!.contains("offline")) {
+                    throw FirebaseNetworkException("bad connection")
+                }
                 e.printStackTrace()
                 _lastAccessedTeam = null
             }
         }
 //        println("returning ...")
         return _lastAccessedTeam
+    }
+
+    override fun addSnapshotListener(id: String, snapshotListener: (DocumentSnapshot?) -> Unit): ListenerRegistration {
+        return Firebase.firestore.collection(TEAM_COL).document(id).addSnapshotListener({ a, b -> snapshotListener(a) })
     }
 
     override suspend fun getTeamByInviteCode(code: String): Team? {
@@ -56,7 +67,7 @@ object TeamAccessor : TeamDao {
 
     override suspend fun createTeam(teamName: String, leagueId: String): Team? {
         val teamDoc = Firebase.firestore.collection(TEAM_COL).document()
-        val team = Team(teamDoc.id, teamName, teamDoc.id, mutableListOf(), mutableListOf(Firebase.auth.uid ?: ""), leagueId, 0, 0, 0, 0, 0, mutableListOf(), mutableListOf())
+        val team = Team(teamDoc.id, teamName, teamDoc.id, mutableListOf(), mutableListOf(), mutableListOf(Firebase.auth.uid ?: ""), leagueId, 0, 0, 0, 0, 0, mutableListOf(), mutableListOf())
         try {
             teamDoc.set(team).await()
             return team
@@ -132,17 +143,20 @@ object TeamAccessor : TeamDao {
         }
     }
 
-    override suspend fun uploadForm(uri: Uri, contentResolver: ContentResolver) {
+    override suspend fun uploadForm(uri: Uri, contentResolver: ContentResolver, id: Int, progressListener: (Double) -> Unit, canceler: (() -> Unit) -> Unit) {
         // original java code: https://stackoverflow.com/questions/5568874/how-to-extract-the-file-name-from-uri-returned-from-intent-action-get-content/25005243#25005243
         var result: String? = null
         if (uri.scheme.equals("content")) {
-            val cursor = contentResolver.query(uri, null, null, null, null);
+            var cursor: Cursor? = null
             try {
+                cursor = contentResolver.query(uri, null, null, null, null)
                 if (cursor != null && cursor.moveToFirst()) {
                     result = cursor.getString(cursor.getColumnIndexOrThrow(OpenableColumns.DISPLAY_NAME));
                 }
+            } catch (e: Exception) {
+                e.printStackTrace()
             } finally {
-                cursor?.close();
+                cursor?.close()
             }
         }
         if (result == null) {
@@ -155,13 +169,22 @@ object TeamAccessor : TeamDao {
         val folderRef = FirebaseStorage.getInstance().getReference("teams")
         _lastAccessedTeam = getTeamById(GS.user!!.teamID)
         val ref = folderRef.child("${_lastAccessedTeam?.id}/${UUID.randomUUID()}_${result}")
-
         val inputStream = contentResolver.openInputStream(uri)
         inputStream.use {
-            val downloadUrl = ref.putBytes(inputStream!!.readBytes()).await().storage.downloadUrl.await().toString()
-            //downloadUrl.metadata?.path
-            val newFormFile = FormFile(result, downloadUrl, GS.user?.fullname!!, System.currentTimeMillis())
-            _lastAccessedTeam?.forms?.add(newFormFile)
+            val uploadTask = ref.putBytes(inputStream!!.readBytes())
+            uploadTask.addOnProgressListener({progressListener(1.0 * it.bytesTransferred / it.totalByteCount)})
+            canceler({ uploadTask.cancel() })
+            val downloadUrl = uploadTask.await().storage.downloadUrl.await().toString()
+            val newFormUpload = FormUpload(downloadUrl, GS.user!!.id, GS.user!!.fullname, Timestamp.now())
+            _lastAccessedTeam!!.forms.first { it.id == id }.apply {
+                uploads.retainAll {
+                    if (it.playerID == GS.user!!.id) {
+                        FirebaseStorage.getInstance().getReferenceFromUrl(it.link).delete()
+                        false
+                    } else true
+                }
+                uploads.add(newFormUpload)
+            }
             updateTeam(_lastAccessedTeam!!)
         }
     }

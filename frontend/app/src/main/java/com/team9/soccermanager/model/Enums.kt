@@ -1,11 +1,11 @@
 package com.team9.soccermanager.model
 
 enum class RegisterError {
-    NONE, WEAK_PASSWORD, BAD_EMAIL, USER_EXISTS, UNKNOWN
+    NONE, WEAK_PASSWORD, BAD_EMAIL, USER_EXISTS, UNKNOWN, NETWORK
 }
 
 enum class LoginError {
-    NONE, NOT_EXIST, BAD_CREDENTIALS, UNKNOWN, BROKEN_ACCOUNT
+    NONE, NOT_EXIST, BAD_CREDENTIALS, UNKNOWN, BROKEN_ACCOUNT, NETWORK
 }
 
 enum class LeagueError {
