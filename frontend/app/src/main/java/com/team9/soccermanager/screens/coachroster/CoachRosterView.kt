@@ -146,12 +146,16 @@ fun CoachRosterView(
                                     fontSize = 25.sp,
                                     fontWeight = FontWeight.Bold
                                 )
+
                                 Spacer(modifier = Modifier.height(11.dp))
+
                                 Text(
                                     text = playeravail.playerAvail.avail.toString(),
                                     fontSize = 14.sp,
-                                    fontStyle = FontStyle.Italic
+                                    fontStyle = FontStyle.Italic,
+                                    color = if (playeravail.playerAvail.avail == Availability.AVAILABLE) Color(87, 207, 119) else MaterialTheme.colorScheme.error
                                 )
+
                                 if (playeravail.playerAvail.reason.isNotEmpty()) {
                                     Spacer(modifier = Modifier.height(10.dp))
                                     Text(
