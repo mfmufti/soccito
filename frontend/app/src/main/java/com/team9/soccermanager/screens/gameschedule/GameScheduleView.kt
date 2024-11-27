@@ -27,6 +27,7 @@ fun GameScheduleView(
     switchToWelcome: () -> Unit,
     switchMainScreen: (MainScreens) -> Unit,
     goToSpecificGame: (Int) -> Unit,
+    goToGameAdd: () -> Unit,
 ) {
     val completedGames = remember { viewModel.getCompletedGames() }
     val upcomingGames = remember { viewModel.getUpcomingGames() }
@@ -120,17 +121,17 @@ fun GameScheduleView(
 
             if (GS.user!!.type == "admin") {
                 SmallFloatingActionButton(
-                    onClick = { },
+                    onClick = goToGameAdd,
                     containerColor = MaterialTheme.colorScheme.secondaryContainer,
                     contentColor = MaterialTheme.colorScheme.secondary,
                     modifier = Modifier
                         .align(Alignment.BottomEnd) // Align it to the bottom-end (right bottom corner)
-                        .padding(16.dp)
+                        .padding(8.dp)
                         .size(60.dp)
                 ) {
                     Icon(
                         imageVector = Icons.Filled.Add,
-                        contentDescription ="Add a game",
+                        contentDescription = "Add a game",
                         modifier = Modifier.size(30.dp)
                     )
                 }

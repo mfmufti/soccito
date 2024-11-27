@@ -23,8 +23,8 @@ import java.util.Locale
 
 
 // The ViewModel stays the same
-class PlayerSpecificGameViewModel(
-    val gameIndex: Int,
+class GameSpecificViewModel(
+    gameIndex: Int,
     context: Context
 ) : PlayerHomeViewModel() {
     private val geocoder = Geocoder(context, Locale.getDefault())

@@ -12,16 +12,14 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cancel
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
-import androidx.compose.material3.Surface
+import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -51,15 +49,16 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 @Composable
-fun PlayerSpecificGameView(
+fun GameSpecificView(
     gameId: Int,
     switchToWelcome: () -> Unit,
     switchMainScreen: (MainScreens) -> Unit,
+    goToGameEdit: () -> Unit,
 ) {
     // Get context outside remember
     val context = LocalContext.current
-    val viewModel: PlayerSpecificGameViewModel = remember(gameId) {
-        PlayerSpecificGameViewModel(gameId, context)
+    val viewModel: GameSpecificViewModel = remember(gameId) {
+        GameSpecificViewModel(gameId, context)
     }
 
     var teamName by remember { mutableStateOf("") }
@@ -80,11 +79,12 @@ fun PlayerSpecificGameView(
         switchMainScreen = switchMainScreen,
         allowBack = true,
     ) { paddingValues ->
-        Surface(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
                 .imePadding(),
+            contentAlignment = Alignment.TopCenter
         ) {
             Column(
                 modifier = Modifier
@@ -120,7 +120,7 @@ fun PlayerSpecificGameView(
                         )
                         Spacer(modifier = Modifier.height(5.dp))
                         Text(
-                            text = SimpleDateFormat("MMM d, y 'at' hh:mm a zzz", Locale.US).format(game.timestamp.toDate())
+                            text = SimpleDateFormat("MMM d, y 'at' hh:mm a zzz", Locale.getDefault()).format(game.timestamp.toDate())
                         )
                     }
                 }
@@ -174,7 +174,7 @@ fun PlayerSpecificGameView(
                     style = MaterialTheme.typography.bodyLarge,
                 )
 
-                if (game.winner != Winner.UNKNOWN || GS.user!!.type == "admin") {
+                if (game.winner != Winner.UNKNOWN && GS.user!!.type == "admin") {
                     Spacer(modifier = Modifier.height(30.dp))
                     Text("Coach's notes:")
                     Spacer(modifier = Modifier.height(4.dp))
@@ -184,7 +184,7 @@ fun PlayerSpecificGameView(
                             .fillMaxWidth()
                             .height(200.dp),
                         shape = RoundedCornerShape(8.dp),
-                        border = BorderStroke(1.dp, Color.Gray)
+                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.inverseOnSurface)
                     ) {
                         Box(
                             modifier = Modifier
@@ -233,7 +233,7 @@ fun PlayerSpecificGameView(
                                 } else {
                                     Text(
                                         text = "No Coach's Notes Yet",
-                                        style = TextStyle(fontSize = 32.sp),
+                                        style = TextStyle(fontSize = 22.sp),
                                         color = Color.Gray,
                                         textAlign = TextAlign.Center
                                     )
@@ -271,6 +271,24 @@ fun PlayerSpecificGameView(
                                 Text("Ok")
                             }
                         }
+                    )
+                }
+            }
+
+            if (GS.user!!.type == "admin") {
+                SmallFloatingActionButton(
+                    onClick = { goToGameEdit() },
+                    containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                    contentColor = MaterialTheme.colorScheme.secondary,
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd) // Align it to the bottom-end (right bottom corner)
+                        .padding(8.dp)
+                        .size(60.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Edit,
+                        contentDescription = "Add a dropbox",
+                        modifier = Modifier.size(30.dp)
                     )
                 }
             }

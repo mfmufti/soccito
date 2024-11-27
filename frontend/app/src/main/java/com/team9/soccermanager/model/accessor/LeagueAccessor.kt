@@ -2,7 +2,6 @@ package com.team9.soccermanager.model.accessor
 
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
-import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.firestore
 import com.google.firebase.firestore.toObject
@@ -42,7 +41,7 @@ object LeagueAccessor : LeagueDao {
         // TODO: generate code instead of using doc id
         //  (not secure, but using for now since we are guaranteed uniqueness)
         val league =
-            League(leagueDoc.id, leagueName, leagueDoc.id, mutableListOf(), mutableListOf(Firebase.auth.uid ?: ""))
+            League(leagueDoc.id, leagueName, leagueDoc.id, mutableListOf(), mutableListOf(), mutableListOf(Firebase.auth.uid ?: ""))
 
         try {
             leagueDoc.set(league).await()
@@ -126,8 +125,8 @@ object LeagueAccessor : LeagueDao {
         }
     }
 
-    override fun getGameFromLoaded(index: Int): Game {
-        return lastLoadedGames!![index]
+    override fun getGameFromLoaded(id: Int): Game {
+        return lastLoadedGames!!.first { it.id == id }
     }
 
     override suspend fun writeGame(game: Game, newGame: Boolean): GameError {
@@ -142,7 +141,7 @@ object LeagueAccessor : LeagueDao {
             if (newGame) {
                 val id = if (games.isEmpty()) 0 else games.maxOf { (it as Map<*, *>)["id"] as Long }
                 game.id = id.toInt()
-                games += game
+                games += game.toMap()
             } else {
                 var found = false
                 for ((i, curGame) in games.withIndex()) {
@@ -154,10 +153,11 @@ object LeagueAccessor : LeagueDao {
                     }
                 }
                 if (!found) {
-                    games += game
+                    games += game.toMap()
                 }
             }
-            docRef.update("games", games)
+            docRef.update("games", games).await()
+            lastLoadedGames = games.map { Game(it as Map<*, *>) }
             return GameError.NONE
         } catch (e: Exception) {
             e.printStackTrace()

@@ -106,6 +106,7 @@ class RegisterViewModel(val type: String, val other: Map<String, String>): ViewM
                     ?: throw Exception("League not found")
                 val team = TeamAccessor.createTeam(teamName, league.id) ?: throw Exception("Failed to create team")
                 league.teamIds.add(team.id)
+                league.teamNames.add(team.name)
                 LeagueAccessor.updateLeague(league)
                 Account.joinTeam(team.id)
                 Account.joinLeague(leagueCode)

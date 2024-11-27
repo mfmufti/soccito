@@ -43,7 +43,7 @@ data class Game(
 
     fun toMap(): Map<String, Any> {
         return mapOf(
-            "id" to id,
+            "id" to id.toLong(),
             "address" to address,
             "geopoint" to geopoint,
             "team1ID" to team1ID,
@@ -51,11 +51,30 @@ data class Game(
             "team1Name" to team1Name,
             "team2Name" to team2Name,
             "timestamp" to timestamp,
-            "team1Score" to team1Score,
-            "team2Score" to team2Score,
+            "team1Score" to team1Score.toLong(),
+            "team2Score" to team2Score.toLong(),
             "winner" to winner.toString(),
             "team1CoachsNotes" to team1CoachsNotes,
             "team2CoachsNotes" to team2CoachsNotes
         )
+    }
+
+    companion object {
+        fun from(id: Int,
+            address: String,
+            geopoint: GeoPoint,
+            team1ID: String,
+            team2ID: String,
+            team1Name: String,
+            team2Name: String,
+            timestamp: Timestamp,
+            team1Score: Int,
+            team2Score: Int,
+            winner: Winner,
+            team1CoachsNotes: String,
+            team2CoachsNotes: String): Game {
+            return Game(id, address, geopoint, team1ID, team2ID, team1Name, team2Name, timestamp, team1Score,
+                team2Score, winner, team1CoachsNotes, team2CoachsNotes)
+        }
     }
 }

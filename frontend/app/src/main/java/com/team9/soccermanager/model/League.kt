@@ -5,8 +5,9 @@ data class League(
     val name: String,
     val code: String,
     val teamIds: MutableList<String>,
+    val teamNames: MutableList<String>,
     val adminIds: MutableList<String>
 ) {
     // need to provide no-arg constructor to support deserialization with Firebase
-    constructor(): this("", "", "", mutableListOf(), mutableListOf())
+    constructor(): this("", "", "", mutableListOf(), mutableListOf(), mutableListOf())
 }

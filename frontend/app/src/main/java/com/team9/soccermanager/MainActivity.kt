@@ -40,6 +40,7 @@ import com.team9.soccermanager.screens.chat.ChatView
 import com.team9.soccermanager.screens.chat.ChatViewModel
 import com.team9.soccermanager.screens.formspecific.FormSpecificViewModel
 import com.team9.soccermanager.screens.coachroster.CoachRosterView
+import com.team9.soccermanager.screens.gameedit.GameEditView
 import com.team9.soccermanager.screens.gameschedule.GameScheduleView
 import com.team9.soccermanager.screens.typeselect.TypeSelectView
 import com.team9.soccermanager.screens.welcome.WelcomeView
@@ -48,7 +49,7 @@ import com.team9.soccermanager.screens.playerroster.PlayerRosterView
 import com.team9.soccermanager.screens.rankings.RankingsView
 import com.team9.soccermanager.screens.loadscreen.LoadView
 import com.team9.soccermanager.screens.playerforms.PlayerFormsView
-import com.team9.soccermanager.screens.playerspecificgame.PlayerSpecificGameView
+import com.team9.soccermanager.screens.playerspecificgame.GameSpecificView
 import kotlinx.serialization.Serializable
 
 @Serializable object LoadScreen
@@ -65,8 +66,6 @@ import kotlinx.serialization.Serializable
 @Serializable object NewAdminScreen
 @Serializable object NewCoachScreen
 @Serializable object NewPlayerScreen
-@Serializable object HomeScreen
-@Serializable object RosterScreen
 @Serializable object PlayerHomeScreen
 @Serializable object PlayerFormsScreen
 @Serializable object CoachHomeScreen
@@ -74,12 +73,13 @@ import kotlinx.serialization.Serializable
 @Serializable data class FormSpecificView(val id: Int, val title: String)
 @Serializable object AdminHomeScreen
 @Serializable object LeagueStandingsScreen
-@Serializable object PlayerGameScheduleScreen
+@Serializable object GameScheduleScreen
+@Serializable data class GameSpecificScreen(val id: Int)
+@Serializable data class GameEditScreen(val newGame: Boolean, val id: Int)
 @Serializable object PlayerRosterScreen
 @Serializable data class ChatScreen(var chatID: String, var fullname: String)
 @Serializable object ChatSelectScreen
 @Serializable object CoachRosterScreen
-@Serializable data class PlayerSpecificGameScreen(val id: Int)
 
 class MainActivity : ComponentActivity() {
     @SuppressLint("SourceLockedOrientationActivity")
@@ -165,7 +165,7 @@ fun App(navController: NavHostController = rememberNavController()) {
             nav.clearSwitch(when (newScreen) {
                 MainScreens.ROSTER -> RosterScreen()
                 MainScreens.CHAT -> ChatSelectScreen
-                MainScreens.SCHEDULE -> PlayerGameScheduleScreen
+                MainScreens.SCHEDULE -> GameScheduleScreen
                 else -> HomeScreen()
             })
         }
@@ -282,16 +282,27 @@ fun App(navController: NavHostController = rememberNavController()) {
                 goToLeagueStandings = { nav.switch(LeagueStandingsScreen) },
             )
         }
-        composable<PlayerGameScheduleScreen> {
+        composable<GameScheduleScreen> {
             GameScheduleView(
                 switchToWelcome = { nav.clearSwitch(WelcomeScreen) },
                 switchMainScreen = switchMainScreen,
-                goToSpecificGame = { id -> nav.switch(PlayerSpecificGameScreen(id)) },
+                goToSpecificGame = { id -> nav.switch(GameSpecificScreen(id)) },
+                goToGameAdd = { nav.switch(GameEditScreen(true, -1)) },
             )
         }
-        composable<PlayerSpecificGameScreen> { backStackEntry ->
-            val data: PlayerSpecificGameScreen = backStackEntry.toRoute()
-            PlayerSpecificGameView(
+        composable<GameSpecificScreen> { backStackEntry ->
+            val data: GameSpecificScreen = backStackEntry.toRoute()
+            GameSpecificView(
+                gameId = data.id,
+                switchToWelcome = { nav.clearSwitch(WelcomeScreen) },
+                switchMainScreen = switchMainScreen,
+                goToGameEdit = { nav.switch(GameEditScreen(false, data.id)) },
+            )
+        }
+        composable<GameEditScreen> { backStackEntry ->
+            val data: GameEditScreen = backStackEntry.toRoute()
+            GameEditView(
+                newGame = data.newGame,
                 gameId = data.id,
                 switchToWelcome = { nav.clearSwitch(WelcomeScreen) },
                 switchMainScreen = switchMainScreen,
