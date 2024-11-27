@@ -42,6 +42,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.team9.soccermanager.model.Form
+import com.team9.soccermanager.model.GS
 import com.team9.soccermanager.model.MainScreens
 import com.team9.soccermanager.ui.composable.BarsWrapper
 
@@ -127,8 +128,8 @@ fun CoachFormsView(
                         value = newName,
                         onValueChange = { newName = it },
                         label = { Text("Dropbox name") },
-                        maxLines = 1,
-                        modifier = Modifier.padding(20.dp)
+                        modifier = Modifier.padding(20.dp),
+                        singleLine = true,
                     ) },
                     onDismissRequest = { newName = ""; addingNew = false },
                     confirmButton = {
@@ -238,6 +239,10 @@ private fun FormList(goToSpecificForm: (Int, String) -> Unit, askDelete: (Int) -
                 )
             }
             Spacer(modifier = Modifier.height(10.dp))
+        }
+
+        if (GS.user!!.type == "coach") {
+            Spacer(modifier = Modifier.height(60.dp))
         }
     }
 }

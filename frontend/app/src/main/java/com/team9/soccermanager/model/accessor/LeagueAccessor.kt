@@ -139,7 +139,7 @@ object LeagueAccessor : LeagueDao {
             }
             var games = gamesRaw as List<*>
             if (newGame) {
-                val id = if (games.isEmpty()) 0 else games.maxOf { (it as Map<*, *>)["id"] as Long }
+                val id = if (games.isEmpty()) 0 else games.maxOf { (it as Map<*, *>)["id"] as Long } + 1
                 game.id = id.toInt()
                 games += game.toMap()
             } else {
@@ -157,6 +157,32 @@ object LeagueAccessor : LeagueDao {
                 }
             }
             docRef.update("games", games).await()
+            lastLoadedGames = games.map { Game(it as Map<*, *>) }
+            return GameError.NONE
+        } catch (e: Exception) {
+            e.printStackTrace()
+            if (e.message != null &&  e.message!!.contains("offline")) {
+                return GameError.NETWORK
+            } else {
+                return GameError.UNKNOWN
+            }
+        }
+    }
+
+    override suspend fun deleteGame(gameId: Int): GameError {
+        try {
+            val docRef = Firebase.firestore.collection(LEAGUE_COL).document(GS.user!!.leagueID)
+            val doc = docRef.get().await()
+            val gamesRaw = doc["games"]
+            if (gamesRaw == null) {
+                return GameError.UNKNOWN
+            }
+            val games = gamesRaw as List<*>
+            val gamesFiltered = games.filter { Game(it as Map<*, *>).id != gameId }
+            if (gamesFiltered.size == games.size) {
+                return GameError.UNKNOWN
+            }
+            docRef.update("games", gamesFiltered).await()
             lastLoadedGames = games.map { Game(it as Map<*, *>) }
             return GameError.NONE
         } catch (e: Exception) {

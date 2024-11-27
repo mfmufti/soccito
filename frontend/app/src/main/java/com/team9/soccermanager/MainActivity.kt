@@ -41,6 +41,7 @@ import com.team9.soccermanager.screens.chat.ChatViewModel
 import com.team9.soccermanager.screens.formspecific.FormSpecificViewModel
 import com.team9.soccermanager.screens.coachroster.CoachRosterView
 import com.team9.soccermanager.screens.gameedit.GameEditView
+import com.team9.soccermanager.screens.gameedit.GameEditViewModel
 import com.team9.soccermanager.screens.gameschedule.GameScheduleView
 import com.team9.soccermanager.screens.typeselect.TypeSelectView
 import com.team9.soccermanager.screens.welcome.WelcomeView
@@ -49,7 +50,8 @@ import com.team9.soccermanager.screens.playerroster.PlayerRosterView
 import com.team9.soccermanager.screens.rankings.RankingsView
 import com.team9.soccermanager.screens.loadscreen.LoadView
 import com.team9.soccermanager.screens.playerforms.PlayerFormsView
-import com.team9.soccermanager.screens.playerspecificgame.GameSpecificView
+import com.team9.soccermanager.screens.gamespecific.GameSpecificView
+import com.team9.soccermanager.screens.gamespecific.GameSpecificViewModel
 import kotlinx.serialization.Serializable
 
 @Serializable object LoadScreen
@@ -106,9 +108,13 @@ class Navigator(val navController: NavHostController) {
             popUpTo(top) { inclusive = false }
         }
     }
-    fun pop() {
+    fun pop(screen: Any? = null) {
         if (navController.previousBackStackEntry != null) {
-            navController.popBackStack()
+            if (screen == null) {
+                navController.popBackStack()
+            } else {
+                navController.popBackStack(screen, false)
+            }
         }
     }
     fun clearSwitch(dest: Any) {
@@ -294,6 +300,7 @@ fun App(navController: NavHostController = rememberNavController()) {
             val data: GameSpecificScreen = backStackEntry.toRoute()
             GameSpecificView(
                 gameId = data.id,
+//                viewModel = viewModel(factory = viewModelFactory { initializer { GameSpecificViewModel(data.id) } }),
                 switchToWelcome = { nav.clearSwitch(WelcomeScreen) },
                 switchMainScreen = switchMainScreen,
                 goToGameEdit = { nav.switch(GameEditScreen(false, data.id)) },
@@ -302,10 +309,12 @@ fun App(navController: NavHostController = rememberNavController()) {
         composable<GameEditScreen> { backStackEntry ->
             val data: GameEditScreen = backStackEntry.toRoute()
             GameEditView(
-                newGame = data.newGame,
                 gameId = data.id,
+                newGame = data.newGame,
+                viewModel = viewModel(factory = viewModelFactory { initializer { GameEditViewModel(data.id, data.newGame) } }),
                 switchToWelcome = { nav.clearSwitch(WelcomeScreen) },
                 switchMainScreen = switchMainScreen,
+                goToGameSchedule = { nav.pop(GameScheduleScreen) },
             )
         }
         composable<PlayerRosterScreen> {

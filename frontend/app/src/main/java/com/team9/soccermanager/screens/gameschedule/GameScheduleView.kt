@@ -116,6 +116,9 @@ fun GameScheduleView(
                             GameList(games, goToSpecificGame)
                         }
                     }
+                    if (GS.user!!.type == "admin") {
+                        Spacer(modifier = Modifier.height(60.dp))
+                    }
                 }
             }
 

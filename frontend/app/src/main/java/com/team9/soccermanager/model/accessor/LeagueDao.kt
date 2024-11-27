@@ -14,4 +14,5 @@ interface LeagueDao {
     suspend fun getGame(id: Int): Pair<GameError, Game>
     fun getGameFromLoaded(id: Int): Game
     suspend fun writeGame(game: Game, newGame: Boolean = false): GameError
+    suspend fun deleteGame(gameId: Int): GameError
 }

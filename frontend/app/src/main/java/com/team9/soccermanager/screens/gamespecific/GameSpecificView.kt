@@ -1,4 +1,4 @@
-package com.team9.soccermanager.screens.playerspecificgame
+package com.team9.soccermanager.screens.gamespecific
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -51,26 +51,22 @@ import java.util.Locale
 @Composable
 fun GameSpecificView(
     gameId: Int,
+    viewModel: GameSpecificViewModel = remember { GameSpecificViewModel(gameId) },
     switchToWelcome: () -> Unit,
     switchMainScreen: (MainScreens) -> Unit,
     goToGameEdit: () -> Unit,
 ) {
-    // Get context outside remember
-    val context = LocalContext.current
-    val viewModel: GameSpecificViewModel = remember(gameId) {
-        GameSpecificViewModel(gameId, context)
-    }
-
-    var teamName by remember { mutableStateOf("") }
     var isMapLoaded by remember { mutableStateOf(false) }
     val game = remember { viewModel.getGame() }
-    val location by viewModel.locationState.collectAsState()
+    val location by remember { viewModel.getLocationState() }
+    val cameraState = remember { viewModel.getCameraState() }
     var editing by remember { viewModel.getEditing() }
     val coachsNotes by remember { viewModel.getCoachsNotes() }
     var coachsNotesEditing by remember { viewModel.getCoachsNotesEditing() }
     var errorEditing by remember { viewModel.getErrorEditing() }
 
-    viewModel.getTeamName { teamName = it }
+    println("it is: ")
+    println(game)
 
     BarsWrapper(
         title = when (game.status) {
@@ -142,9 +138,7 @@ fun GameSpecificView(
                                 .fillMaxSize()
                                 .fillMaxHeight()
                                 .padding(0.dp, 20.dp, 0.dp, 0.dp),
-                            cameraPositionState = rememberCameraPositionState {
-                                position = CameraPosition.fromLatLngZoom(gameLocation, 10f)
-                            },
+                            cameraPositionState = cameraState,
                             onMapLoaded = { isMapLoaded = true },
                             uiSettings = MapUiSettings(
                                 zoomControlsEnabled = true,           // Hide the +/- zoom buttons
@@ -156,7 +150,6 @@ fun GameSpecificView(
                                 tiltGesturesEnabled = false,          // Disable tilt again (redundant but thorough)
                                 zoomGesturesEnabled = true           // Disable zoom again (redundant but thorough)
                             )
-
                         ) {
                             Marker(
                                 state = MarkerState(position = gameLocation),
@@ -276,6 +269,10 @@ fun GameSpecificView(
                             }
                         }
                     )
+                }
+
+                if (GS.user!!.type == "admin") {
+                    Spacer(modifier = Modifier.height(60.dp))
                 }
             }
 

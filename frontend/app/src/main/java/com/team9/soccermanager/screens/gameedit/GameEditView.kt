@@ -43,6 +43,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -54,9 +55,9 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
+import java.util.TimeZone
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GameEditView(
     gameId: Int,
@@ -64,6 +65,7 @@ fun GameEditView(
     viewModel: GameEditViewModel = remember { GameEditViewModel(gameId, newGame) },
     switchToWelcome: () -> Unit,
     switchMainScreen: (MainScreens) -> Unit,
+    goToGameSchedule: () -> Unit,
 ) {
     val loading by remember { viewModel.getLoading() }
     val errorLoading by remember { viewModel.getErrorLoading() }
@@ -102,7 +104,7 @@ fun GameEditView(
                         CircularProgressIndicator(modifier = Modifier.size(60.dp))
                     }
                 } else {
-                    GameEditForms(viewModel, { switchMainScreen(MainScreens.BACK) })
+                    GameEditForms(viewModel, newGame, { switchMainScreen(MainScreens.BACK) }, goToGameSchedule)
                 }
             }
         }
@@ -110,7 +112,7 @@ fun GameEditView(
 }
 
 @Composable
-fun GameEditForms(viewModel: GameEditViewModel, goBack: () -> Unit) {
+fun GameEditForms(viewModel: GameEditViewModel, newGame: Boolean, goBack: () -> Unit, goToGameSchedule: () -> Unit) {
     var team1Score by remember { viewModel.getTeam1Score() }
     var team2Score by remember { viewModel.getTeam2Score() }
     var date by remember { viewModel.getDate() }
@@ -122,8 +124,11 @@ fun GameEditForms(viewModel: GameEditViewModel, goBack: () -> Unit) {
     var team2Select by remember { viewModel.getTeam2Select() }
     var showDateSelect by remember { viewModel.getShowDateSelect() }
     var showTimeSelect by remember { viewModel.getShowTimeSelect() }
+    var address by remember { viewModel.getAddress() }
     val errorSaving by remember { viewModel.getErrorSaving() }
     val errorTitle by remember { viewModel.getErrorTitle() }
+    var deleteConfirming by remember { viewModel.getDeleteConfirming() }
+    val context = LocalContext.current
 
     DropDown("Game status", statusSelect, { statusSelect = it }, GameStatus.entries.map { DisplayableStatus(it) })
     Spacer(modifier = Modifier.height(10.dp))
@@ -155,7 +160,7 @@ fun GameEditForms(viewModel: GameEditViewModel, goBack: () -> Unit) {
     Spacer(modifier = Modifier.height(10.dp))
 
     OutlinedTextField(
-        value = if (date == null) "" else SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).format(date!!),
+        value = if (date == null) "" else formatDate(date!!),
         onValueChange = { },
         label = { Text("Date") },
         placeholder = { Text("Date") },
@@ -201,11 +206,34 @@ fun GameEditForms(viewModel: GameEditViewModel, goBack: () -> Unit) {
     )
     Spacer(modifier = Modifier.height(10.dp))
 
+    OutlinedTextField(
+        value = address,
+        onValueChange = { address = it },
+        label = { Text("Address") },
+        modifier = Modifier.fillMaxWidth(),
+        singleLine = true,
+    )
+    Spacer(modifier = Modifier.height(10.dp))
+
     Button(
-        onClick = { viewModel.writeGame(goBack) },
+        onClick = { viewModel.writeGame(context, goBack) },
         modifier = Modifier.fillMaxWidth()
     ) {
-        Text("Submit")
+        Text("Save")
+    }
+
+    if (!newGame) {
+        Spacer(modifier = Modifier.height(10.dp))
+        Button(
+            onClick = { deleteConfirming = true },
+            modifier = Modifier.fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.errorContainer,
+                contentColor = MaterialTheme.colorScheme.onErrorContainer
+            ),
+        ) {
+            Text("Delete")
+        }
     }
 
     if (showDateSelect) {
@@ -245,6 +273,31 @@ fun GameEditForms(viewModel: GameEditViewModel, goBack: () -> Unit) {
             }
         )
     }
+
+    if (deleteConfirming) {
+        AlertDialog(
+            title = { Text(
+                text = "Deleting Game",
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center,
+            ) },
+            text = { Text(
+                text = "The game and all related data will be deleted.",
+                modifier = Modifier.fillMaxWidth(),
+            ) },
+            onDismissRequest = { deleteConfirming = false },
+            dismissButton = {
+                TextButton(onClick = { deleteConfirming = false }) {
+                    Text("Cancel")
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = { viewModel.deleteGame(goToGameSchedule) }) {
+                    Text("Delete")
+                }
+            }
+        )
+    }
 }
 
 private fun formatTime(hours: Int, minutes: Int): String {
@@ -252,6 +305,12 @@ private fun formatTime(hours: Int, minutes: Int): String {
     cal.set(Calendar.HOUR_OF_DAY, hours)
     cal.set(Calendar.MINUTE, minutes)
     return SimpleDateFormat("hh:mm a zzz", Locale.getDefault()).format(cal.time)
+}
+
+private fun formatDate(date: Date): String {
+    val df = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
+    df.timeZone = TimeZone.getTimeZone("GMT")
+    return df.format(date)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

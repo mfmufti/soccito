@@ -1,11 +1,14 @@
-package com.team9.soccermanager.screens.playerspecificgame
+package com.team9.soccermanager.screens.gamespecific
 
 import android.content.Context
 import android.location.Geocoder
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.compose.CameraPositionState
 import com.team9.soccermanager.model.GS
 import com.team9.soccermanager.model.GameError
 import com.team9.soccermanager.model.accessor.LeagueAccessor
@@ -23,15 +26,9 @@ import java.util.Locale
 
 
 // The ViewModel stays the same
-class GameSpecificViewModel(
-    gameIndex: Int,
-    context: Context
-) : PlayerHomeViewModel() {
-    private val geocoder = Geocoder(context, Locale.getDefault())
-
-    private val _locationState = MutableStateFlow<LatLng?>(null)
-    val locationState: StateFlow<LatLng?> = _locationState.asStateFlow()
-
+class GameSpecificViewModel(gameIndex: Int) : PlayerHomeViewModel() {
+    private val locationState = mutableStateOf(LatLng(0.0, 0.0))
+    private val cameraState = CameraPositionState(position = CameraPosition.fromLatLngZoom(locationState.value, 10f))
     private val game = LeagueAccessor.getGameFromLoaded(gameIndex)
     private val editing = mutableStateOf(false)
     private val coachsNotes = mutableStateOf("")
@@ -48,6 +45,8 @@ class GameSpecificViewModel(
         coachsNotesEditing.value = coachsNotes.value
     }
 
+    fun getLocationState() = locationState
+    fun getCameraState() = cameraState
     fun getGame() = game
     fun getEditing() = editing
     fun getCoachsNotes() = coachsNotes
@@ -55,31 +54,8 @@ class GameSpecificViewModel(
     fun getErrorEditing() = errorEditing
 
     private fun loadGameLocation() {
-        viewModelScope.launch {
-            val game = getGame()
-            // First try to use existing geopoint if available
-
-                // Fall back to geocoding the address
-                val coordinates = getCoordinatesFromAddress(game.address)
-                coordinates?.let { (lat, lng) ->
-                    _locationState.value = LatLng(lat, lng)
-
-            }
-        }
-    }
-
-    private suspend fun getCoordinatesFromAddress(address: String): Pair<Double, Double>? {
-        return withContext(Dispatchers.IO) {
-            try {
-                val addresses = geocoder.getFromLocationName(address, 1)
-                if (!addresses.isNullOrEmpty()) {
-                    val location = addresses[0]
-                    Pair(location.latitude, location.longitude)
-                } else null
-            } catch (e: IOException) {
-                null
-            }
-        }
+        locationState.value = LatLng(game.geopoint.latitude, game.geopoint.longitude)
+        cameraState.position = CameraPosition.fromLatLngZoom(locationState.value, 10f)
     }
 
     fun cancelNotesEditing() {
@@ -107,5 +83,9 @@ class GameSpecificViewModel(
             }
             editing.value = false
         }
+    }
+
+    override fun onCleared() {
+        println("for I have truly vanished")
     }
 }

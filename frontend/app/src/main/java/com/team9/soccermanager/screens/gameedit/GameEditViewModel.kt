@@ -1,5 +1,7 @@
 package com.team9.soccermanager.screens.gameedit
 
+import android.content.Context
+import android.location.Geocoder
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -12,10 +14,13 @@ import com.team9.soccermanager.model.GameStatus
 import com.team9.soccermanager.model.accessor.Game
 import com.team9.soccermanager.model.accessor.LeagueAccessor
 import com.team9.soccermanager.screens.playerhome.PlayerHomeViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
+import java.util.TimeZone
 
 data class SimpleTeam(val id: String = "", val name: String = "") {
     override fun toString(): String {
@@ -49,14 +54,15 @@ class GameEditViewModel(private var gameId: Int, private var newGame: Boolean): 
     private val team2Select = mutableStateOf(SimpleTeam())
     private val showDateSelect = mutableStateOf(false)
     private val showTimeSelect = mutableStateOf(false)
+    private var address = mutableStateOf("")
     private val loading = mutableStateOf(true)
     private val errorSaving = mutableStateOf("")
     private val errorLoading = mutableStateOf("")
     private val errorTitle = mutableStateOf(defaultErrorTitle)
+    private val deleteConfirming = mutableStateOf(false)
 
     private var team1CoachsNotes = ""
     private var team2CoachsNotes = ""
-    private var address = ""
     private var geopoint = GeoPoint(0.0, 0.0)
 
     fun getTeam1Score() = team1Score
@@ -70,10 +76,12 @@ class GameEditViewModel(private var gameId: Int, private var newGame: Boolean): 
     fun getTeam2Select() = team2Select
     fun getShowDateSelect() = showDateSelect
     fun getShowTimeSelect() = showTimeSelect
+    fun getAddress() = address
     fun getLoading() = loading
     fun getErrorSaving() = errorSaving
     fun getErrorLoading() = errorLoading
     fun getErrorTitle() = errorTitle
+    fun getDeleteConfirming() = deleteConfirming
     fun resetError() {
         errorSaving.value = ""
         errorTitle.value = defaultErrorTitle
@@ -110,11 +118,11 @@ class GameEditViewModel(private var gameId: Int, private var newGame: Boolean): 
                 date.value = cal.time
                 hours.value = cal.get(Calendar.HOUR_OF_DAY)
                 minutes.value = cal.get(Calendar.MINUTE)
+                address.value = game.address
 
                 team1CoachsNotes = game.team1CoachsNotes
                 team2CoachsNotes = game.team2CoachsNotes
                 geopoint = game.geopoint
-                address = game.address
             }
 
 //            team1Select.value =
@@ -123,8 +131,9 @@ class GameEditViewModel(private var gameId: Int, private var newGame: Boolean): 
         }
     }
 
-    fun writeGame(success: () -> Unit = {}) {
-        val cal: Calendar = Calendar.getInstance()
+    fun writeGame(context: Context, success: () -> Unit = {}) {
+        val cal = Calendar.getInstance()
+        val cal2 = Calendar.getInstance(TimeZone.getTimeZone("GMT"))
         val team1ScoreInt: Int
         val team2ScoreInt: Int
         if (statusSelect.value.status == null) {
@@ -150,7 +159,10 @@ class GameEditViewModel(private var gameId: Int, private var newGame: Boolean): 
             return
         }
         try {
-            cal.setTime(date.value!!)
+            cal2.setTime(date.value!!)
+            cal.set(Calendar.YEAR, cal2.get(Calendar.YEAR))
+            cal.set(Calendar.MONTH, cal2.get(Calendar.MONTH))
+            cal.set(Calendar.DAY_OF_MONTH, cal2.get(Calendar.DAY_OF_MONTH))
         } catch (e: Exception) {
             errorSaving.value = "Please specify a valid date."
             return
@@ -164,9 +176,17 @@ class GameEditViewModel(private var gameId: Int, private var newGame: Boolean): 
         }
 
         viewModelScope.launch {
+            try {
+                val coords = getCoordinatesFromAddress(context, address.value)
+                geopoint = GeoPoint(coords.first, coords.second)
+            } catch (e: Exception) {
+                errorSaving.value = "Please enter a valid address for the game."
+                return@launch
+            }
+
             val game = Game.from(
                 id = gameId,
-                address = address,
+                address = address.value,
                 geopoint = geopoint,
                 team1ID = team1Select.value.id,
                 team2ID = team2Select.value.id,
@@ -189,6 +209,32 @@ class GameEditViewModel(private var gameId: Int, private var newGame: Boolean): 
                 GameError.NETWORK -> errorSaving.value = "Failed to connect to your network."
                 GameError.UNKNOWN -> errorSaving.value = "Unknown error occurred."
             }
+        }
+    }
+
+    fun deleteGame(success: () -> Unit) {
+        viewModelScope.launch {
+            deleteConfirming.value = false
+            when (LeagueAccessor.deleteGame(gameId)) {
+                GameError.NONE -> success()
+                GameError.NETWORK -> {
+                    errorTitle.value = "Error Deleting Game"
+                    errorSaving.value = "Failed to connect to your network."
+                }
+                GameError.UNKNOWN -> {
+                    errorTitle.value = "Error Deleting Game"
+                    errorSaving.value = "Unknown error occurred."
+                }
+            }
+        }
+    }
+
+    private suspend fun getCoordinatesFromAddress(context: Context, address: String): Pair<Double, Double> {
+        val geocoder = Geocoder(context, Locale.getDefault())
+        return withContext(Dispatchers.IO) {
+            val addresses = geocoder.getFromLocationName(address, 1)
+            val location = addresses!!.get(0)
+            Pair(location.latitude, location.longitude)
         }
     }
 }
