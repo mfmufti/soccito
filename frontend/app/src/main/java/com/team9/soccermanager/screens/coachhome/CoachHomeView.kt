@@ -33,13 +33,13 @@ fun CoachHomeView(
     switchToWelcome: () -> Unit,
     switchMainScreen: (MainScreens) -> Unit,
     goToLeagueStandings: () -> Unit,
-    goToForms: () -> Unit
+    goToForms: () -> Unit,
+    goToAnnouncements: () -> Unit
 ) {
     var teamName by remember { mutableStateOf("") }
     var fullname by remember { mutableStateOf("") }
     var announcements by remember { mutableStateOf<List<Announcement>?>(null) }
     var announcementContent by remember { mutableStateOf("") }
-    var showAnnouncementForm by remember { mutableStateOf(false) }
     var joinCode by remember { mutableStateOf("") }
 
     viewModel.getTeam {
@@ -80,73 +80,34 @@ fun CoachHomeView(
                         .padding(16.dp),
                     contentAlignment = Alignment.TopStart
                 ) {
-                    if (announcements == null) Text( text = "", style = TextStyle(fontSize = 16.sp))
-                    else LazyColumn(Modifier.fillMaxWidth()) {
-                        items(announcements!!.reversed()) {
-                            announcement -> ListItem(
-                                headlineContent = { Text(announcement.content) },
-                                supportingContent =
-                                { Text("~ ${announcement.authorName} | ${getDateTimeInstance().format(Date(announcement.datePosted))}") }
-                            )
-                        }
-                    }
-                    SmallFloatingActionButton(
-                        onClick = { showAnnouncementForm = true },
-                        containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                        contentColor = MaterialTheme.colorScheme.secondary,
+                    if(announcements == null) Text( text = "", style = TextStyle(fontSize = 16.sp))
+                    else Column(
                         modifier = Modifier
-                            .align(Alignment.BottomEnd) // Align it to the bottom-end (right bottom corner)
-                            .padding(8.dp)
+                            .verticalScroll(rememberScrollState())
+                            .fillMaxSize()
+                            .padding(16.dp),
                     ) {
-                        Icon(Icons.Filled.Add, "Small floating action button.")
+                        val announcement = announcements!!.reversed().first()
+                        Text(announcement.content)
+                        Text("~ ${announcement.authorName} | ${
+                            getDateTimeInstance().format(
+                                Date(announcement.datePosted)
+                            )}")
+                    }
+                    TextButton(
+                        onClick = { goToAnnouncements() },
+                        colors = ButtonDefaults.textButtonColors(
+                            contentColor = Color.Blue
+                        ),
+                        modifier = Modifier
+                            .align(Alignment.BottomEnd)
+                            .padding(0.dp)
+                    ) {
+                        Text(
+                            text = "View More"
+                        )
                     }
                 }
-            }
-
-            if(showAnnouncementForm) {
-                AlertDialog(
-                    title = {
-                        Text(text = "Create Announcement")
-                    },
-                    text = {
-                        TextField(
-                            value = announcementContent,
-                            onValueChange = { announcementContent = it },
-                            label = { Text("Enter text") },
-                            maxLines = 2,
-                            textStyle = TextStyle(color = Color.Blue, fontWeight = FontWeight.Bold),
-                            modifier = Modifier.padding(20.dp)
-                        )
-                    },
-                    onDismissRequest = {
-                        showAnnouncementForm = false
-                    },
-                    confirmButton = {
-                        TextButton(
-                            onClick = {
-                                // TODO add announcment
-                                viewModel.addAnnouncement(announcementContent) {
-                                    // then reset text
-                                    viewModel.getTeam { announcements = it.announcements.toList() }
-                                    showAnnouncementForm = false
-                                    announcementContent = ""
-                                }
-                            }
-                        ) {
-                            Text("Confirm")
-                        }
-                    },
-                    dismissButton = {
-                        TextButton(
-                            onClick = {
-                                showAnnouncementForm = false
-                                announcementContent = ""
-                            }
-                        ) {
-                            Text("Dismiss")
-                        }
-                    }
-                )
             }
 
             Spacer(modifier = Modifier.height(30.dp))

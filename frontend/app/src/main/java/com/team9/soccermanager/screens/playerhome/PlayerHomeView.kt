@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.*
 import com.team9.soccermanager.model.GS
 import com.team9.soccermanager.model.MainScreens
@@ -37,6 +38,7 @@ fun PlayerHomeView(
     switchMainScreen: (MainScreens) -> Unit,
     goToLeagueStandings: () -> Unit,
     goToForms: () -> Unit,
+    goToAnnouncements: () -> Unit
 ) {
     var fullname by remember { mutableStateOf("") }
     var joinCode by remember { mutableStateOf("") }
@@ -82,17 +84,31 @@ fun PlayerHomeView(
                     contentAlignment = Alignment.TopStart
                 ) {
                     if(viewModel.announcements.value == null) Text( text = "", style = TextStyle(fontSize = 16.sp))
-                    else LazyColumn(Modifier.fillMaxWidth()) {
-                        items(viewModel.announcements.value!!.reversed()) {
-                                announcement -> ListItem(
-                            headlineContent = { Text(announcement.content) },
-                            supportingContent =
-                            { Text("~ ${announcement.authorName} | ${
-                                getDateTimeInstance().format(
-                                    Date(announcement.datePosted)
-                                )}") }
+                    else Column(
+                        modifier = Modifier
+                            .verticalScroll(rememberScrollState())
+                            .fillMaxSize()
+                            .padding(16.dp),
+                    ) {
+                        val announcement = viewModel.announcements.value!!.reversed().first()
+                        Text(announcement.content)
+                        Text("~ ${announcement.authorName} | ${
+                            getDateTimeInstance().format(
+                                Date(announcement.datePosted)
+                            )}")
+                    }
+                    TextButton(
+                        onClick = { goToAnnouncements() },
+                        colors = ButtonDefaults.textButtonColors(
+                            contentColor = Color.Blue
+                        ),
+                        modifier = Modifier
+                            .align(Alignment.BottomEnd)
+                            .padding(0.dp)
+                    ) {
+                        Text(
+                            text = "View More"
                         )
-                        }
                     }
                 }
             }

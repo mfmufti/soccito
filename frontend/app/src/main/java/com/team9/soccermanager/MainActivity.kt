@@ -27,6 +27,8 @@ import com.team9.soccermanager.model.GS
 import com.team9.soccermanager.model.MainScreens
 import com.team9.soccermanager.screens.coachforms.CoachFormsView
 import com.team9.soccermanager.screens.adminhome.AdminHomeView
+import com.team9.soccermanager.screens.announcements.CoachAnnouncementsView
+import com.team9.soccermanager.screens.announcements.PlayerAnnouncementsView
 import com.team9.soccermanager.screens.chatselect.ChatSelectView
 import com.team9.soccermanager.screens.coachhome.CoachHomeView
 import com.team9.soccermanager.screens.formspecific.FormSpecificView
@@ -68,8 +70,10 @@ import kotlinx.serialization.Serializable
 @Serializable object NewPlayerScreen
 @Serializable object PlayerHomeScreen
 @Serializable object PlayerFormsScreen
+@Serializable object PlayerAnnouncementsScreen
 @Serializable object CoachHomeScreen
 @Serializable object CoachFormsScreen
+@Serializable object CoachAnnouncementsScreen
 @Serializable data class FormSpecificView(val id: Int, val title: String)
 @Serializable object AdminHomeScreen
 @Serializable object LeagueStandingsScreen
@@ -239,6 +243,7 @@ fun App(navController: NavHostController = rememberNavController()) {
                 switchMainScreen = switchMainScreen,
                 goToLeagueStandings = { nav.switch(LeagueStandingsScreen) },
                 goToForms = { nav.switch(PlayerFormsScreen) },
+                goToAnnouncements = { nav.switch(PlayerAnnouncementsScreen) }
             )
         }
         composable<PlayerFormsScreen> {
@@ -248,13 +253,30 @@ fun App(navController: NavHostController = rememberNavController()) {
                 switchMainScreen = switchMainScreen,
             )
         }
+        composable<PlayerAnnouncementsScreen> {
+            PlayerAnnouncementsView(
+                title = "Announcements",
+                viewModel = viewModel(),
+                switchToWelcome = { nav.clearSwitch(WelcomeScreen) },
+                switchMainScreen = switchMainScreen
+            )
+        }
+        composable<CoachAnnouncementsScreen> {
+            CoachAnnouncementsView(
+                title = "Announcements",
+                viewModel = viewModel(),
+                switchToWelcome = { nav.clearSwitch(WelcomeScreen) },
+                switchMainScreen = switchMainScreen
+            )
+        }
         composable<CoachHomeScreen> {
             CoachHomeView(
                 viewModel = viewModel(),
                 switchToWelcome = { nav.clearSwitch(WelcomeScreen) },
                 switchMainScreen = switchMainScreen,
                 goToLeagueStandings = { nav.switch(LeagueStandingsScreen) },
-                goToForms = { nav.switch(CoachFormsScreen) }
+                goToForms = { nav.switch(CoachFormsScreen) },
+                goToAnnouncements = { nav.switch(CoachAnnouncementsScreen) }
             )
         }
         composable<CoachFormsScreen> {
