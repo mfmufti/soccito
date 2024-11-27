@@ -47,6 +47,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.team9.soccermanager.model.GameStatus
 import com.team9.soccermanager.model.MainScreens
 import com.team9.soccermanager.ui.composable.BarsWrapper
 import java.text.SimpleDateFormat
@@ -116,6 +117,7 @@ fun GameEditForms(viewModel: GameEditViewModel, goBack: () -> Unit) {
     var hours by remember { viewModel.getHours() }
     var minutes by remember { viewModel.getMinutes() }
     val teams = remember { viewModel.getTeams() }
+    var statusSelect by remember { viewModel.getStatusSelect() }
     var team1Select by remember { viewModel.getTeam1Select() }
     var team2Select by remember { viewModel.getTeam2Select() }
     var showDateSelect by remember { viewModel.getShowDateSelect() }
@@ -123,10 +125,13 @@ fun GameEditForms(viewModel: GameEditViewModel, goBack: () -> Unit) {
     val errorSaving by remember { viewModel.getErrorSaving() }
     val errorTitle by remember { viewModel.getErrorTitle() }
 
-    DropDown("First team", team1Select, { team1Select = it }, teams.filter { it.id.isEmpty() || it.id != team2Select.id })
+    DropDown("Game status", statusSelect, { statusSelect = it }, GameStatus.entries.map { DisplayableStatus(it) })
     Spacer(modifier = Modifier.height(10.dp))
 
-    DropDown("Second team", team2Select, { team2Select = it }, teams.filter { it.id.isEmpty() || it.id != team1Select.id })
+    DropDown("Team 1", team1Select, { team1Select = it }, teams.filter { it.id.isEmpty() || it.id != team2Select.id })
+    Spacer(modifier = Modifier.height(10.dp))
+
+    DropDown("Team 2", team2Select, { team2Select = it }, teams.filter { it.id.isEmpty() || it.id != team1Select.id })
     Spacer(modifier = Modifier.height(10.dp))
 
     OutlinedTextField(
@@ -134,7 +139,8 @@ fun GameEditForms(viewModel: GameEditViewModel, goBack: () -> Unit) {
         onValueChange = { team1Score = it },
         label = { Text("Team 1 Score") },
         modifier = Modifier.fillMaxWidth(),
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        singleLine = true,
     )
     Spacer(modifier = Modifier.height(10.dp))
 
@@ -143,7 +149,8 @@ fun GameEditForms(viewModel: GameEditViewModel, goBack: () -> Unit) {
         onValueChange = { team2Score = it },
         label = { Text("Team 2 Score") },
         modifier = Modifier.fillMaxWidth(),
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        singleLine = true,
     )
     Spacer(modifier = Modifier.height(10.dp))
 

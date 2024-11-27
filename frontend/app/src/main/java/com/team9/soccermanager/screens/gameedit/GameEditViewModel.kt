@@ -8,17 +8,31 @@ import com.google.firebase.Timestamp
 import com.google.firebase.firestore.GeoPoint
 import com.team9.soccermanager.model.GS
 import com.team9.soccermanager.model.GameError
-import com.team9.soccermanager.model.Winner
+import com.team9.soccermanager.model.GameStatus
 import com.team9.soccermanager.model.accessor.Game
 import com.team9.soccermanager.model.accessor.LeagueAccessor
 import com.team9.soccermanager.screens.playerhome.PlayerHomeViewModel
 import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.Date
+import java.util.Locale
 
 data class SimpleTeam(val id: String = "", val name: String = "") {
     override fun toString(): String {
         return name
+    }
+}
+
+data class DisplayableStatus(val status: GameStatus? = null) {
+    override fun toString(): String {
+        if (status == null) {
+            return ""
+        }
+        var ans = status.toString().lowercase()
+        if (ans.isNotEmpty()) {
+            ans = ans.replaceFirstChar { it.uppercase() }
+        }
+        return ans
     }
 }
 
@@ -30,6 +44,7 @@ class GameEditViewModel(private var gameId: Int, private var newGame: Boolean): 
     private val hours: MutableState<Int?> = mutableStateOf(null)
     private val minutes: MutableState<Int?> = mutableStateOf(null)
     private val teams = mutableStateListOf<SimpleTeam>()
+    private val statusSelect = mutableStateOf(DisplayableStatus())
     private val team1Select = mutableStateOf(SimpleTeam())
     private val team2Select = mutableStateOf(SimpleTeam())
     private val showDateSelect = mutableStateOf(false)
@@ -41,7 +56,6 @@ class GameEditViewModel(private var gameId: Int, private var newGame: Boolean): 
 
     private var team1CoachsNotes = ""
     private var team2CoachsNotes = ""
-    private var winner = Winner.UNKNOWN
     private var address = ""
     private var geopoint = GeoPoint(0.0, 0.0)
 
@@ -51,6 +65,7 @@ class GameEditViewModel(private var gameId: Int, private var newGame: Boolean): 
     fun getHours() = hours
     fun getMinutes() = minutes
     fun getTeams() = teams
+    fun getStatusSelect() = statusSelect
     fun getTeam1Select() = team1Select
     fun getTeam2Select() = team2Select
     fun getShowDateSelect() = showDateSelect
@@ -86,6 +101,7 @@ class GameEditViewModel(private var gameId: Int, private var newGame: Boolean): 
                 val game = gameRet.second
                 team1Score.value = game.team1Score.toString()
                 team2Score.value = game.team2Score.toString()
+                statusSelect.value = DisplayableStatus(game.status)
                 team1Select.value = teams.first { it.id == game.team1ID }
                 team2Select.value = teams.first { it.id == game.team2ID }
 
@@ -97,7 +113,6 @@ class GameEditViewModel(private var gameId: Int, private var newGame: Boolean): 
 
                 team1CoachsNotes = game.team1CoachsNotes
                 team2CoachsNotes = game.team2CoachsNotes
-                winner = game.winner
                 geopoint = game.geopoint
                 address = game.address
             }
@@ -112,6 +127,10 @@ class GameEditViewModel(private var gameId: Int, private var newGame: Boolean): 
         val cal: Calendar = Calendar.getInstance()
         val team1ScoreInt: Int
         val team2ScoreInt: Int
+        if (statusSelect.value.status == null) {
+            errorSaving.value = "Please select a status for the game."
+            return
+        }
         if (team1Select.value.id.isEmpty() || team2Select.value.id.isEmpty() || team1Select.value == team2Select.value) {
             errorSaving.value = "Please choose 2 unique teams."
             return
@@ -156,7 +175,7 @@ class GameEditViewModel(private var gameId: Int, private var newGame: Boolean): 
                 timestamp = Timestamp(cal.time),
                 team1Score = team1ScoreInt,
                 team2Score = team2ScoreInt,
-                winner = winner,
+                status = statusSelect.value.status!!,
                 team1CoachsNotes = team1CoachsNotes,
                 team2CoachsNotes = team2CoachsNotes,
             )

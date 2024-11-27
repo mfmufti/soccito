@@ -50,7 +50,8 @@ fun NewAdminView(
                 value = league,
                 onValueChange = { league = it },
                 label = { Text("League Name") },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
             )
 
             if (error.isNotEmpty()) {

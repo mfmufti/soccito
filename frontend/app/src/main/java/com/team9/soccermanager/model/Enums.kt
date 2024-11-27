@@ -28,8 +28,8 @@ enum class MainScreens {
     HOME, SCHEDULE, ROSTER, CHAT, BACK, NONE
 }
 
-enum class Winner {
-    UNKNOWN, FIRST, SECOND
+enum class GameStatus {
+    ONGOING, COMPLETED, SCHEDULED
 }
 
 enum class Availability {

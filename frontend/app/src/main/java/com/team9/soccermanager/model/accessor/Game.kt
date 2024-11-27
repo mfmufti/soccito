@@ -2,7 +2,7 @@ package com.team9.soccermanager.model.accessor
 
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.GeoPoint
-import com.team9.soccermanager.model.Winner
+import com.team9.soccermanager.model.GameStatus
 
 data class Game(
     var id: Int,
@@ -15,14 +15,14 @@ data class Game(
     val timestamp: Timestamp,
     val team1Score: Int,
     val team2Score: Int,
-    val winner: Winner,
+    val status: GameStatus,
     var team1CoachsNotes: String,
     var team2CoachsNotes: String
 ) {
 
     constructor(): this(
         -1, "", GeoPoint(0.0, 0.0), "",
-        "", "", "", Timestamp.now(), 0, 0, Winner.UNKNOWN, "", ""
+        "", "", "", Timestamp.now(), 0, 0, GameStatus.SCHEDULED, "", ""
     )
 
     constructor(gameMap: Map<*, *>): this(
@@ -36,7 +36,7 @@ data class Game(
         timestamp = gameMap["timestamp"] as Timestamp,
         team1Score = (gameMap["team1Score"] as Long).toInt(),
         team2Score = (gameMap["team2Score"] as Long).toInt(),
-        winner = Winner.valueOf(gameMap["winner"] as String),
+        status = GameStatus.valueOf(gameMap["status"] as String),
         team1CoachsNotes = gameMap["team1CoachsNotes"] as String,
         team2CoachsNotes = gameMap["team2CoachsNotes"] as String
     )
@@ -53,7 +53,7 @@ data class Game(
             "timestamp" to timestamp,
             "team1Score" to team1Score.toLong(),
             "team2Score" to team2Score.toLong(),
-            "winner" to winner.toString(),
+            "status" to status.toString(),
             "team1CoachsNotes" to team1CoachsNotes,
             "team2CoachsNotes" to team2CoachsNotes
         )
@@ -70,11 +70,11 @@ data class Game(
             timestamp: Timestamp,
             team1Score: Int,
             team2Score: Int,
-            winner: Winner,
+            status: GameStatus,
             team1CoachsNotes: String,
             team2CoachsNotes: String): Game {
             return Game(id, address, geopoint, team1ID, team2ID, team1Name, team2Name, timestamp, team1Score,
-                team2Score, winner, team1CoachsNotes, team2CoachsNotes)
+                team2Score, status, team1CoachsNotes, team2CoachsNotes)
         }
     }
 }

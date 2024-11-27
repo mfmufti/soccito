@@ -41,8 +41,8 @@ import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.team9.soccermanager.model.GS
+import com.team9.soccermanager.model.GameStatus
 import com.team9.soccermanager.model.MainScreens
-import com.team9.soccermanager.model.Winner
 import com.team9.soccermanager.ui.composable.BarsWrapper
 import com.team9.soccermanager.ui.theme.success
 import java.text.SimpleDateFormat
@@ -73,7 +73,11 @@ fun GameSpecificView(
     viewModel.getTeamName { teamName = it }
 
     BarsWrapper(
-        title = if (game.winner == Winner.UNKNOWN) "Game Planned" else "Game Completed",
+        title = when (game.status) {
+            GameStatus.ONGOING -> "Game Ongoing"
+            GameStatus.COMPLETED -> "Game Completed"
+            GameStatus.SCHEDULED -> "Game Scheduled"
+        },
         activeScreen = MainScreens.SCHEDULE,
         signOut = { viewModel.signOut(); switchToWelcome() },
         switchMainScreen = switchMainScreen,
@@ -174,7 +178,7 @@ fun GameSpecificView(
                     style = MaterialTheme.typography.bodyLarge,
                 )
 
-                if (game.winner != Winner.UNKNOWN && GS.user!!.type == "admin") {
+                if (game.status == GameStatus.COMPLETED && GS.user!!.type != "admin") {
                     Spacer(modifier = Modifier.height(30.dp))
                     Text("Coach's notes:")
                     Spacer(modifier = Modifier.height(4.dp))

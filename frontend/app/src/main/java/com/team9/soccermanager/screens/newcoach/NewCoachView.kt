@@ -51,7 +51,8 @@ fun NewCoachView(
                 value = league,
                 onValueChange = { league = it },
                 label = { Text("League Code") },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -60,7 +61,8 @@ fun NewCoachView(
                 value = team,
                 onValueChange = { team = it },
                 label = { Text("Team Name") },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
             )
 
             if (error.isNotEmpty()) {

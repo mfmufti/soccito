@@ -75,7 +75,8 @@ fun LoginView(
                 value = email,
                 onValueChange = { email = it },
                 label = { Text("Email") },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -86,7 +87,8 @@ fun LoginView(
                 label = { Text("Password") },
                 modifier = Modifier.fillMaxWidth(),
                 visualTransformation = PasswordVisualTransformation(),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                singleLine = true,
             )
 
             if (error.isNotEmpty()) {

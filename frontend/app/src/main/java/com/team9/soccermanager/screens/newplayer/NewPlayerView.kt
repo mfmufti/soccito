@@ -16,7 +16,7 @@ fun NewPlayerView(
     viewModel: NewPlayerViewModel = remember { NewPlayerViewModel() }
 ) {
     var team by remember { viewModel.getTeamCode() }
-    var error by remember { viewModel.getError() }
+    val error by remember { viewModel.getError() }
 
     Scaffold (
         modifier = Modifier.padding(16.dp),
@@ -50,7 +50,8 @@ fun NewPlayerView(
                 value = team,
                 onValueChange = { team = it },
                 label = { Text("Team Code") },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
             )
 
             if (error.isNotEmpty()) {

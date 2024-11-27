@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.Timestamp
 import com.team9.soccermanager.model.GS
 import com.team9.soccermanager.model.GameError
+import com.team9.soccermanager.model.GameStatus
 import com.team9.soccermanager.model.accessor.Game
 import com.team9.soccermanager.model.accessor.LeagueAccessor
 import com.team9.soccermanager.screens.playerhome.PlayerHomeViewModel
@@ -42,7 +43,7 @@ class GameScheduleViewModel: PlayerHomeViewModel() {
                     // Skip games that are between two different teams, if not admin
                     continue
                 }
-                if (game.timestamp >= Timestamp.now()) {
+                if (game.status != GameStatus.COMPLETED) {
                     upcomingGames.add(game)
                 } else {
                     completedGames.add(game)

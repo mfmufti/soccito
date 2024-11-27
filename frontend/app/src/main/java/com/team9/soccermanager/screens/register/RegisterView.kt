@@ -22,7 +22,6 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -79,7 +78,8 @@ fun RegisterView(
                 value = fullname,
                 onValueChange = { fullname = it },
                 label = { Text("Full name") },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -88,7 +88,8 @@ fun RegisterView(
                 value = email,
                 onValueChange = { email = it },
                 label = { Text("Email") },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -99,7 +100,8 @@ fun RegisterView(
                 label = { Text("Password") },
                 modifier = Modifier.fillMaxWidth(),
                 visualTransformation = PasswordVisualTransformation(),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                singleLine = true,
             )
 
             if (error.isNotEmpty()) {
