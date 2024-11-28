@@ -1,10 +1,13 @@
 package com.team9.soccermanager.screens.playerhome
 
 import android.content.ContentResolver
+import android.content.ContentValues.TAG
 import android.net.Uri
+import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.ListenerRegistration
@@ -13,6 +16,7 @@ import com.team9.soccermanager.model.Account
 import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
 import com.google.firebase.firestore.toObject
+import com.google.firebase.messaging.FirebaseMessaging
 import com.team9.soccermanager.model.Announcement
 import com.team9.soccermanager.model.GS
 import com.team9.soccermanager.model.Team
@@ -30,6 +34,7 @@ open class PlayerHomeViewModel : ViewModel() {
                     announcements.value = it.announcements.toList()
                 }
             }
+            Account.setupNotifications()
         }
     }
 

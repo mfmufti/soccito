@@ -99,6 +99,7 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
 }
 
 class Navigator(val navController: NavHostController) {
