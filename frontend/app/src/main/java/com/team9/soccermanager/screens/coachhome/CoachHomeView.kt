@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.*
 import com.team9.soccermanager.model.Announcement
 import com.team9.soccermanager.model.GS
@@ -77,22 +78,60 @@ fun CoachHomeView(
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(16.dp),
-                    contentAlignment = Alignment.TopStart
+                        .padding(4.dp),
+                    contentAlignment = Alignment.Center
                 ) {
                     if(announcements == null) Text( text = "", style = TextStyle(fontSize = 16.sp))
                     else Column(
                         modifier = Modifier
                             .verticalScroll(rememberScrollState())
                             .fillMaxSize()
-                            .padding(16.dp),
+                            .padding(horizontal = 8.dp)
+                            .padding(bottom = 12.dp),
                     ) {
                         val announcement = announcements!!.reversed().first()
-                        Text(announcement.content)
-                        Text("~ ${announcement.authorName} | ${
-                            getDateTimeInstance().format(
-                                Date(announcement.datePosted)
-                            )}")
+                        Card(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp, vertical = 8.dp),
+                            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                            shape = RoundedCornerShape(12.dp),
+                            colors = CardDefaults.cardColors(
+                                containerColor = MaterialTheme.colorScheme.surface
+                            )
+                        ) {
+                            Column(
+                                modifier = Modifier
+                                    .padding(20.dp)
+                                    .fillMaxWidth(),
+                            ) {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Text(
+                                        text = announcement.authorName,
+                                        style = MaterialTheme.typography.titleMedium,
+                                        color = MaterialTheme.colorScheme.primary,
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                    Text(
+                                        text = getDateTimeInstance().format(announcement.datePosted),
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                }
+                                Spacer(modifier = Modifier.height(12.dp))
+                                Text(
+                                    text = announcement.content,
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    color = MaterialTheme.colorScheme.onSurface,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
+                                )
+                            }
+                        }
                     }
                     TextButton(
                         onClick = { goToAnnouncements() },
@@ -101,7 +140,7 @@ fun CoachHomeView(
                         ),
                         modifier = Modifier
                             .align(Alignment.BottomEnd)
-                            .padding(0.dp)
+                            .padding(top = 7.dp, end = 2.dp)
                     ) {
                         Text(
                             text = "View More"
