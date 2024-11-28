@@ -132,6 +132,13 @@ object Account {
         Firebase.auth.signOut()
     }
 
+    fun updateViewAnnouncement() {
+        if (GS.user != null) {
+            GS.user!!.lastAnnouncementViewTime = System.currentTimeMillis()
+            updateRemoteUser()
+        }
+    }
+
     private fun updateRemoteUser() {
         Firebase.firestore.collection("users").document(auth.currentUser?.uid!!).set(GS.user!!)
     }

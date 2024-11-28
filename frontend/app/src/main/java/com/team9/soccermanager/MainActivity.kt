@@ -102,11 +102,11 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-        askNotificationPermission()
+        //askNotificationPermission()
     }
 
     // Declare the launcher at the top of your Activity/Fragment:
-    private val requestPermissionLauncher = registerForActivityResult(
+   /* private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission(),
     ) { isGranted: Boolean ->
         if (isGranted) {
@@ -133,7 +133,7 @@ class MainActivity : ComponentActivity() {
                 requestPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
             }
         }
-    }
+    }*/
 
 }
 
@@ -166,6 +166,7 @@ fun App(navController: NavHostController = rememberNavController()) {
     // to the appropriate screen. If its player, go to playerHomeScreen upon login and register
 
     val nav = remember(navController) { Navigator(navController) }
+    GS.nav = nav
     var start by remember { mutableStateOf<Any>(LoadScreen) }
 
     if (Account.isLoggedIn()) {

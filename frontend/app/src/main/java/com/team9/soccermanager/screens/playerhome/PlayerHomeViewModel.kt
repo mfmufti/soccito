@@ -32,6 +32,11 @@ open class PlayerHomeViewModel : ViewModel() {
             listener = TeamAccessor.listenForUpdates {
                 viewModelScope.launch(Dispatchers.Main) {
                     announcements.value = it.announcements.toList()
+                    if(GS.user != null) {
+                        if (it.announcements.size > 0) {
+                            GS.updateNotificationStatus(true, it.announcements.reversed().first().datePosted)
+                        }
+                    }
                 }
             }
             Account.setupNotifications()

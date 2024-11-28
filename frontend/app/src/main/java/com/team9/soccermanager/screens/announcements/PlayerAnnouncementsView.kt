@@ -2,11 +2,15 @@ package com.team9.soccermanager.screens.announcements
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.*
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.*
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.team9.soccermanager.model.Announcement
 import com.team9.soccermanager.model.MainScreens
 import com.team9.soccermanager.ui.composable.BarsWrapper
@@ -48,30 +52,43 @@ fun AnnouncementList(announcements: List<Announcement>) {
     ) {
         for (announcement in announcements) {
             Card(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                shape = RoundedCornerShape(12.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surface
+                )
             ) {
                 Column(
                     modifier = Modifier
-                        .padding(16.dp)
+                        .padding(20.dp)
                         .fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text(
-                        text = announcement.authorName,
-                        style = MaterialTheme.typography.titleSmall,
-                        color = MaterialTheme.colorScheme.onSurface,
-                    )
-                    Text(
-                        text = getDateTimeInstance().format(announcement.datePosted),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = announcement.authorName,
+                            style = MaterialTheme.typography.titleMedium,
+                            color = MaterialTheme.colorScheme.primary,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Text(
+                            text = getDateTimeInstance().format(announcement.datePosted),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(12.dp))
                     Text(
                         text = announcement.content,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onSurface
                     )
-
                 }
             }
             Spacer(modifier = Modifier.height(10.dp))

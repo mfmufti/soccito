@@ -1,6 +1,7 @@
 package com.team9.soccermanager.screens.playerhome
 
 import android.net.Uri
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -25,6 +26,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.*
+import com.team9.soccermanager.model.Account
 import com.team9.soccermanager.model.GS
 import com.team9.soccermanager.model.MainScreens
 import com.team9.soccermanager.ui.composable.BarsWrapper
@@ -45,6 +47,12 @@ fun PlayerHomeView(
 
     viewModel.getTeam {
         viewModel.announcements.value = it.announcements.toList()
+        if(it.announcements.size > 0) {
+            val datePosted = it.announcements.toList().reversed().first().datePosted
+            if (GS.user != null) {
+                GS.updateNotificationStatus(true, datePosted)
+            }
+        }
     }
 
     viewModel.getFullName { fullname = it }

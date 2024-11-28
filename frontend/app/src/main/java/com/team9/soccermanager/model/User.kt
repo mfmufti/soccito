@@ -21,8 +21,9 @@ data class User(
     var teamName: String,
     var type: String,
     var chats: List<DocumentReference>,
-    var notificationToken: String?
+    var notificationToken: String?,
+    var lastAnnouncementViewTime: Long
 ) {
     // need to provide no-arg constructor to support deserialization with Firebase
-    constructor() : this("", PlrAvail(),"", "", "", "", "", "", "", listOf(), "")
+    constructor() : this("", PlrAvail(),"", "", "", "", "", "", "", listOf(), "", 0)
 }
