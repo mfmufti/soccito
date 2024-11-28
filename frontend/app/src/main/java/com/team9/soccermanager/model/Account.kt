@@ -1,11 +1,13 @@
 package com.team9.soccermanager.model
 
 import android.util.Log
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.Firebase
 import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.*
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.firestore
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.tasks.await
 
 object Account {
@@ -130,8 +132,33 @@ object Account {
         Firebase.auth.signOut()
     }
 
+    fun updateViewAnnouncement() {
+        if (GS.user != null) {
+            GS.user!!.lastAnnouncementViewTime = System.currentTimeMillis()
+            updateRemoteUser()
+        }
+    }
+
     private fun updateRemoteUser() {
         Firebase.firestore.collection("users").document(auth.currentUser?.uid!!).set(GS.user!!)
+    }
+
+    fun setupNotifications() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
+
+            // Get new FCM registration token
+            val token = task.result
+            // Log token
+            Log.d(TAG, "NOTIFICATION TOKEN: $token")
+
+            GS.user?.notificationToken = token
+            updateRemoteUser()
+
+        })
     }
 
     fun sendEmailVerification() {

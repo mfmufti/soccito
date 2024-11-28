@@ -81,6 +81,7 @@ dependencies {
     implementation(libs.androidx.material.icons.extended)
     implementation(libs.firebase.storage.ktx)
     implementation("com.google.firebase:firebase-database-ktx:21.0.0")
+    implementation(libs.firebase.messaging)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

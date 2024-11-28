@@ -1,5 +1,7 @@
 package com.team9.soccermanager.ui.composable
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -14,7 +16,11 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Forum
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.outlined.Notifications
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -24,10 +30,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.team9.soccermanager.PlayerAnnouncementsScreen
 import com.team9.soccermanager.model.GS
 import com.team9.soccermanager.model.MainScreens
 
@@ -59,15 +69,20 @@ fun BarsWrapper(
                     }
                 }
                 Text(text = title)
-                Button(
-                    onClick = signOut,
-                    modifier = Modifier.size(100.dp, 36.dp),
-                    contentPadding = PaddingValues(3.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.errorContainer,
-                        contentColor = MaterialTheme.colorScheme.onErrorContainer
-                    )) {
-                    Text(text = "Sign Out")
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    AnnouncementNotificationsButton(onClick = {})
+                    Button(
+                        onClick = signOut,
+                        modifier = Modifier.size(100.dp, 36.dp),
+                        contentPadding = PaddingValues(3.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.errorContainer,
+                            contentColor = MaterialTheme.colorScheme.onErrorContainer
+                        )) {
+                        Text(text = "Sign Out")
+                    }
                 }
             }
         },
@@ -105,5 +120,36 @@ private fun getTint(curScreen: MainScreens, activeScreen: MainScreens): Color {
         MaterialTheme.colorScheme.surfaceTint
     } else {
         LocalContentColor.current
+    }
+}
+
+@Composable
+fun AnnouncementNotificationsButton(
+    onClick: () -> Unit
+) {
+
+    val notificationState = GS.notificationState.collectAsState()
+
+    IconButton(onClick = {
+        if (GS.user != null && GS.user!!.type == "player") {
+            GS.nav?.switch(PlayerAnnouncementsScreen)
+        }
+    } ) {
+        BadgedBox(
+            badge = {
+                if (notificationState.value) {
+                    Badge(
+                        contentColor = Color.White,
+                        modifier = Modifier.size(8.dp)
+                    ) {}
+                }
+            }
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.Notifications,
+                contentDescription = "Notifications",
+                tint = Color.Black
+            )
+        }
     }
 }
