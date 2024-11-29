@@ -19,6 +19,7 @@ runtimeLivedata = "1.7.3"
 junitJunit = "4.12"
 firebaseFirestoreKtx = "25.1.0"
 firebaseStorageKtx = "21.0.1"
+firebaseMessagingKtx = "24.1.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -55,6 +56,7 @@ kotlinx-serialization-json-v173 = { module = "org.jetbrains.kotlinx:kotlinx-seri
 mockito-inline = { module = "org.mockito:mockito-inline" }
 mockk = { module = "io.mockk:mockk" }
 firebase-storage-ktx = { group = "com.google.firebase", name = "firebase-storage-ktx", version.ref = "firebaseStorageKtx" }
+firebase-messaging-ktx = { group = "com.google.firebase", name = "firebase-messaging-ktx", version.ref = "firebaseMessagingKtx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

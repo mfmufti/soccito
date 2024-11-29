@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.*
 import com.team9.soccermanager.model.Account
 import com.team9.soccermanager.model.GS
 import com.team9.soccermanager.model.MainScreens
+import com.team9.soccermanager.model.MenuScreens
 import com.team9.soccermanager.ui.composable.BarsWrapper
 import java.text.DateFormat.getDateTimeInstance
 import java.util.Date
@@ -40,12 +41,12 @@ fun PlayerHomeView(
     viewModel: PlayerHomeViewModel = remember { PlayerHomeViewModel() },
     switchToWelcome: () -> Unit,
     switchMainScreen: (MainScreens) -> Unit,
+    switchMenuScreen: (MenuScreens) -> Unit,
     goToLeagueStandings: () -> Unit,
     goToForms: () -> Unit,
     goToAnnouncements: () -> Unit
 ) {
     var fullname by remember { mutableStateOf("") }
-    var joinCode by remember { mutableStateOf("") }
 
     viewModel.getTeam {
         viewModel.announcements.value = it.announcements.toList()
@@ -59,13 +60,12 @@ fun PlayerHomeView(
 
     viewModel.getFullName { fullname = it }
 
-    viewModel.getJoinCode { joinCode = it }
-
     BarsWrapper(
         title = "Home",
         activeScreen = MainScreens.HOME,
         signOut = { viewModel.signOut(); switchToWelcome() },
         switchMainScreen = switchMainScreen,
+        switchMenuScreen = switchMenuScreen
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -74,9 +74,7 @@ fun PlayerHomeView(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(text = "Welcome $fullname", style = TextStyle(fontSize = 30.sp))
-            Text(text = "You are a ${GS.user!!.type}", style = TextStyle(fontSize = 30.sp)) // test type
-
+            Text(text = "Hello $fullname", style = TextStyle(fontSize = 30.sp))
             Spacer(modifier = Modifier.height(15.dp))
 
             OutlinedCard(
@@ -93,7 +91,8 @@ fun PlayerHomeView(
                         .padding(4.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    if(viewModel.announcements.value == null) Text( text = "", style = TextStyle(fontSize = 16.sp))
+                    if(viewModel.announcements.value == null || viewModel.announcements.value!!.isEmpty()
+                    ) Text( text = "", style = TextStyle(fontSize = 16.sp))
                     else Column(
                         modifier = Modifier
                             .verticalScroll(rememberScrollState())
@@ -203,16 +202,6 @@ fun PlayerHomeView(
 
             Spacer(modifier = Modifier.height(5.dp))
 
-            if (joinCode.isNotEmpty()) {
-                SelectionContainer {
-                    Text(
-                        text = joinCode,
-                        color = MaterialTheme.colorScheme.error,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
-            }
         }
     }
 }

@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.*
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.team9.soccermanager.model.Announcement
 import com.team9.soccermanager.model.MainScreens
+import com.team9.soccermanager.model.MenuScreens
 import com.team9.soccermanager.ui.composable.BarsWrapper
 import java.text.DateFormat.getDateTimeInstance
 
@@ -21,6 +22,7 @@ fun PlayerAnnouncementsView(
     title: String,
     viewModel: PlayerAnnouncementsViewModel = remember { PlayerAnnouncementsViewModel() },
     switchToWelcome: () -> Unit,
+    switchMenuScreen: (MenuScreens) -> Unit,
     switchMainScreen: (MainScreens) -> Unit,
 ) {
 
@@ -29,6 +31,7 @@ fun PlayerAnnouncementsView(
         activeScreen = MainScreens.HOME,
         allowBack = true,
         switchMainScreen = switchMainScreen,
+        switchMenuScreen = switchMenuScreen,
         signOut = { viewModel.signOut(); switchToWelcome() },
     ) { paddingValues ->
         Surface(

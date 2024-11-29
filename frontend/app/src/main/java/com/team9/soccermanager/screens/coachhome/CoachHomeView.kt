@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.*
 import com.team9.soccermanager.model.Announcement
 import com.team9.soccermanager.model.GS
 import com.team9.soccermanager.model.MainScreens
+import com.team9.soccermanager.model.MenuScreens
 import com.team9.soccermanager.ui.composable.BarsWrapper
 import java.text.DateFormat.getDateTimeInstance
 import java.util.Date
@@ -33,6 +34,7 @@ fun CoachHomeView(
     viewModel: CoachHomeViewModel = remember { CoachHomeViewModel() },
     switchToWelcome: () -> Unit,
     switchMainScreen: (MainScreens) -> Unit,
+    switchMenuScreen: (MenuScreens) -> Unit,
     goToLeagueStandings: () -> Unit,
     goToForms: () -> Unit,
     goToAnnouncements: () -> Unit
@@ -41,19 +43,19 @@ fun CoachHomeView(
     var fullname by remember { mutableStateOf("") }
     var announcements by remember { mutableStateOf<List<Announcement>?>(null) }
     var announcementContent by remember { mutableStateOf("") }
-    var joinCode by remember { mutableStateOf("") }
+    var showAnnouncementForm by remember { mutableStateOf(false) }
 
     viewModel.getTeam {
         announcements = it.announcements.toList()
     }
     viewModel.getFullName { fullname = it }
-    viewModel.getJoinCode { joinCode = it }
 
     BarsWrapper(
         title = "Home",
         activeScreen = MainScreens.HOME,
         signOut = { viewModel.signOut(); switchToWelcome() },
         switchMainScreen = switchMainScreen,
+        switchMenuScreen = switchMenuScreen
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -62,8 +64,7 @@ fun CoachHomeView(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(text = "Welcome $fullname", style = TextStyle(fontSize = 30.sp))
-            Text(text = "You are a ${GS.user!!.type}", style = TextStyle(fontSize = 30.sp)) // test type
+            Text(text = "Hello $fullname", style = TextStyle(fontSize = 30.sp))
 
             Spacer(modifier = Modifier.height(15.dp))
 
@@ -81,7 +82,8 @@ fun CoachHomeView(
                         .padding(4.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    if(announcements == null) Text( text = "", style = TextStyle(fontSize = 16.sp))
+                    if(announcements == null || announcements!!.isEmpty()
+                    ) Text( text = "", style = TextStyle(fontSize = 16.sp))
                     else Column(
                         modifier = Modifier
                             .verticalScroll(rememberScrollState())
@@ -187,17 +189,6 @@ fun CoachHomeView(
                     .padding(16.dp)
             ) {
                 Text("View Forms")
-            }
-
-            if (joinCode.isNotEmpty()) {
-                SelectionContainer {
-                    Text(
-                        text = joinCode,
-                        color = MaterialTheme.colorScheme.error,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
             }
         }
     }

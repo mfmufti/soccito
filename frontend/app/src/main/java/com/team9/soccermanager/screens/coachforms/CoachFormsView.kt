@@ -44,6 +44,7 @@ import androidx.compose.ui.unit.sp
 import com.team9.soccermanager.model.Form
 import com.team9.soccermanager.model.GS
 import com.team9.soccermanager.model.MainScreens
+import com.team9.soccermanager.model.MenuScreens
 import com.team9.soccermanager.ui.composable.BarsWrapper
 
 @Composable
@@ -51,6 +52,7 @@ fun CoachFormsView(
     viewModel: CoachFormsViewModel = remember { CoachFormsViewModel() },
     switchToWelcome: () -> Unit,
     switchMainScreen: (MainScreens) -> Unit,
+    switchMenuScreen: (MenuScreens) -> Unit,
     goToSpecificForm: (Int, String) -> Unit,
 ) {
     val forms = remember { viewModel.getForms() }
@@ -69,6 +71,7 @@ fun CoachFormsView(
         signOut = { viewModel.signOut(); switchToWelcome() },
         allowBack = true,
         switchMainScreen = switchMainScreen,
+        switchMenuScreen = switchMenuScreen
     ) { paddingValues ->
         Box(
             modifier = Modifier

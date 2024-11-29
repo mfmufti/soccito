@@ -17,6 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.team9.soccermanager.model.Announcement
 import com.team9.soccermanager.model.MainScreens
+import com.team9.soccermanager.model.MenuScreens
 import com.team9.soccermanager.ui.composable.BarsWrapper
 
 @Composable
@@ -25,6 +26,7 @@ fun CoachAnnouncementsView(
     viewModel: CoachAnnouncementsViewModel = remember { CoachAnnouncementsViewModel() },
     switchToWelcome: () -> Unit,
     switchMainScreen: (MainScreens) -> Unit,
+    switchMenuScreen: (MenuScreens) -> Unit
 ) {
 
     var announcements by remember { mutableStateOf<List<Announcement>?>(null) }
@@ -40,6 +42,7 @@ fun CoachAnnouncementsView(
         activeScreen = MainScreens.HOME,
         allowBack = true,
         switchMainScreen = switchMainScreen,
+        switchMenuScreen = switchMenuScreen,
         signOut = { viewModel.signOut(); switchToWelcome() },
     ) { paddingValues ->
         Box(

@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.*
 import com.team9.soccermanager.model.MainScreens
+import com.team9.soccermanager.model.MenuScreens
 import com.team9.soccermanager.model.accessor.Message
 import com.team9.soccermanager.ui.composable.BarsWrapper
 
@@ -30,6 +31,7 @@ fun ChatView(
     viewModel: ChatViewModel = ChatViewModel(chatID),
     switchToWelcome: () -> Unit,
     switchMainScreen: (MainScreens) -> Unit,
+    switchMenuScreen: (MenuScreens) -> Unit
 ) {
 //    var teamName by remember { mutableStateOf("") }
 //    viewModel.getTeamName { teamName = it }
@@ -42,6 +44,7 @@ fun ChatView(
         activeScreen = MainScreens.CHAT,
         signOut = { viewModel.signOut(); switchToWelcome() },
         switchMainScreen = switchMainScreen,
+        switchMenuScreen = switchMenuScreen,
         allowBack = true,
     ) { paddingValues ->
         Column(

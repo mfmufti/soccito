@@ -59,6 +59,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.team9.soccermanager.model.AvailView
 import com.team9.soccermanager.model.Availability
 import com.team9.soccermanager.model.MainScreens
+import com.team9.soccermanager.model.MenuScreens
 import com.team9.soccermanager.model.PlrAvail
 import com.team9.soccermanager.ui.composable.BarsWrapper
 
@@ -66,7 +67,8 @@ import com.team9.soccermanager.ui.composable.BarsWrapper
 fun CoachRosterView(
     viewModel: CoachRosterViewModel = remember { CoachRosterViewModel() },
     switchToWelcome: () -> Unit,
-    switchMainScreen: (MainScreens) -> Unit
+    switchMainScreen: (MainScreens) -> Unit,
+    switchMenuScreen: (MenuScreens) -> Unit
 ) {
 
     val availList = remember { viewModel.getAvailList() }
@@ -80,6 +82,7 @@ fun CoachRosterView(
         activeScreen = MainScreens.ROSTER,
         signOut = { viewModel.signOut(); switchToWelcome() },
         switchMainScreen = switchMainScreen,
+        switchMenuScreen = switchMenuScreen
     ) { paddingValues ->
         Surface(
             modifier = Modifier

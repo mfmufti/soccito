@@ -46,6 +46,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.team9.soccermanager.model.MainScreens
+import com.team9.soccermanager.model.MenuScreens
 import com.team9.soccermanager.ui.composable.BarsWrapper
 import com.team9.soccermanager.ui.theme.success
 import java.text.DateFormat.getDateTimeInstance
@@ -57,6 +58,7 @@ fun PlayerFormsView(
     viewModel: PlayerFormsViewModel = remember { PlayerFormsViewModel() },
     switchToWelcome: () -> Unit,
     switchMainScreen: (MainScreens) -> Unit,
+    switchMenuScreen: (MenuScreens) -> Unit
 ) {
     val formUploads = remember { viewModel.getFormUploads() }
     val loading by remember { viewModel.getLoading() }
@@ -71,6 +73,7 @@ fun PlayerFormsView(
         signOut = { viewModel.signOut(); switchToWelcome() },
         allowBack = true,
         switchMainScreen = switchMainScreen,
+        switchMenuScreen = switchMenuScreen
     ) { paddingValues ->
         Box(
             modifier = Modifier

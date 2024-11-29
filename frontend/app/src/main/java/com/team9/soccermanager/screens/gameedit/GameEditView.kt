@@ -50,6 +50,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.team9.soccermanager.model.GameStatus
 import com.team9.soccermanager.model.MainScreens
+import com.team9.soccermanager.model.MenuScreens
 import com.team9.soccermanager.ui.composable.BarsWrapper
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -65,6 +66,7 @@ fun GameEditView(
     viewModel: GameEditViewModel = remember { GameEditViewModel(gameId, newGame) },
     switchToWelcome: () -> Unit,
     switchMainScreen: (MainScreens) -> Unit,
+    switchMenuScreen: (MenuScreens) -> Unit,
     goToGameSchedule: () -> Unit,
 ) {
     val loading by remember { viewModel.getLoading() }
@@ -75,6 +77,7 @@ fun GameEditView(
         activeScreen = MainScreens.SCHEDULE,
         signOut = { viewModel.signOut(); switchToWelcome() },
         switchMainScreen = switchMainScreen,
+        switchMenuScreen = switchMenuScreen,
         allowBack = true,
     ) { paddingValues ->
         Surface(

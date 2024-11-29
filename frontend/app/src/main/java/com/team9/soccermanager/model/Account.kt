@@ -89,7 +89,6 @@ object Account {
             .addOnSuccessListener {
                 GS.user = it.toObject(User::class.java)
                 GS.user?.id = it.id
-                println(GS.user?.type)
                 then()
             }
             .addOnFailureListener{
