@@ -74,7 +74,6 @@ fun CoachAnnouncementsView(
                             onValueChange = { announcementContent = it },
                             label = { Text("Enter text") },
                             maxLines = 2,
-                            textStyle = TextStyle(color = Color.Blue, fontWeight = FontWeight.Bold),
                             modifier = Modifier.padding(20.dp)
                         )
                     },
