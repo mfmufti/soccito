@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.*
 import com.team9.soccermanager.model.GS
 import com.team9.soccermanager.model.MainScreens
 import com.team9.soccermanager.model.MenuScreens
+import com.team9.soccermanager.screens.gameschedule.GameScheduleView
 import com.team9.soccermanager.ui.composable.BarsWrapper
 import java.text.DateFormat.getDateTimeInstance
 import java.util.Date
@@ -38,6 +39,7 @@ fun AdminHomeView(
     switchMainScreen: (MainScreens) -> Unit,
     switchMenuScreen: (MenuScreens) -> Unit,
     goToLeagueStandings: () -> Unit,
+    goToSpecificGame: (Int) -> Unit,
 ) {
     var fullname by remember { mutableStateOf("") }
 
@@ -60,11 +62,9 @@ fun AdminHomeView(
             Text(text = "Hello $fullname", style = TextStyle(fontSize = 30.sp))
             Spacer(modifier = Modifier.height(15.dp))
 
-            Spacer(modifier = Modifier.height(30.dp))
-
-            Text(text = "Upcoming Game shown here")
-
-            Spacer(modifier = Modifier.height(30.dp))
+            Box(modifier = Modifier.padding(16.dp)) {
+                GameScheduleView(goToSpecificGame = goToSpecificGame, singleGame = true)
+            }
 
             Button(
                 onClick = goToLeagueStandings,

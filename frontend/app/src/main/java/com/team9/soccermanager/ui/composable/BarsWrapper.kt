@@ -370,7 +370,6 @@ fun AnnouncementNotificationsButton(
             Icon(
                 imageVector = Icons.Outlined.Notifications,
                 contentDescription = "Notifications",
-                tint = Color.Black
             )
         }
     }

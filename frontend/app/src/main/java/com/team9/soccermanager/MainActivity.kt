@@ -302,7 +302,8 @@ fun App(navController: NavHostController = rememberNavController()) {
                 switchMenuScreen = switchMenuScreen,
                 goToLeagueStandings = { nav.switch(LeagueStandingsScreen) },
                 goToForms = { nav.switch(PlayerFormsScreen) },
-                goToAnnouncements = { nav.switch(PlayerAnnouncementsScreen) }
+                goToAnnouncements = { nav.switch(PlayerAnnouncementsScreen) },
+                goToSpecificGame = { id -> nav.switch(GameSpecificScreen(id)) },
             )
         }
         composable<PlayerFormsScreen> {
@@ -339,7 +340,8 @@ fun App(navController: NavHostController = rememberNavController()) {
                 switchMenuScreen = switchMenuScreen,
                 goToLeagueStandings = { nav.switch(LeagueStandingsScreen) },
                 goToForms = { nav.switch(CoachFormsScreen) },
-                goToAnnouncements = { nav.switch(CoachAnnouncementsScreen) }
+                goToAnnouncements = { nav.switch(CoachAnnouncementsScreen) },
+                goToSpecificGame = { id -> nav.switch(GameSpecificScreen(id)) },
             )
         }
         composable<CoachFormsScreen> {
@@ -368,6 +370,7 @@ fun App(navController: NavHostController = rememberNavController()) {
                 switchMainScreen = switchMainScreen,
                 switchMenuScreen = switchMenuScreen,
                 goToLeagueStandings = { nav.switch(LeagueStandingsScreen) },
+                goToSpecificGame = { id -> nav.switch(GameSpecificScreen(id)) },
             )
         }
         composable<GameScheduleScreen> {

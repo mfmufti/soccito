@@ -25,6 +25,7 @@ import com.team9.soccermanager.model.Announcement
 import com.team9.soccermanager.model.GS
 import com.team9.soccermanager.model.MainScreens
 import com.team9.soccermanager.model.MenuScreens
+import com.team9.soccermanager.screens.gameschedule.GameScheduleView
 import com.team9.soccermanager.ui.composable.BarsWrapper
 import java.text.DateFormat.getDateTimeInstance
 import java.util.Date
@@ -37,7 +38,8 @@ fun CoachHomeView(
     switchMenuScreen: (MenuScreens) -> Unit,
     goToLeagueStandings: () -> Unit,
     goToForms: () -> Unit,
-    goToAnnouncements: () -> Unit
+    goToAnnouncements: () -> Unit,
+    goToSpecificGame: (Int) -> Unit,
 ) {
     var teamName by remember { mutableStateOf("") }
     var fullname by remember { mutableStateOf("") }
@@ -138,7 +140,7 @@ fun CoachHomeView(
                     TextButton(
                         onClick = { goToAnnouncements() },
                         colors = ButtonDefaults.textButtonColors(
-                            contentColor = Color.Blue
+                            contentColor = MaterialTheme.colorScheme.primary,
                         ),
                         modifier = Modifier
                             .align(Alignment.BottomEnd)
@@ -151,11 +153,9 @@ fun CoachHomeView(
                 }
             }
 
-            Spacer(modifier = Modifier.height(30.dp))
-
-            Text(text = "Upcoming Game shown here")
-
-            Spacer(modifier = Modifier.height(30.dp))
+            Box(modifier = Modifier.padding(16.dp)) {
+                GameScheduleView(goToSpecificGame = goToSpecificGame, singleGame = true)
+            }
 
             Button(
                 onClick = goToLeagueStandings,

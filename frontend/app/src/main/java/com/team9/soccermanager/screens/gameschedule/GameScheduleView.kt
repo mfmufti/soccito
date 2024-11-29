@@ -25,11 +25,12 @@ import java.util.Locale
 @Composable
 fun GameScheduleView(
     viewModel: GameScheduleViewModel = remember { GameScheduleViewModel() },
-    switchToWelcome: () -> Unit,
-    switchMainScreen: (MainScreens) -> Unit,
-    switchMenuScreen: (MenuScreens) -> Unit,
+    switchToWelcome: () -> Unit = {},
+    switchMainScreen: (MainScreens) -> Unit = {},
+    switchMenuScreen: (MenuScreens) -> Unit = {},
     goToSpecificGame: (Int) -> Unit,
-    goToGameAdd: () -> Unit,
+    goToGameAdd: () -> Unit = {},
+    singleGame: Boolean = false,
 ) {
     val completedGames = remember { viewModel.getCompletedGames() }
     val upcomingGames = remember { viewModel.getUpcomingGames() }
@@ -37,6 +38,13 @@ fun GameScheduleView(
     val loading by remember { viewModel.getLoading() }
     var tabIndex by remember { mutableIntStateOf(0) }
     val titles = listOf("Upcoming", "Completed")
+
+    if (singleGame) {
+        if (error.isEmpty() && !loading && !upcomingGames.isEmpty()) {
+            GameList(listOf(upcomingGames[0]), goToSpecificGame)
+        }
+        return
+    }
 
     BarsWrapper(
         title = "Game Schedule",
@@ -152,7 +160,6 @@ private fun GameList(games: List<Game>, goToSpecificGame: (Int) -> Unit) {
         Button(
             onClick = { goToSpecificGame(game.id) },
             modifier = Modifier
-                .padding(5.dp)
                 .fillMaxWidth()
                 .height(100.dp),
             shape = MaterialTheme.shapes.medium
@@ -174,6 +181,6 @@ private fun GameList(games: List<Game>, goToSpecificGame: (Int) -> Unit) {
                 )
             }
         }
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(14.dp))
     }
 }
