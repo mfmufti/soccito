@@ -43,6 +43,7 @@ import com.google.maps.android.compose.rememberCameraPositionState
 import com.team9.soccermanager.model.GS
 import com.team9.soccermanager.model.GameStatus
 import com.team9.soccermanager.model.MainScreens
+import com.team9.soccermanager.model.MenuScreens
 import com.team9.soccermanager.ui.composable.BarsWrapper
 import com.team9.soccermanager.ui.theme.success
 import java.text.SimpleDateFormat
@@ -53,6 +54,7 @@ fun GameSpecificView(
     gameId: Int,
     switchToWelcome: () -> Unit,
     switchMainScreen: (MainScreens) -> Unit,
+    switchMenuScreen: (MenuScreens) -> Unit,
     goToGameEdit: () -> Unit,
 ) {
     // Get context outside remember
@@ -81,6 +83,7 @@ fun GameSpecificView(
         activeScreen = MainScreens.SCHEDULE,
         signOut = { viewModel.signOut(); switchToWelcome() },
         switchMainScreen = switchMainScreen,
+        switchMenuScreen = switchMenuScreen,
         allowBack = true,
     ) { paddingValues ->
         Box(

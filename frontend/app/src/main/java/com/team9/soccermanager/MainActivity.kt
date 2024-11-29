@@ -25,8 +25,12 @@ import androidx.navigation.toRoute
 import com.team9.soccermanager.model.Account
 import com.team9.soccermanager.model.GS
 import com.team9.soccermanager.model.MainScreens
+import com.team9.soccermanager.model.MenuScreens
+import com.team9.soccermanager.screens.account.AccountView
 import com.team9.soccermanager.screens.coachforms.CoachFormsView
 import com.team9.soccermanager.screens.adminhome.AdminHomeView
+import com.team9.soccermanager.screens.changename.ChangeNameView
+import com.team9.soccermanager.screens.changepassword.ChangePasswordView
 import com.team9.soccermanager.screens.chatselect.ChatSelectView
 import com.team9.soccermanager.screens.coachhome.CoachHomeView
 import com.team9.soccermanager.screens.formspecific.FormSpecificView
@@ -50,7 +54,9 @@ import com.team9.soccermanager.screens.rankings.RankingsView
 import com.team9.soccermanager.screens.loadscreen.LoadView
 import com.team9.soccermanager.screens.playerforms.PlayerFormsView
 import com.team9.soccermanager.screens.playerspecificgame.GameSpecificView
+import com.team9.soccermanager.screens.profile.ProfileView
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Serializer
 
 @Serializable object LoadScreen
 @Serializable object WelcomeScreen
@@ -78,8 +84,12 @@ import kotlinx.serialization.Serializable
 @Serializable data class GameEditScreen(val newGame: Boolean, val id: Int)
 @Serializable object PlayerRosterScreen
 @Serializable data class ChatScreen(var chatID: String, var fullname: String)
+@Serializable object ProfileScreen
 @Serializable object ChatSelectScreen
 @Serializable object CoachRosterScreen
+@Serializable object AccountScreen
+@Serializable object PasswordChangeScreen
+@Serializable object NameChangeScreen
 
 class MainActivity : ComponentActivity() {
     @SuppressLint("SourceLockedOrientationActivity")
@@ -171,6 +181,13 @@ fun App(navController: NavHostController = rememberNavController()) {
         }
     }
 
+    val switchMenuScreen = { menuScreen: MenuScreens ->
+        nav.switch(when (menuScreen) {
+            MenuScreens.PROFILE -> ProfileScreen
+            else -> AccountScreen
+        })
+    }
+
     NavHost(navController = navController, startDestination = start) {
         composable<LoadScreen> {
             LoadView()
@@ -237,6 +254,7 @@ fun App(navController: NavHostController = rememberNavController()) {
                 viewModel = viewModel(),
                 switchToWelcome = { nav.clearSwitch(WelcomeScreen) },
                 switchMainScreen = switchMainScreen,
+                switchMenuScreen = switchMenuScreen,
                 goToLeagueStandings = { nav.switch(LeagueStandingsScreen) },
                 goToForms = { nav.switch(PlayerFormsScreen) },
             )
@@ -246,6 +264,7 @@ fun App(navController: NavHostController = rememberNavController()) {
                 viewModel = viewModel(),
                 switchToWelcome = { nav.clearSwitch(WelcomeScreen) },
                 switchMainScreen = switchMainScreen,
+                switchMenuScreen = switchMenuScreen
             )
         }
         composable<CoachHomeScreen> {
@@ -253,6 +272,7 @@ fun App(navController: NavHostController = rememberNavController()) {
                 viewModel = viewModel(),
                 switchToWelcome = { nav.clearSwitch(WelcomeScreen) },
                 switchMainScreen = switchMainScreen,
+                switchMenuScreen = switchMenuScreen,
                 goToLeagueStandings = { nav.switch(LeagueStandingsScreen) },
                 goToForms = { nav.switch(CoachFormsScreen) }
             )
@@ -262,6 +282,7 @@ fun App(navController: NavHostController = rememberNavController()) {
                 viewModel = viewModel(),
                 switchToWelcome = { nav.clearSwitch(WelcomeScreen) },
                 switchMainScreen = switchMainScreen,
+                switchMenuScreen = switchMenuScreen,
                 goToSpecificForm = { id, title -> nav.switch(FormSpecificView(id, title)) }
             )
         }
@@ -273,12 +294,14 @@ fun App(navController: NavHostController = rememberNavController()) {
                 viewModel = viewModel(factory = viewModelFactory { initializer { FormSpecificViewModel(data.id) } }),
                 switchToWelcome = { nav.clearSwitch(WelcomeScreen) },
                 switchMainScreen = switchMainScreen,
+                switchMenuScreen = switchMenuScreen
             )
         }
         composable<AdminHomeScreen> {
             AdminHomeView(
                 switchToWelcome = { nav.clearSwitch(WelcomeScreen) },
                 switchMainScreen = switchMainScreen,
+                switchMenuScreen = switchMenuScreen,
                 goToLeagueStandings = { nav.switch(LeagueStandingsScreen) },
             )
         }
@@ -286,6 +309,7 @@ fun App(navController: NavHostController = rememberNavController()) {
             GameScheduleView(
                 switchToWelcome = { nav.clearSwitch(WelcomeScreen) },
                 switchMainScreen = switchMainScreen,
+                switchMenuScreen = switchMenuScreen,
                 goToSpecificGame = { id -> nav.switch(GameSpecificScreen(id)) },
                 goToGameAdd = { nav.switch(GameEditScreen(true, -1)) },
             )
@@ -296,6 +320,7 @@ fun App(navController: NavHostController = rememberNavController()) {
                 gameId = data.id,
                 switchToWelcome = { nav.clearSwitch(WelcomeScreen) },
                 switchMainScreen = switchMainScreen,
+                switchMenuScreen = switchMenuScreen,
                 goToGameEdit = { nav.switch(GameEditScreen(false, data.id)) },
             )
         }
@@ -306,18 +331,21 @@ fun App(navController: NavHostController = rememberNavController()) {
                 gameId = data.id,
                 switchToWelcome = { nav.clearSwitch(WelcomeScreen) },
                 switchMainScreen = switchMainScreen,
+                switchMenuScreen = switchMenuScreen
             )
         }
         composable<PlayerRosterScreen> {
             PlayerRosterView(
                 switchToWelcome = { nav.clearSwitch(WelcomeScreen) },
                 switchMainScreen = switchMainScreen,
+                switchMenuScreen = switchMenuScreen
             )
         }
         composable<CoachRosterScreen> {
             CoachRosterView(
                 switchToWelcome = { nav.clearSwitch(WelcomeScreen) },
-                switchMainScreen = switchMainScreen
+                switchMainScreen = switchMainScreen,
+                switchMenuScreen = switchMenuScreen
             )
         }
         composable<ChatScreen> { backStackEntry ->
@@ -328,6 +356,7 @@ fun App(navController: NavHostController = rememberNavController()) {
                 fullname = data.fullname,
                 switchToWelcome = { nav.clearSwitch(WelcomeScreen) },
                 switchMainScreen = switchMainScreen,
+                switchMenuScreen = switchMenuScreen
             )
         }
         composable<LeagueStandingsScreen> {
@@ -340,7 +369,30 @@ fun App(navController: NavHostController = rememberNavController()) {
                 viewModel = viewModel(),
                 switchToWelcome = { nav.clearSwitch(WelcomeScreen) },
                 switchMainScreen = switchMainScreen,
+                switchMenuScreen = switchMenuScreen,
                 goToChat = { chatID, fullname -> nav.switch(ChatScreen(chatID, fullname))},
+            )
+        }
+        composable<ProfileScreen> {
+            ProfileView(
+                switchBack = { nav.pop() }
+            )
+        }
+        composable<AccountScreen> {
+            AccountView(
+                switchBack = { nav.pop() },
+                passwordChange = { nav.switch(PasswordChangeScreen) },
+                nameChange = { nav.switch(NameChangeScreen) }
+            )
+        }
+        composable<PasswordChangeScreen> {
+            ChangePasswordView(
+                switchBack = { nav.pop() }
+            )
+        }
+        composable<NameChangeScreen> {
+            ChangeNameView(
+                switchBack = { nav.pop() }
             )
         }
     }

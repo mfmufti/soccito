@@ -12,6 +12,14 @@ enum class LeagueError {
     NONE, EXISTS, NETWORK, UNKNOWN
 }
 
+enum class PwdError {
+    WEAK, INCORRECT, NETWORK, UNKNOWN, NONE, NO_EMAIL
+}
+
+enum class NameError {
+    UNKNOWN, NONE
+}
+
 enum class TeamError {
     NONE, EXISTS, NETWORK, BAD_JOIN_CODE, UNKNOWN
 }
@@ -26,6 +34,10 @@ enum class GameError {
 
 enum class MainScreens {
     HOME, SCHEDULE, ROSTER, CHAT, BACK, NONE
+}
+
+enum class MenuScreens {
+    PROFILE, ACCOUNT
 }
 
 enum class GameStatus {

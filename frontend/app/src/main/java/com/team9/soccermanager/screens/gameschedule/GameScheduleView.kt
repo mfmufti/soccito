@@ -14,6 +14,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.*
 import com.team9.soccermanager.model.GS
 import com.team9.soccermanager.model.MainScreens
+import com.team9.soccermanager.model.MenuScreens
 import com.team9.soccermanager.model.accessor.Game
 import com.team9.soccermanager.ui.composable.BarsWrapper
 import java.text.DateFormat.getDateTimeInstance
@@ -26,6 +27,7 @@ fun GameScheduleView(
     viewModel: GameScheduleViewModel = remember { GameScheduleViewModel() },
     switchToWelcome: () -> Unit,
     switchMainScreen: (MainScreens) -> Unit,
+    switchMenuScreen: (MenuScreens) -> Unit,
     goToSpecificGame: (Int) -> Unit,
     goToGameAdd: () -> Unit,
 ) {
@@ -41,6 +43,7 @@ fun GameScheduleView(
         activeScreen = MainScreens.SCHEDULE,
         signOut = { viewModel.signOut(); switchToWelcome() },
         switchMainScreen = switchMainScreen,
+        switchMenuScreen = switchMenuScreen
     ) { paddingValues ->
         Box(
             modifier = Modifier

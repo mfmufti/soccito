@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.*
 import com.team9.soccermanager.model.Availability
 import com.team9.soccermanager.model.GS
 import com.team9.soccermanager.model.MainScreens
+import com.team9.soccermanager.model.MenuScreens
 import com.team9.soccermanager.ui.composable.BarsWrapper
 
 @Composable
@@ -27,6 +28,7 @@ fun PlayerRosterView(
     viewModel: PlayerRosterViewModel = remember { PlayerRosterViewModel() },
     switchToWelcome: () -> Unit,
     switchMainScreen: (MainScreens) -> Unit,
+    switchMenuScreen: (MenuScreens) -> Unit
 ) {
     val availList = remember { viewModel.getAvailList() }
     val loading = remember { viewModel.getLoading() }
@@ -37,6 +39,7 @@ fun PlayerRosterView(
         activeScreen = MainScreens.ROSTER,
         signOut = { viewModel.signOut(); switchToWelcome() },
         switchMainScreen = switchMainScreen,
+        switchMenuScreen = switchMenuScreen
     ) { paddingValues ->
         Surface(
             modifier = Modifier

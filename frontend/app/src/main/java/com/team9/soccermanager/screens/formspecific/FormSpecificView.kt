@@ -20,6 +20,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.*
 import com.google.firebase.Timestamp
 import com.team9.soccermanager.model.MainScreens
+import com.team9.soccermanager.model.MenuScreens
 import com.team9.soccermanager.ui.composable.BarsWrapper
 import java.text.DateFormat.getDateTimeInstance
 import java.util.Date
@@ -31,6 +32,7 @@ fun FormSpecificView(
     viewModel: FormSpecificViewModel = remember { FormSpecificViewModel(id) },
     switchToWelcome: () -> Unit,
     switchMainScreen: (MainScreens) -> Unit,
+    switchMenuScreen: (MenuScreens) -> Unit
 ) {
     val uploads = remember { viewModel.getUploads() }
     val loading by remember { viewModel.getLoading() }
@@ -41,6 +43,7 @@ fun FormSpecificView(
         activeScreen = MainScreens.HOME,
         allowBack = true,
         switchMainScreen = switchMainScreen,
+        switchMenuScreen = switchMenuScreen,
         signOut = { viewModel.signOut(); switchToWelcome() },
     ) { paddingValues ->
         Surface(
