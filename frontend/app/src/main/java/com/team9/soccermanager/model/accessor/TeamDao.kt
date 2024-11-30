@@ -24,6 +24,7 @@ interface TeamDao {
     suspend fun listenForUpdates(onResult: (Team) -> Unit): ListenerRegistration?
     suspend fun getPlayerAvail(onResult: (List<AvailView>) -> Unit, onError: (TeamError) -> Unit)
     suspend fun getRankingsData(onResult: (List<RankingView>) -> Unit)
+    fun getNotificationTokens(onTokens: (tokens: List<String>) -> Unit)
     fun updateUserAvail(id: String, avail: Availability, reason: String)
 
 }

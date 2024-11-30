@@ -2,6 +2,8 @@ package com.team9.soccermanager
 
 import android.annotation.SuppressLint
 import android.content.pm.ActivityInfo
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -112,11 +114,11 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-        //askNotificationPermission()
+        askNotificationPermission()
     }
 
     // Declare the launcher at the top of your Activity/Fragment:
-   /* private val requestPermissionLauncher = registerForActivityResult(
+    private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission(),
     ) { isGranted: Boolean ->
         if (isGranted) {
@@ -143,7 +145,7 @@ class MainActivity : ComponentActivity() {
                 requestPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
             }
         }
-    }*/
+    }
 
 }
 

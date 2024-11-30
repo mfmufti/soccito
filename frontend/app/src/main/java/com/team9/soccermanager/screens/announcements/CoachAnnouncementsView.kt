@@ -1,5 +1,6 @@
 package com.team9.soccermanager.screens.announcements
 
+import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -89,6 +90,7 @@ fun CoachAnnouncementsView(
                                     viewModel.getTeam { announcements = it.announcements.toList() }
                                     showAnnouncementForm = false
                                     announcementContent = ""
+                                    viewModel.sendNotifications()
                                 }
                             }
                         ) {

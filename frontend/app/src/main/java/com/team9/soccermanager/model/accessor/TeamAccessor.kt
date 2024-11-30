@@ -273,4 +273,16 @@ object TeamAccessor : TeamDao {
         teamsList.sortByDescending { it.pts }
         onResult(teamsList)
     }
+
+    override fun getNotificationTokens(onTokens: (tokens: List<String>) -> Unit) {
+        if (_lastAccessedTeam != null) {
+            val userIds = _lastAccessedTeam!!.playerIds
+            Firebase.firestore.collection(USER_COL)
+                .whereIn("id", userIds)
+                .addSnapshotListener {
+                    snapshot, ex -> if(snapshot != null) onTokens(snapshot.documents.mapNotNull { document -> document.getString("notificationToken") })
+                }
+
+        }
+    }
 }
