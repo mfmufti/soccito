@@ -46,15 +46,34 @@ object Account {
                     userProfile.fullname = fullname
                     userProfile.email = email
                     userProfile.type = type
+                    userProfile.id = auth.currentUser?.uid!!
+                    println(auth.currentUser?.uid!!)
                     Firebase.firestore.collection("users").document(auth.currentUser?.uid!!)
-                        .set(userProfile)
-                    Firebase.firestore.collection("users").document(auth.currentUser?.uid!!).get().addOnSuccessListener {
-                        GS.user = it.toObject(User::class.java)
-                        GS.user!!.id = it.id
-                        then(RegisterError.NONE)
-                    }.addOnFailureListener({
-                        then(RegisterError.UNKNOWN)
-                    })
+                        .set(userProfile).addOnSuccessListener {
+                            if (type == "player") {
+                                Firebase.firestore.collection("users").document(auth.currentUser?.uid!!)
+                                    .update("playerAvail", PlrAvail()).addOnSuccessListener {
+                                        Firebase.firestore.collection("users").document(auth.currentUser?.uid!!).get().addOnSuccessListener {
+                                            GS.user = it.toObject(User::class.java)
+                                            //GS.user!!.id = it.id
+                                            then(RegisterError.NONE)
+                                        }.addOnFailureListener({
+                                            then(RegisterError.UNKNOWN)
+                                        })
+                                    }
+                            } else {
+                                Firebase.firestore.collection("users").document(auth.currentUser?.uid!!).get().addOnSuccessListener {
+                                    GS.user = it.toObject(User::class.java)
+                                    //GS.user!!.id = it.id
+                                    then(RegisterError.NONE)
+                                }.addOnFailureListener({
+                                    then(RegisterError.UNKNOWN)
+                                })
+                            }
+                        }
+                        .addOnFailureListener({
+                            then(RegisterError.UNKNOWN)
+                            })
                 } else {
                     Log.w(TAG, "Failed to create account", task.exception)
                     then(when (task.exception) {
@@ -72,7 +91,8 @@ object Account {
         Firebase.firestore.collection("teams").document(teamId).get().addOnSuccessListener {
             GS.user?.teamID = teamId
             GS.user?.teamName = it.data?.get("name").toString()
-            updateRemoteUser()
+            GS.user?.teamName?.let { it1 -> updateRemoteUser("teamName", it1) }
+            updateRemoteUser("teamID", teamId)
         }
     }
 
@@ -80,7 +100,8 @@ object Account {
         Firebase.firestore.collection("leagues").document(leagueId).get().addOnSuccessListener {
             GS.user?.leagueID = leagueId
             GS.user?.leagueName = it.data?.get("name").toString()
-            updateRemoteUser()
+            GS.user?.leagueName?.let { it1 -> updateRemoteUser("leagueName", it1) }
+            updateRemoteUser("leagueID", leagueId)
         }
     }
 
@@ -127,19 +148,35 @@ object Account {
             }
     }
 
+    private fun clearFCMToken() {
+        if (GS.user != null) {
+            Firebase.firestore.collection("users").document(GS.user!!.id).update("notificationToken", null)
+                .addOnSuccessListener {
+                    Firebase.auth.signOut()
+                    // successful
+                }
+                .addOnFailureListener { e ->
+                    e.printStackTrace()
+                    Firebase.auth.signOut()
+                    // failure
+                }
+        }
+
+    }
+
     fun signOut() {
-        Firebase.auth.signOut()
+        clearFCMToken()
     }
 
     fun updateViewAnnouncement() {
         if (GS.user != null) {
             GS.user!!.lastAnnouncementViewTime = System.currentTimeMillis()
-            updateRemoteUser()
+            updateRemoteUser("lastAnnouncementViewTime", GS.user!!.lastAnnouncementViewTime)
         }
     }
 
-    private fun updateRemoteUser() {
-        Firebase.firestore.collection("users").document(auth.currentUser?.uid!!).set(GS.user!!)
+    private fun updateRemoteUser(field: String, content: Any) {
+        Firebase.firestore.collection("users").document(auth.currentUser?.uid!!).update(field, content)
     }
 
     fun setupNotifications() {
@@ -155,7 +192,7 @@ object Account {
             Log.d(TAG, "NOTIFICATION TOKEN: $token")
 
             GS.user?.notificationToken = token
-            updateRemoteUser()
+            updateRemoteUser("notificationToken", token)
 
         })
     }

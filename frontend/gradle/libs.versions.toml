@@ -20,6 +20,7 @@ junitJunit = "4.12"
 firebaseFirestoreKtx = "25.1.0"
 firebaseStorageKtx = "21.0.1"
 firebaseMessagingKtx = "24.1.0"
+firebaseFunctionsKtx = "21.1.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -57,6 +58,7 @@ mockito-inline = { module = "org.mockito:mockito-inline" }
 mockk = { module = "io.mockk:mockk" }
 firebase-storage-ktx = { group = "com.google.firebase", name = "firebase-storage-ktx", version.ref = "firebaseStorageKtx" }
 firebase-messaging-ktx = { group = "com.google.firebase", name = "firebase-messaging-ktx", version.ref = "firebaseMessagingKtx" }
+firebase-functions-ktx = { group = "com.google.firebase", name = "firebase-functions-ktx", version.ref = "firebaseFunctionsKtx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

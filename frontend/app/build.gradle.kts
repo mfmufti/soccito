@@ -83,6 +83,7 @@ dependencies {
     implementation("com.google.firebase:firebase-database-ktx:21.0.0")
     implementation(libs.firebase.messaging.ktx)
     implementation(libs.firebase.functions.ktx)
+    //implementation(libs.firebase.functions.ktx)
     //implementation(libs.firebase.messaging)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
