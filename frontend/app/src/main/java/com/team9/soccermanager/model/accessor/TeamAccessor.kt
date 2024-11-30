@@ -280,7 +280,9 @@ object TeamAccessor : TeamDao {
             Firebase.firestore.collection(USER_COL)
                 .whereIn("id", userIds)
                 .addSnapshotListener {
-                    snapshot, ex -> if(snapshot != null) onTokens(snapshot.documents.mapNotNull { document -> document.getString("notificationToken") })
+                    snapshot, ex -> if(snapshot != null) {
+                        onTokens(snapshot.documents.mapNotNull { document -> document.getString("notificationToken") }.distinct())
+                    }
                 }
 
         }

@@ -39,12 +39,14 @@ fun RegisterView(
     switchBack: () -> Unit,
     switchToLogin: () -> Unit,
     switchToHome: () -> Unit,
+    askForNotifications: () -> Unit,
     viewModel: RegisterViewModel = remember { RegisterViewModel(type, other) },
 ) {
     var fullname by remember { viewModel.getFullname() }
     var email by remember { viewModel.getEmail() }
     var password by remember { viewModel.getPassword() }
     val error by remember { viewModel.getError() }
+
 
     Scaffold(
         modifier = Modifier.
@@ -113,7 +115,10 @@ fun RegisterView(
             Spacer(modifier = Modifier.height(16.dp))
 
             Button(
-                onClick = { viewModel.handleRegister(switchToHome) },
+                onClick = { viewModel.handleRegister {
+                    switchToHome()
+                    askForNotifications()
+                } },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Register")

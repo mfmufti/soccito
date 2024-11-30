@@ -38,6 +38,7 @@ fun LoginView(
     switchBack: () -> Unit,
     switchToRegister: () -> Unit,
     switchToSpecific: (type: String) -> Unit,
+    askForNotifications: () -> Unit,
     viewModel: LoginViewModel = LoginViewModel()
 ) {
     var email by remember { mutableStateOf("") }
@@ -101,7 +102,10 @@ fun LoginView(
 
             Button(
                 onClick = { viewModel.handleLogin(
-                    email, password, success = switchToSpecific, failure = { error = it }
+                    email, password, success = {
+                        switchToSpecific(it)
+                        askForNotifications()
+                    }, failure = { error = it }
                 ) },
                 modifier = Modifier.fillMaxWidth()
             ) {

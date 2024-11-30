@@ -110,11 +110,10 @@ class MainActivity : ComponentActivity() {
         setContent {
             SoccerManagerTheme {
                 Surface(modifier = Modifier.fillMaxSize()) {
-                    App()
+                    App(askForNotifications = { askNotificationPermission() })
                 }
             }
         }
-        askNotificationPermission()
     }
 
     // Declare the launcher at the top of your Activity/Fragment:
@@ -175,7 +174,7 @@ class Navigator(val navController: NavHostController) {
 }
 
 @Composable
-fun App(navController: NavHostController = rememberNavController()) {
+fun App(navController: NavHostController = rememberNavController(), askForNotifications: () -> Unit) {
 
     //start = LeagueStandingsScreen // For debug purposes
     // First check if authenticated user is player, coach, admin, and guide them
@@ -250,6 +249,7 @@ fun App(navController: NavHostController = rememberNavController()) {
                 switchBack = { nav.pop() },
                 switchToRegister = { nav.popSwitch(TypeSelectScreen, WelcomeScreen) },
                 switchToSpecific = { nav.clearSwitch(HomeScreen()) },
+                askForNotifications = askForNotifications
             )
         }
         composable<RegisterScreen> { backStackEntry ->
@@ -264,7 +264,8 @@ fun App(navController: NavHostController = rememberNavController()) {
                 ),
                 switchBack = { nav.pop() },
                 switchToLogin = { nav.popSwitch(LoginScreen, WelcomeScreen) },
-                switchToHome = { nav.clearSwitch(HomeScreen()) }
+                switchToHome = { nav.clearSwitch(HomeScreen()) },
+                askForNotifications = askForNotifications
             )
         }
         composable<TypeSelectScreen> {
