@@ -20,6 +20,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.*
 import com.team9.soccermanager.model.GS
 
+/*
+ Composable function for the rankings screen.
+ Displays the rankings screen, showing the league standings,
+ in a scrollable table.
+ */
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RankingsView(

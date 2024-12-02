@@ -25,6 +25,11 @@ import com.team9.soccermanager.ui.composable.BarsWrapper
 import java.text.DateFormat.getDateTimeInstance
 import java.util.Date
 
+/*
+ Composable function for the form-specific screen.
+  It displays a list of form uploads for a specific form.
+ */
+
 @Composable
 fun FormSpecificView(
     id: Int,

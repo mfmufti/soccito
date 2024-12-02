@@ -12,7 +12,14 @@ import com.team9.soccermanager.model.accessor.LeagueAccessor
 import com.team9.soccermanager.screens.playerhome.PlayerHomeViewModel
 import kotlinx.coroutines.launch
 
+/*
+ View model for the game schedule screen.
+ It handles fetching and displaying upcoming and completed games.
+ */
+
+
 class GameScheduleViewModel: PlayerHomeViewModel() {
+    //List of games
     private val upcomingGames = mutableStateListOf<Game>()
     private val completedGames = mutableStateListOf<Game>()
     private val loading = mutableStateOf(true)
@@ -22,6 +29,9 @@ class GameScheduleViewModel: PlayerHomeViewModel() {
     fun getCompletedGames() = completedGames
     fun getLoading() = loading
     fun getError() = error
+
+    //Initializes the view model and fetches game data.
+
 
     init {
         viewModelScope.launch {

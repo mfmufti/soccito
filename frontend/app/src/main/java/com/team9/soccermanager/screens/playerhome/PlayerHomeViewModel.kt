@@ -22,12 +22,19 @@ import com.team9.soccermanager.model.GS
 import com.team9.soccermanager.model.Team
 import com.team9.soccermanager.model.accessor.TeamAccessor
 
+/*
+ View model for the player home screen.
+ It handles fetching and managing user data, announcements, and team information.
+ */
+
 open class PlayerHomeViewModel : ViewModel() {
     var signedOut = false
     var announcements = mutableStateOf<List<Announcement>?>(null)
     private var listener: ListenerRegistration? = null
-
-    init {
+    /*
+     Initializes the view model and sets up listeners for announcements and notifications.
+     */
+        init {
         viewModelScope.launch(Dispatchers.IO) {
             listener = TeamAccessor.listenForUpdates {
                 viewModelScope.launch(Dispatchers.Main) {

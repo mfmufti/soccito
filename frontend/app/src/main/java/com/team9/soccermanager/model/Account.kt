@@ -10,6 +10,7 @@ import com.google.firebase.firestore.firestore
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.tasks.await
 
+// Object to handle account-related operations
 object Account {
     private val TAG = "Model"
     private var auth: FirebaseAuth = Firebase.auth
@@ -62,6 +63,7 @@ object Account {
                                         })
                                     }
                             } else {
+                                // If the user is not a player, set the user in the global state
                                 Firebase.firestore.collection("users").document(auth.currentUser?.uid!!).get().addOnSuccessListener {
                                     GS.user = it.toObject(User::class.java)
                                     //GS.user!!.id = it.id
@@ -105,6 +107,7 @@ object Account {
         }
     }
 
+    // Setup the global state (GS) with user data
     fun setupGS(then: () -> Unit) {
         Firebase.firestore.collection("users").document(auth.currentUser?.uid!!).get()
             .addOnSuccessListener {

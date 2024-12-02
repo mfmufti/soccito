@@ -2,8 +2,10 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     id("com.android.application")
+    //Google Services plugin (for Firebase)
     id("com.google.gms.google-services")
     id("org.jetbrains.kotlin.plugin.serialization")
+    //Google Maps Secrets plugin
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
@@ -58,6 +60,7 @@ secrets {
 }
 
 dependencies {
+    // Android and Compose dependencies
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -67,18 +70,22 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.runtime.livedata)
+    // Testing dependency
     implementation(libs.junit.junit)
+    // Firebase dependencies
     implementation(libs.firebase.firestore.ktx)
     implementation(libs.kotlinx.serialization.json)
     implementation(platform(libs.firebase.bom))
     implementation(libs.google.firebase.analytics)
     implementation(libs.google.firebase.auth)
     implementation(libs.google.firebase.firestore)
+    // Navigation dependencies
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.kotlinx.coroutines.play.services)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.material.icons.extended)
+    // Firebase Storage dependencies
     implementation(libs.firebase.storage.ktx)
     implementation("com.google.firebase:firebase-database-ktx:21.0.0")
     implementation(libs.firebase.messaging.ktx)

@@ -13,6 +13,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.*
 
+/* Composable function for user type selection screen (Player, Coach, Admin */
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TypeSelectView(

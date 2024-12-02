@@ -101,6 +101,11 @@ import kotlinx.serialization.Serializer
 @Serializable object PasswordChangeScreen
 @Serializable object NameChangeScreen
 
+/*
+ This is the main activity of the Soccer Manager application.
+  It sets up the app's UI, handles navigation, and manages permissions.
+ */
+
 class MainActivity : ComponentActivity() {
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -148,6 +153,10 @@ class MainActivity : ComponentActivity() {
 
 }
 
+/*
+  A helper class for navigating between screens in the application.
+ */
+
 class Navigator(val navController: NavHostController) {
     fun switch(dest: Any) {
         navController.navigate(route = dest)
@@ -172,6 +181,12 @@ class Navigator(val navController: NavHostController) {
         }
     }
 }
+
+
+/*
+  The main composable function for the application.
+  Sets up the navigation graph and handles screen transitions.
+ */
 
 @Composable
 fun App(navController: NavHostController = rememberNavController(), askForNotifications: () -> Unit) {

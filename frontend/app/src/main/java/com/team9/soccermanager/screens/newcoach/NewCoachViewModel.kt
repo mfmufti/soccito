@@ -7,6 +7,11 @@ import com.team9.soccermanager.model.TeamError
 import com.team9.soccermanager.model.accessor.TeamAccessor
 import kotlinx.coroutines.launch
 
+/*
+ View model for the new coach screen.
+ It handles validating and processing the league code and team name entered by a new coach.
+ */
+
 class NewCoachViewModel : ViewModel() {
     private var leagueCode = mutableStateOf("")
     private var team = mutableStateOf("")
@@ -15,6 +20,11 @@ class NewCoachViewModel : ViewModel() {
     fun getLeagueCode() = leagueCode
     fun getTeam() = team
     fun getError() = error
+
+    /*
+    Checks if the league code and team name are valid.
+    @param success A callback function to be invoked if the league code and team name are valid.
+     */
 
     fun checkTeam(success: (String, String) -> Unit) {
         if (leagueCode.value.isEmpty() || team.value.isEmpty()) {

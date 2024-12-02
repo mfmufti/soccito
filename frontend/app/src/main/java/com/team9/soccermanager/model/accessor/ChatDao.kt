@@ -3,6 +3,11 @@ package com.team9.soccermanager.model.accessor
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ListenerRegistration
 
+/*
+  This file defines data classes and an interface for managing chats
+   in the application.
+ */
+
 data class Chat(val name: String, val type: String, val userRef: DocumentReference)
 data class Message(val right: Boolean, var text: String)
 

@@ -37,6 +37,13 @@ import androidx.compose.ui.unit.sp
 import com.team9.soccermanager.model.GS
 import java.util.Locale
 
+
+/*
+ Composable function for the user profile screen.
+ It displays the user's profile information in an expandable format.
+ */
+
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileView(

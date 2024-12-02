@@ -22,6 +22,11 @@ import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
 
+/*
+ View model for the game edit screen.
+ It handles the admin creating, editing, and deleting game data.
+ */
+
 data class SimpleTeam(val id: String = "", val name: String = "") {
     override fun toString(): String {
         return name
@@ -87,6 +92,9 @@ class GameEditViewModel(private var gameId: Int, private var newGame: Boolean): 
         errorTitle.value = defaultErrorTitle
     }
 
+    //Initializes the view model and loads game data if editing an existing game.
+
+
     init {
         viewModelScope.launch {
             val league = LeagueAccessor.getLeagueById(GS.user!!.leagueID)
@@ -131,6 +139,7 @@ class GameEditViewModel(private var gameId: Int, private var newGame: Boolean): 
         }
     }
 
+    //write to firestore
     fun writeGame(context: Context, success: () -> Unit = {}) {
         val cal = Calendar.getInstance()
         val cal2 = Calendar.getInstance(TimeZone.getTimeZone("GMT"))
@@ -229,6 +238,8 @@ class GameEditViewModel(private var gameId: Int, private var newGame: Boolean): 
         }
     }
 
+
+    //Gets the coordinates of an address using the Geocoder.
     private suspend fun getCoordinatesFromAddress(context: Context, address: String): Pair<Double, Double> {
         val geocoder = Geocoder(context, Locale.getDefault())
         return withContext(Dispatchers.IO) {

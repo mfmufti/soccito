@@ -15,6 +15,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+/*
+ View model for the player roster screen.
+ It handles fetching and managing the player availability data.
+ */
+
+
 class PlayerRosterViewModel: PlayerHomeViewModel() {
     private var plrAvailability = mutableStateListOf<AvailView>()
     private var error = mutableStateOf("")
@@ -24,6 +30,8 @@ class PlayerRosterViewModel: PlayerHomeViewModel() {
     fun getError() = error
     fun getLoading() = loading
 
+
+    //Initializes the view model and fetches the player availability data.
     init {
         CoroutineScope(Dispatchers.IO).launch {
             TeamAccessor.getPlayerAvail(

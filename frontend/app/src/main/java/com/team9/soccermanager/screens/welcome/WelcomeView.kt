@@ -6,6 +6,8 @@ import androidx.compose.ui.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.unit.*
 
+/* Composable function for the welcome screen, login + resigter buttons */
+
 @Composable
 fun WelcomeView(
     switchToLogin: () -> Unit,

@@ -14,9 +14,17 @@ import com.team9.soccermanager.model.Team
 import com.team9.soccermanager.model.accessor.TeamAccessor
 import kotlinx.coroutines.tasks.await
 
+/*
+ View model for the coach home screen..
+ It handles data related to the coach's home screen, such as team information and announcements.
+ */
+
 open class CoachHomeViewModel : ViewModel() {
     var signedOut = false
     private var listener: ListenerRegistration? = null
+
+
+    //Initializes the view model and sets up a listener for team updates.
 
     init {
         viewModelScope.launch(Dispatchers.IO) {

@@ -21,6 +21,12 @@ import java.text.DateFormat.getDateTimeInstance
 import java.text.SimpleDateFormat
 import java.util.Locale
 
+/*
+ Composable function for the game schedule screen.
+ It displays a game schedule screen, showing a list
+  of upcoming and completed games.
+ */
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GameScheduleView(
@@ -91,19 +97,7 @@ fun GameScheduleView(
                     verticalArrangement = Arrangement.Top,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    // Delete when more games are added to database...
-//                    data class Game(val home: String, val away: String)
-//
-//                    val data = listOf(
-//                        Game("Leverkusen", "Bayern"),
-//                        Game("Chelsea", "Leverkusen"),
-//                        Game("Leverkusen", "Berlin"),
-//                        Game("Leverkusen", "Dortmund"),
-//                        Game("PSG", "Leverkusen"),
-//                        Game("Leverkusen", "PSG"),
-//                        Game("Leverkusen", "Liepzig"),
-//                        Game("Leverkusen", "Augsburg")
-//                    )
+
                     if (error.isNotEmpty()) {
                         Text(
                             text = error,
@@ -154,6 +148,12 @@ fun GameScheduleView(
     }
 }
 
+
+/*
+ Displays a list of games with their details.
+ @param games The list of games to display.
+ @param goToSpecificGame A callback function to navigate to the game-specific screen for a given game ID.
+ */
 @Composable
 private fun GameList(games: List<Game>, goToSpecificGame: (Int) -> Unit) {
     for (game in games) {

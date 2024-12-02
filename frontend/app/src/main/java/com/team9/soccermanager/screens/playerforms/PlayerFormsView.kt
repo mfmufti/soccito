@@ -52,6 +52,11 @@ import com.team9.soccermanager.ui.theme.success
 import java.text.DateFormat.getDateTimeInstance
 import kotlin.math.floor
 
+/*
+ Composable function for the player forms screen.
+ It displays a list of forms that the player can upload or download.
+ */
+
 @SuppressLint("DefaultLocale")
 @Composable
 fun PlayerFormsView(
@@ -150,6 +155,11 @@ fun PlayerFormsView(
     }
 }
 
+/*
+ Displays a list of forms for upload/download.
+ @param formUploads The list of form uploads.
+ @param uploadForm A callback function to upload a form.
+ */
 @Composable
 fun FormList(formUploads: List<SimpleFormUpload>, uploadForm: (Uri, ContentResolver, Int) -> Unit) {
     val ctx = LocalContext.current

@@ -7,12 +7,22 @@ import com.team9.soccermanager.model.TeamCodeError
 import com.team9.soccermanager.model.accessor.TeamAccessor
 import kotlinx.coroutines.launch
 
+/*
+ View model for the new player screen.
+ It handles validating and processing the team code entered by a new player.
+ */
+
 class NewPlayerViewModel : ViewModel() {
     private var teamCode = mutableStateOf("")
     private var error = mutableStateOf("")
 
     fun getTeamCode() = teamCode
     fun getError() = error
+
+    /*
+    Checks if the team code is valid and exists.
+    @param success A callback function to be invoked if the team code is valid.
+     */
 
     fun checkTeamCode(success: (String) -> Unit) {
         if (teamCode.value.isEmpty()) {

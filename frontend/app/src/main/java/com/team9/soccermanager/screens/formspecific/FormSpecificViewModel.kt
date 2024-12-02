@@ -13,6 +13,11 @@ import com.team9.soccermanager.model.Team
 import com.team9.soccermanager.model.accessor.TeamAccessor
 import com.team9.soccermanager.screens.playerhome.PlayerHomeViewModel
 
+/*
+  View model for the form-specific screen.
+  It handles displaying and managing form uploads.
+ */
+
 data class Upload(val name: String, val uploaded: Boolean, val time: Timestamp, val link: String) {
     constructor(name: String, uploaded: Boolean): this(name, uploaded, Timestamp.now(), "")
 }

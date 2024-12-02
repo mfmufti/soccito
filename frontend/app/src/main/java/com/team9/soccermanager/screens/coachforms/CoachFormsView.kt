@@ -47,6 +47,12 @@ import com.team9.soccermanager.model.MainScreens
 import com.team9.soccermanager.model.MenuScreens
 import com.team9.soccermanager.ui.composable.BarsWrapper
 
+/*
+  Composable function for the coach forms screen.
+  It displays a list of form dropboxes and allows the coach to create, delete, and view.
+ */
+
+
 @Composable
 fun CoachFormsView(
     viewModel: CoachFormsViewModel = remember { CoachFormsViewModel() },
@@ -195,7 +201,7 @@ fun CoachFormsView(
         }
     }
 }
-
+//List of form dropboxes
 @Composable
 private fun FormList(goToSpecificForm: (Int, String) -> Unit, askDelete: (Int) -> Unit, forms: List<Form>) {
     Column(

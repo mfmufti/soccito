@@ -23,6 +23,12 @@ import com.team9.soccermanager.model.MainScreens
 import com.team9.soccermanager.model.MenuScreens
 import com.team9.soccermanager.ui.composable.BarsWrapper
 
+/*
+ Composable function for the player roster screen.
+ It displays the list of players and their availability status.
+ */
+
+
 @Composable
 fun PlayerRosterView(
     viewModel: PlayerRosterViewModel = remember { PlayerRosterViewModel() },

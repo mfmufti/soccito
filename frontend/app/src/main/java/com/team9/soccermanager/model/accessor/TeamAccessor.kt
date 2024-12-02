@@ -28,6 +28,13 @@ import com.team9.soccermanager.model.TeamError
 import kotlinx.coroutines.tasks.await
 import java.util.UUID
 
+/*
+ `TeamAccessor`, provides data access methods for teams in the application.
+ It implements the `TeamDao` interface and interacts with Firestore and Firebase Storage
+ to manage team data, including team creation, retrieval, updates, form uploads,
+ player availability, and rankings.
+ */
+
 object TeamAccessor : TeamDao {
     private const val TEAM_COL = "teams"
     private const val LEAGUE_COL = "leagues"
@@ -51,6 +58,11 @@ object TeamAccessor : TeamDao {
         return _lastAccessedTeam
     }
 
+    /*
+     Adds a snapshot listener to a team document.
+     @param snapshotListener A callback function that is invoked whenever the team document changes.
+     @return A ListenerRegistration object that can be used to remove the listener.
+     */
     override fun addSnapshotListener(id: String, snapshotListener: (DocumentSnapshot?) -> Unit): ListenerRegistration {
         return Firebase.firestore.collection(TEAM_COL).document(id).addSnapshotListener({ a, b -> snapshotListener(a) })
     }
@@ -189,6 +201,12 @@ object TeamAccessor : TeamDao {
         }
     }
 
+    /*
+     Listens for updates to the current user's team.
+     @param onResult A callback function that is invoked whenever the team data changes.
+     @return A ListenerRegistration object that can be used to remove the listener.
+     */
+
     override suspend fun listenForUpdates(onResult: (Team) -> Unit): ListenerRegistration? {
         val id = getTeamById(GS.user?.teamID!!)?.id ?: return null
         val docRef = Firebase.firestore.collection(TEAM_COL).document(id)
@@ -276,6 +294,11 @@ object TeamAccessor : TeamDao {
         teamsList.sortByDescending { it.pts }
         onResult(teamsList)
     }
+
+    /*
+      Retrieves the notification tokens for all players in the current user's team.
+      @param onTokens A callback function that is invoked with the list of notification tokens.
+     */
 
     override fun getNotificationTokens(onTokens: (tokens: List<String>) -> Unit) {
         if (_lastAccessedTeam != null) {

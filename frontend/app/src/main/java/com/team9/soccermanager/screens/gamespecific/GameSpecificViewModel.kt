@@ -24,6 +24,11 @@ import kotlinx.coroutines.withContext
 import java.io.IOException
 import java.util.Locale
 
+/*
+ View model for the game-specific screen.
+ It handles fetching and displaying game details, including location. time, score and coach's notes.
+ */
+
 
 // The ViewModel stays the same
 class GameSpecificViewModel(gameIndex: Int) : PlayerHomeViewModel() {
@@ -34,6 +39,8 @@ class GameSpecificViewModel(gameIndex: Int) : PlayerHomeViewModel() {
     private val coachsNotes = mutableStateOf("")
     private val coachsNotesEditing = mutableStateOf("")
     private val errorEditing = mutableStateOf("")
+
+    //Initializes the view model and loads game location and coach's notes.
 
     init {
         loadGameLocation()

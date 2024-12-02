@@ -8,6 +8,12 @@ import androidx.compose.ui.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.unit.*
 
+/*
+ Composable function for the new coach screen.
+ It displays a form for entering a league code and team name to create a new team.
+ */
+
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewCoachView(

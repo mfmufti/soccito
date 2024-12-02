@@ -27,6 +27,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.team9.soccermanager.R
 
+/*
+ Composable function for the loading screen.
+ It displays a loading indicator while the app is initializing/loading.
+ */
+
 @Composable
 fun LoadView() {
     Box(

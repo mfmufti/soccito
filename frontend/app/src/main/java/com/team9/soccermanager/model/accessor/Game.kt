@@ -4,6 +4,11 @@ import com.google.firebase.Timestamp
 import com.google.firebase.firestore.GeoPoint
 import com.team9.soccermanager.model.GameStatus
 
+/* This file defines the Game data class, which represents a soccer game in
+ the application. It includes constructors, a function to convert the object
+ to a map, and a companion object with a factory method for creatingGame
+ instances. */
+
 data class Game(
     var id: Int,
     val address: String,

@@ -31,6 +31,8 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+/* Composable function for the registration screen. */
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegisterView(

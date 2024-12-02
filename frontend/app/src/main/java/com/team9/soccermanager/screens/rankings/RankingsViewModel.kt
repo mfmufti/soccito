@@ -20,7 +20,12 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
 
-class RankingsViewModel {
+/*
+  View model for the rankings screen.
+  It handles fetching and managing the ranking data.
+ */
+
+class    RankingsViewModel {
 
     //var teamsList = mutableStateListOf<TeamView>()
     private val loading = mutableStateOf(true)

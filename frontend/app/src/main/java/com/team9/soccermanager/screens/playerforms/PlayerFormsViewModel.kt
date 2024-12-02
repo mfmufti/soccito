@@ -20,6 +20,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlin.math.floor
 
+/*
+ View model for the player forms screen.
+ It handles fetching, managing, and uploading player forms.
+ */
+
 data class SimpleFormUpload(val formId: Int, val name: String, val uploaded: Boolean, val link: String, val timestamp: Timestamp)
 
 class PlayerFormsViewModel: PlayerHomeViewModel() {
@@ -41,6 +46,9 @@ class PlayerFormsViewModel: PlayerHomeViewModel() {
     fun getProgress() = progress
     fun getUploadError() = uploadError
 
+    /*
+     Initializes the view model and fetches the form uploads.
+     */
     init {
         val update = { team: Team ->
             formUploads.clear()
@@ -121,6 +129,10 @@ class PlayerFormsViewModel: PlayerHomeViewModel() {
     fun cancelUpload() {
         cancel()
     }
+
+    /*
+     Cleans up resources when the view model is cleared.
+     */
 
     override fun onCleared() {
         super.onCleared()

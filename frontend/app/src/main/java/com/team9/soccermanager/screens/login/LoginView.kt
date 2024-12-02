@@ -32,6 +32,12 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+/*
+ Composable function for the login screen.
+ It displays a form for user login and handles authentication.
+ */
+
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginView(

@@ -49,6 +49,11 @@ import com.team9.soccermanager.ui.theme.success
 import java.text.SimpleDateFormat
 import java.util.Locale
 
+/*
+ Composable function for the game-specific screen.
+ It displays detailed information about a specific game, including location, score, and coach's notes.
+ */
+
 @Composable
 fun GameSpecificView(
     gameId: Int,
