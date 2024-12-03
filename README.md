@@ -41,7 +41,7 @@ ADD SCREENSHOT
 <a href="https://drive.google.com/file/d/1QxkoeMtOnvWzfLRmXFyQlbR0eh4QM5T4/view?usp=sharing">Version 1.3.0 Download</a>
 
 ## User Documentation
-<a href="https://git.uwaterloo.ca/mw2shah/team-9/-/releases/1.1.0">Release 1.1.0</a>\
+<a href="https://git.uwaterloo.ca/mw2shah/team-9/-/wikis/User-Documentation"">User Documentation</a>\
 
 ## Meeting Notes
-<a href="https://git.uwaterloo.ca/mw2shah/team-9/-/wikis/User-Documentation">User Documentation</a>
+<a href="https://git.uwaterloo.ca/mw2shah/team-9/-/wikis/Meeting-Notes">Meeting Notes</a>
