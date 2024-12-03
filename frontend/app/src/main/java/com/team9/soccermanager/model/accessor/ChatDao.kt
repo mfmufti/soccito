@@ -3,6 +3,11 @@ package com.team9.soccermanager.model.accessor
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ListenerRegistration
 
+/*
+ Defines data classes and an interface for accessing chat-related data.
+ It includes data classes for Chat, Message, and ChatMessage, as well as an interface called ChatDao for performing chat-related operations.
+ */
+
 data class Chat(val name: String, val type: String, val userRef: DocumentReference, var read: Boolean)
 data class Message(val right: Boolean, var text: String, var time: Long)
 data class ChatMessage(val from: DocumentReference, var text: String, var time: Long)

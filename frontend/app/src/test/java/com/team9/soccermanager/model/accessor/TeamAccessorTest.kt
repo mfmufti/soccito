@@ -18,6 +18,7 @@ class TeamTest {
         mockkObject(TeamAccessor)
     }
 
+    // Tests the getTeamById function by verifying it returns the correct team with the given ID.
     @Test
     fun `test getTeamById`() = runTest {
         val mockTeam = mockk<Team>()
@@ -28,6 +29,7 @@ class TeamTest {
         assertEquals("Barcelona", team?.name)
     }
 
+    // Tests the addSnapshotListener function by verifying it returns a ListenerRegistration object.
     @Test
     fun `test addSnapshotListener`() {
         val mockListener = mockk<ListenerRegistration>()
@@ -39,6 +41,7 @@ class TeamTest {
         assertEquals(mockListener, result)
     }
 
+    // Tests the getTeamByInviteCode function by verifying it returns the correct team with the given invite code.
     @Test
     fun `test getTeamByInviteCode`() = runTest {
         val mockTeam = mockk<Team>()
@@ -51,6 +54,7 @@ class TeamTest {
         assertEquals("MockTeam", result?.name)
     }
 
+    // Tests the createTeam function by verifying it creates a new team with the given name and league ID.
     @Test
     fun `test createTeam`() = runTest {
         val mockTeam = mockk<Team>()
@@ -63,6 +67,7 @@ class TeamTest {
         assertEquals("New Team", result?.name)
     }
 
+    // Tests the teamExists function by verifying it returns the correct error code when a team with the given name and league ID already exists.
     @Test
     fun `test teamExists`() = runTest {
         coEvery { TeamAccessor.teamExists("teamName", "leagueId") } returns TeamError.EXISTS
@@ -72,6 +77,7 @@ class TeamTest {
         assertEquals(TeamError.EXISTS, result)
     }
 
+    // Tests the teamCodeExists function by verifying it returns the correct error code when a team with the given invite code already exists.
     @Test
     fun `test teamCodeExists`() = runTest {
         coEvery { TeamAccessor.teamCodeExists("mockCode") } returns TeamCodeError.NONE
@@ -81,6 +87,7 @@ class TeamTest {
         assertEquals(TeamCodeError.NONE, result)
     }
 
+    // Tests the uploadForm function by verifying it successfully uploads a form.
     @Test
     fun `test updateTeam`() = runTest {
         coEvery { TeamAccessor.updateTeam(any()) } returns true
@@ -90,6 +97,7 @@ class TeamTest {
         assertTrue(result)
     }
 
+    // Tests the listenForUpdates function by verifying it returns a ListenerRegistration object.
     @Test
     fun `test uploadForm`() = runTest {
         coEvery {
@@ -103,6 +111,7 @@ class TeamTest {
         // No assertion needed, as the function is mocked to do nothing.
     }
 
+    // Tests the updateUserAvail function by verifying it successfully updates a user's availability.
     @Test
     fun `test listenForUpdates`() = runTest {
         val mockListener = mockk<ListenerRegistration>()
@@ -114,6 +123,7 @@ class TeamTest {
         assertEquals(mockListener, result)
     }
 
+    // Tests the updateUserAvail function by verifying it successfully updates a user's availability.
     @Test
     fun `test updateUserAvail`() = runTest {
         justRun { TeamAccessor.updateUserAvail("mockId", any(), "mockReason") }
@@ -124,6 +134,7 @@ class TeamTest {
         verify { TeamAccessor.updateUserAvail("mockId", any(), "mockReason") }
     }
 
+    // Tests the getPlayerAvail function by verifying it successfully retrieves player availability data.
     @Test
     fun `test getPlayerAvail`() = runTest {
         coEvery {
@@ -138,6 +149,7 @@ class TeamTest {
         )
     }
 
+    // Tests the getNotificationTokens function by verifying it successfully retrieves notification tokens for team members.
     @Test
     fun `test getNotificationTokens`() = runTest  {
         justRun { TeamAccessor.getNotificationTokens(any()) }

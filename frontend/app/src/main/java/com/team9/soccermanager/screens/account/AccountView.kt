@@ -30,6 +30,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+/*
+ Composable function for the account screen.
+ It allows users to change their password and full name.
+ */
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AccountView(

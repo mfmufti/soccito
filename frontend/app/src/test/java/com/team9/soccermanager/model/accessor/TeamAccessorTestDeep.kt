@@ -68,6 +68,7 @@ class TeamAccessorTestDeep {
         }
     }
 
+    // Tests the getTeamById function by verifying it retrieves the correct team from Firestore based on the provided team ID.
     @Test
     fun getTeamById() = runTest {
         val mockRepo = mockk<FirebaseFirestore>()
@@ -80,6 +81,7 @@ class TeamAccessorTestDeep {
         assertEquals(TeamAccessor.getTeamById("teamxyz"), team)
     }
 
+    // Tests the createTeam function by verifying it creates a new team document in Firestore with the correct data and returns the newly created team object.
     @Test
     fun `createTeam creates and returns new team`() = runTest {
         val teamName = "New Team"
@@ -112,6 +114,7 @@ class TeamAccessorTestDeep {
         verify { mockAuth.uid }
     }
 
+    // Tests the teamExists function by verifying it checks if a team with the given name already exists in the specified league.
     @Test
     fun teamExistsTest() = runTest {
         val mockFirestore = mockk<FirebaseFirestore>()
@@ -167,6 +170,7 @@ class TeamAccessorTestDeep {
         assertEquals(TeamError.EXISTS, result)
     }
 
+    // Tests the teamCodeExists function by verifying it handles different scenarios: network error, team code exists, and team code does not exist.
     @Test
     fun `teamCodeExists handles network error, exists and non-existing cases`() = runTest {
         val mockDocumentSnapshot: DocumentSnapshot = mockk(relaxed = true)
@@ -214,6 +218,7 @@ class TeamAccessorTestDeep {
         assertEquals(TeamCodeError.NOT_EXIST, resultNotExists)
     }
 
+    // Tests the updateTeam function by verifying it updates the team document in Firestore with the provided data and returns true on success.
     @Test
     fun `updateTeam updates team and returns true`() = runTest {
         val mockTask = getMockTask2()
