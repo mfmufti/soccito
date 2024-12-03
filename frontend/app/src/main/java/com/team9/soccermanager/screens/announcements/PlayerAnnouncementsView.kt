@@ -82,24 +82,22 @@ fun AnnouncementList(announcements: List<Announcement>) {
                         .padding(20.dp)
                         .fillMaxWidth(),
                 ) {
-                    /*
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = if (announcement.authorName.length <= 20) {
+                            text = if (announcement.authorName.length <= 17) {
                                     announcement.authorName
                                 } else {
-                                    announcement.authorName.take(20) + "..."
+                                    announcement.authorName.take(17) + "..."
                             },
                             style = MaterialTheme.typography.titleMedium,
                             color = MaterialTheme.colorScheme.primary,
                             fontWeight = FontWeight.Bold
                         )
                     }
-                     */
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
                         text = announcement.content,
