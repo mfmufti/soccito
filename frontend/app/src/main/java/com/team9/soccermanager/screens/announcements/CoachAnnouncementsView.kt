@@ -79,7 +79,7 @@ fun CoachAnnouncementsView(
                             value = announcementContent,
                             onValueChange = { announcementContent = it },
                             label = { Text("Enter text") },
-                            maxLines = 2,
+                            maxLines = 4,
                             modifier = Modifier.padding(20.dp)
                         )
                     },

@@ -3,6 +3,7 @@ package com.team9.soccermanager.model.accessor
 import com.team9.soccermanager.model.GameError
 import com.team9.soccermanager.model.League
 import com.team9.soccermanager.model.LeagueError
+import com.team9.soccermanager.model.RankingRow
 
 /*
   `LeagueDao`, defines the data access methods for leagues in the application.
@@ -21,4 +22,5 @@ interface LeagueDao {
     fun getGameFromLoaded(id: Int): Game
     suspend fun writeGame(game: Game, newGame: Boolean = false): GameError
     suspend fun deleteGame(gameId: Int): GameError
+    suspend fun getRankingsData(onResult: (List<RankingRow>) -> Unit)
 }

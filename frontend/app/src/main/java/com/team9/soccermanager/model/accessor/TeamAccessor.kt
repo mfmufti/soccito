@@ -17,11 +17,10 @@ import com.google.firebase.firestore.toObject
 import com.google.firebase.storage.FirebaseStorage
 import com.team9.soccermanager.model.AvailView
 import com.team9.soccermanager.model.Availability
-import com.team9.soccermanager.model.Form
 import com.team9.soccermanager.model.FormUpload
 import com.team9.soccermanager.model.GS
 import com.team9.soccermanager.model.PlrAvail
-import com.team9.soccermanager.model.RankingView
+import com.team9.soccermanager.model.RankingRow
 import com.team9.soccermanager.model.Team
 import com.team9.soccermanager.model.TeamCodeError
 import com.team9.soccermanager.model.TeamError
@@ -54,7 +53,6 @@ object TeamAccessor : TeamDao {
                 _lastAccessedTeam = null
             }
         }
-//        println("returning ...")
         return _lastAccessedTeam
     }
 
@@ -244,7 +242,6 @@ object TeamAccessor : TeamDao {
             }
             if (currTeam.data == null) {
                 onError(TeamError.UNKNOWN)
-                println("here1")
                 return
             }
             val res: MutableList<AvailView> = mutableListOf()
@@ -253,7 +250,6 @@ object TeamAccessor : TeamDao {
                 val currPlr = db.collection(USER_COL).document(currPid).get().await()
                 if (currPlr.data == null) {
                     onError(TeamError.UNKNOWN)
-                    println("here2")
                     return
                 }
                 val currPlrName = currPlr.data!!["fullname"] as String
@@ -263,42 +259,8 @@ object TeamAccessor : TeamDao {
             onResult(res)
         } catch(e: Exception) {
             onError(TeamError.UNKNOWN)
-            println("here3")
         }
     }
-
-    override suspend fun getRankingsData(onResult: (List<RankingView>) -> Unit) {
-        val db = Firebase.firestore
-        val teamsList = mutableStateListOf<RankingView>()
-        try {
-            val leagueDocument = db.collection(LEAGUE_COL).document(GS.user!!.leagueID).get().await()
-            val tList = leagueDocument.data?.get("teamIds") as? List<*>
-            if (tList != null) {
-                for (t in tList) {
-                    val teamDocument = db.collection("teams").document(t as String).get().await()
-                    if (teamDocument.data != null) {
-                        val tid = teamDocument.data!!["id"] as String
-                        val currName = teamDocument.data!!["name"] as String
-                        val gp = teamDocument.data!!["gamesPlayed"] as Long
-                        val wins = teamDocument.data!!["wins"] as Long
-                        val losses = teamDocument.data!!["losses"] as Long
-                        val draws = teamDocument.data!!["draws"] as Long
-                        val pts = teamDocument.data!!["points"] as Long
-                        teamsList.add(RankingView(tid, currName, gp, wins, losses, draws, pts))
-                    }
-                }
-            }
-        } catch (e: Exception) {
-            println("Error: ${e.message}")
-        }
-        teamsList.sortByDescending { it.pts }
-        onResult(teamsList)
-    }
-
-    /*
-      Retrieves the notification tokens for all players in the current user's team.
-      @param onTokens A callback function that is invoked with the list of notification tokens.
-     */
 
     override fun getNotificationTokens(onTokens: (tokens: List<String>) -> Unit) {
         if (_lastAccessedTeam != null) {
@@ -310,7 +272,6 @@ object TeamAccessor : TeamDao {
                         onTokens(snapshot.documents.mapNotNull { document -> document.getString("notificationToken") }.distinct())
                     }
                 }
-
         }
     }
 }

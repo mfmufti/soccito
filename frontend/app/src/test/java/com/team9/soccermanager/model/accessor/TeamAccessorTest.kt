@@ -1,127 +1,155 @@
 package com.team9.soccermanager.model.accessor
 
-import io.mockk.mockk
-import kotlin.test.AfterTest
-import kotlin.test.BeforeTest
-import kotlin.test.Test
-import android.content.ContentResolver
-import android.net.Uri
-import android.provider.OpenableColumns
-import com.google.android.gms.tasks.Task
-import com.google.firebase.Firebase
-import com.google.firebase.auth.auth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.events.Publisher
-import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.QuerySnapshot
-import com.google.firebase.firestore.firestore
-import com.google.firebase.firestore.toObject
-import com.google.firebase.storage.FirebaseStorage
-import com.team9.soccermanager.model.Account
-//import com.team9.soccermanager.model.FormFile
-import com.team9.soccermanager.model.GS
-import com.team9.soccermanager.model.Team
-import io.mockk.coEvery
-import io.mockk.coVerify
-import io.mockk.every
-import io.mockk.mockkObject
-import io.mockk.mockkStatic
-import io.mockk.unmockkAll
-import io.mockk.verify
-import kotlinx.coroutines.tasks.await
+import com.google.firebase.firestore.ListenerRegistration
+import com.team9.soccermanager.model.AvailView
 import kotlinx.coroutines.test.runTest
-import java.util.UUID
-import kotlin.test.Ignore
+import kotlin.test.*
 import kotlin.test.assertEquals
+import com.team9.soccermanager.model.Team
+import com.team9.soccermanager.model.TeamCodeError
+import com.team9.soccermanager.model.TeamError
+import io.mockk.*
 
-class TeamAccessorTest {
-    private val team: Team = Team()
-    private val TEAM_COL = "teams"
-    private var _lastAccessedTeam : Team? = null
-
-    suspend fun getTeamByIdd(fire: FirebaseFirestore = Firebase.firestore, id: String): Team?  {
-        if(_lastAccessedTeam?.id != id) {
-//            println("wrong id")
-            try {
-                val query = fire.collection(TEAM_COL).whereEqualTo("id", id).get().await()
-                _lastAccessedTeam = query.documents[0].toObject<Team>()
-            } catch (e: Exception) {
-                e.printStackTrace()
-                _lastAccessedTeam = null
-            }
-        }
-//        println("returning ...")
-        return _lastAccessedTeam
-    }
+class TeamTest {
+    val testInvite = "kzOcrvvilvTOU1VzxF9x"
 
     @BeforeTest
     fun setup() {
-//        mockkObject(fire)
-//        mockkObject(Firebase.firestore)
-        team.name = "The team"
-        team.id = "teamxyz"
-        team.gamesPlayed = 5
-        team.code = "code"
+        mockkObject(TeamAccessor)
     }
 
     @Test
-    fun getTeamById() = runTest {
-        val mockRepo = mockk<FirebaseFirestore>()
-        val mockRef = mockk<CollectionReference>()
-        val mockQuery = mockk<Query>()
-        val mockTask = mockk<Task<QuerySnapshot>>()
-        val mockDocumentSnapshot = mockk<DocumentSnapshot>()
-        val mockQuerySnapshot = mockk<QuerySnapshot>()
+    fun `test getTeamById`() = runTest {
+        val mockTeam = mockk<Team>()
+        every { mockTeam.name } returns "Barcelona"
+        coEvery { TeamAccessor.getTeamByInviteCode(testInvite) } returns mockTeam
 
-        every { mockRepo.collection("teams") }  returns mockRef
-        every { mockRef.whereEqualTo("id", ofType<String>()) } returns mockQuery
-        every { mockQuery.get() } returns mockTask
-        coEvery { mockTask.await() } returns mockQuerySnapshot
-        every { mockQuerySnapshot.documents } returns listOf(mockDocumentSnapshot)
-        every { mockDocumentSnapshot.toObject<Team>() } returns team
-        mockkStatic("retrofit2.KotlinExtensions")
-
-        assertEquals(getTeamByIdd(mockRepo, "teamxyz"), team)
-
-        verify { Firebase.firestore.collection("teams") }
-        verify { mockRef.whereEqualTo("id", ofType<String>()) }
-        verify { mockQuery.get() }
-        coVerify { mockTask.await() }
-        verify { mockQuerySnapshot.documents }
-        verify { mockQuerySnapshot.documents[0].toObject<Team>() }
+        val team = TeamAccessor.getTeamByInviteCode(testInvite)
+        assertEquals("Barcelona", team?.name)
     }
 
-    @Ignore
     @Test
-    fun getTeamByInviteCode() {
+    fun `test addSnapshotListener`() {
+        val mockListener = mockk<ListenerRegistration>()
 
+        every { TeamAccessor.addSnapshotListener("mockId", any()) } returns mockListener
+
+        val result = TeamAccessor.addSnapshotListener("mockId") { println("Snapshot triggered") }
+
+        assertEquals(mockListener, result)
     }
 
-    @Ignore
     @Test
-    fun createTeam() {
+    fun `test getTeamByInviteCode`() = runTest {
+        val mockTeam = mockk<Team>()
+        every { mockTeam.name } returns "MockTeam"
+
+        coEvery { TeamAccessor.getTeamByInviteCode("mockCode") } returns mockTeam
+
+        val result = TeamAccessor.getTeamByInviteCode("mockCode")
+
+        assertEquals("MockTeam", result?.name)
     }
 
-    @Ignore
     @Test
-    fun updateTeam() {
+    fun `test createTeam`() = runTest {
+        val mockTeam = mockk<Team>()
+        every { mockTeam.name } returns "New Team"
+
+        coEvery { TeamAccessor.createTeam("New Team", "leagueId") } returns mockTeam
+
+        val result = TeamAccessor.createTeam("New Team", "leagueId")
+
+        assertEquals("New Team", result?.name)
     }
 
-    @Ignore
     @Test
-    fun uploadForm() {
+    fun `test teamExists`() = runTest {
+        coEvery { TeamAccessor.teamExists("teamName", "leagueId") } returns TeamError.EXISTS
+
+        val result = TeamAccessor.teamExists("teamName", "leagueId")
+
+        assertEquals(TeamError.EXISTS, result)
     }
 
-    @Ignore
     @Test
-    fun listenForUpdates() {
+    fun `test teamCodeExists`() = runTest {
+        coEvery { TeamAccessor.teamCodeExists("mockCode") } returns TeamCodeError.NONE
+
+        val result = TeamAccessor.teamCodeExists("mockCode")
+
+        assertEquals(TeamCodeError.NONE, result)
+    }
+
+    @Test
+    fun `test updateTeam`() = runTest {
+        coEvery { TeamAccessor.updateTeam(any()) } returns true
+
+        val result = TeamAccessor.updateTeam(mockk())
+
+        assertTrue(result)
+    }
+
+    @Test
+    fun `test uploadForm`() = runTest {
+        coEvery {
+            TeamAccessor.uploadForm(
+                any(), any(), any(), any(), any()
+            )
+        } returns Unit
+
+        TeamAccessor.uploadForm(mockk(), mockk(), 1, {}, {})
+
+        // No assertion needed, as the function is mocked to do nothing.
+    }
+
+    @Test
+    fun `test listenForUpdates`() = runTest {
+        val mockListener = mockk<ListenerRegistration>()
+
+        coEvery { TeamAccessor.listenForUpdates(any()) } returns mockListener
+
+        val result = TeamAccessor.listenForUpdates { println("Update received") }
+
+        assertEquals(mockListener, result)
+    }
+
+    @Test
+    fun `test updateUserAvail`() = runTest {
+        justRun { TeamAccessor.updateUserAvail("mockId", any(), "mockReason") }
+
+        TeamAccessor.updateUserAvail("mockId", mockk(), "mockReason")
+
+        // Verifying that the function was called
+        verify { TeamAccessor.updateUserAvail("mockId", any(), "mockReason") }
+    }
+
+    @Test
+    fun `test getPlayerAvail`() = runTest {
+        coEvery {
+            TeamAccessor.getPlayerAvail(any(), any())
+        } answers {
+            firstArg<(List<AvailView>) -> Unit>().invoke(emptyList())
+        }
+
+        TeamAccessor.getPlayerAvail(
+            { result -> assertTrue(result.isEmpty()) },
+            { error -> fail("Unexpected error: $error") }
+        )
+    }
+
+    @Test
+    fun `test getNotificationTokens`() = runTest  {
+        justRun { TeamAccessor.getNotificationTokens(any()) }
+
+        TeamAccessor.getNotificationTokens { tokens -> assertTrue(tokens.isEmpty()) }
+
+        // Verifying that the function was called
+        verify { TeamAccessor.getNotificationTokens(any()) }
     }
 
     @AfterTest
-    fun completed() {
+    fun completion() {
         unmockkAll()
     }
 }

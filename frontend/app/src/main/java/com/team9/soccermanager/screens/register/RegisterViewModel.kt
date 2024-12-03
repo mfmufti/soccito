@@ -33,11 +33,17 @@ class RegisterViewModel(val type: String, val other: Map<String, String>): ViewM
     fun getError() = errorState
 
     fun handleRegister(success: () -> Unit) {
-        if (fullname.isEmpty() || email.isEmpty() || password.isEmpty()) {
+        if (fullname.isBlank() || email.isBlank() || password.isBlank()) {
             error = "Please fill all fields"
             return
         }
-        Account.createAccount(type, fullname, email, password) { status ->
+
+        if (fullname.trim().length > 25) {
+            error = "Fullname must be less than 26 characters"
+            return
+        }
+
+        Account.createAccount(type, fullname.trim(), email.trim(), password) { status ->
             if (status == RegisterError.NONE) {
                 when (type) {
                     "admin" -> createLeague(other["leagueName"]!!, success)

@@ -10,7 +10,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.*
 import com.team9.soccermanager.model.MainScreens
 import com.team9.soccermanager.model.MenuScreens
@@ -79,30 +81,43 @@ fun ChatSelectView(
                 } else {
                     for (index in 0..<chats.size) {
                         val chat = chats[index]
-                        Button(
-                            modifier = Modifier
-                                .fillMaxWidth(),
-                            onClick = { viewModel.switchToChat(index, goToChat) },
-                            shape = RoundedCornerShape(15.dp, 15.dp, 15.dp, 15.dp),
-                            colors = ButtonDefaults.filledTonalButtonColors(),
-                            contentPadding = PaddingValues(16.dp)
+
+                        BadgedBox(
+                            badge = {
+                                if (!chat.read) {
+                                    Badge(
+                                        containerColor = Color.Red,
+                                        modifier = Modifier.size(18.dp)
+                                    )
+                                }
+                            }
                         ) {
-                            Column(
-                                horizontalAlignment = Alignment.CenterHorizontally,
+                            Button(
                                 modifier = Modifier
-                                    .fillMaxWidth()
+                                    .fillMaxWidth(),
+                                onClick = { viewModel.switchToChat(index, goToChat) },
+                                shape = RoundedCornerShape(15.dp, 15.dp, 15.dp, 15.dp),
+                                colors = ButtonDefaults.filledTonalButtonColors(),
+                                contentPadding = PaddingValues(16.dp)
                             ) {
-                                Text(
-                                    text = chat.name,
-                                    fontSize = 30.sp
-                                )
-                                Text(
-                                    text = chat.type,
-                                    fontSize = 12.sp
-                                )
+                                Column(
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                ) {
+                                    Text(
+                                        text = chat.name,
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis,
+                                        fontSize = 30.sp
+                                    )
+                                    Text(
+                                        text = chat.type,
+                                        fontSize = 12.sp
+                                    )
+                                }
                             }
                         }
-
                         Spacer(modifier = Modifier.height(8.dp))
                     }
                 }

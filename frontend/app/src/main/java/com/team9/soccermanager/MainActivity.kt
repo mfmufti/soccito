@@ -202,7 +202,7 @@ fun App(navController: NavHostController = rememberNavController(), askForNotifi
     if (Account.isLoggedIn()) {
         Account.setupGS {
             start = when(GS.user?.type) {
-                "admin" -> PlayerHomeScreen
+                "admin" -> AdminHomeScreen
                 "player" -> PlayerHomeScreen
                 else -> CoachHomeScreen
             }
@@ -459,7 +459,7 @@ fun App(navController: NavHostController = rememberNavController(), askForNotifi
                 switchToWelcome = { nav.clearSwitch(WelcomeScreen) },
                 switchMainScreen = switchMainScreen,
                 switchMenuScreen = switchMenuScreen,
-                goToChat = { chatID, fullname -> nav.switch(ChatScreen(chatID, fullname))},
+                goToChat = { chatID, fullname -> nav.clearSwitch(ChatScreen(chatID, fullname))},
             )
         }
         composable<ProfileScreen> {

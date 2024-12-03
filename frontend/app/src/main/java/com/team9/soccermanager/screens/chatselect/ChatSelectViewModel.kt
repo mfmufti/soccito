@@ -9,6 +9,10 @@ import com.team9.soccermanager.model.GS
 import com.team9.soccermanager.model.accessor.Chat
 import com.team9.soccermanager.model.accessor.ChatAccessor
 import com.team9.soccermanager.screens.playerhome.PlayerHomeViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 /*
    View model for the chat selection screen.
@@ -31,7 +35,10 @@ class ChatSelectViewModel: PlayerHomeViewModel() {
     }
     //Initializes the view model and loads the list of chats.
     init {
-        ChatAccessor.loadChats({ chats.addAll(it); loading.value = false }, { error.value = true })
+        CoroutineScope(Dispatchers.Main).launch {
+            delay(1000)
+            ChatAccessor.loadChats({ chats.addAll(it); loading.value = false }, { error.value = true })
+        }
     }
 
     fun switchToChat(index: Int, switchToChat: (String, String) -> Unit) {

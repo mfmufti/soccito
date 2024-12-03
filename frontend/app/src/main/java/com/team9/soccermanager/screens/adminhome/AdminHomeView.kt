@@ -65,7 +65,7 @@ fun AdminHomeView(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(text = "Hello $fullname", style = TextStyle(fontSize = 30.sp))
+            Text(text = "Hello $fullname", style = TextStyle(fontSize = 30.sp), textAlign = TextAlign.Center, modifier = Modifier.padding(8.dp))
             Spacer(modifier = Modifier.height(15.dp))
 
             Box(modifier = Modifier.padding(16.dp)) {

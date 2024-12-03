@@ -81,14 +81,14 @@ fun PlayerHomeView(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(text = "Hello $fullname", style = TextStyle(fontSize = 30.sp))
+            Text(text = "Hello $fullname", style = TextStyle(fontSize = 30.sp), textAlign = TextAlign.Center, modifier = Modifier.padding(8.dp))
             Spacer(modifier = Modifier.height(15.dp))
 
             OutlinedCard(
                 modifier = Modifier
                     .padding(16.dp)
                     .fillMaxWidth()
-                    .height(200.dp),
+                    .height(220.dp),
                 shape = RoundedCornerShape(8.dp),
                 border = BorderStroke(1.dp, Color.Gray)
             ) {
@@ -130,14 +130,11 @@ fun PlayerHomeView(
                                 ) {
                                     Text(
                                         text = announcement.authorName,
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis,
                                         style = MaterialTheme.typography.titleMedium,
                                         color = MaterialTheme.colorScheme.primary,
                                         fontWeight = FontWeight.Bold
-                                    )
-                                    Text(
-                                        text = getDateTimeInstance().format(announcement.datePosted),
-                                        style = MaterialTheme.typography.bodySmall,
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
                                 }
                                 Spacer(modifier = Modifier.height(12.dp))
@@ -147,6 +144,12 @@ fun PlayerHomeView(
                                     color = MaterialTheme.colorScheme.onSurface,
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis
+                                )
+                                Spacer(modifier = Modifier.height(10.dp))
+                                Text(
+                                    text = getDateTimeInstance().format(announcement.datePosted),
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             }
                         }
@@ -158,7 +161,7 @@ fun PlayerHomeView(
                         ),
                         modifier = Modifier
                             .align(Alignment.BottomEnd)
-                            .padding(top = 7.dp, end = 2.dp)
+                            .padding(top = 17.dp, end = 2.dp)
                     ) {
                         Text(
                             text = "View More"

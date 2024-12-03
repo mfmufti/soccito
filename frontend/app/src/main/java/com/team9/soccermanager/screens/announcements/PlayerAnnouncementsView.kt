@@ -8,7 +8,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.*
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.*
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.team9.soccermanager.model.Announcement
@@ -59,6 +63,16 @@ fun AnnouncementList(announcements: List<Announcement>) {
             .fillMaxSize()
             .padding(16.dp),
     ) {
+        if (announcements.isEmpty()) {
+            Box(
+                modifier = Modifier.padding(16.dp)
+                    .fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(text = "No announcements currently...", textAlign = TextAlign.Center, fontStyle = FontStyle.Italic)
+            }
+        }
+
         for (announcement in announcements) {
             Card(
                 modifier = Modifier
@@ -82,14 +96,11 @@ fun AnnouncementList(announcements: List<Announcement>) {
                     ) {
                         Text(
                             text = announcement.authorName,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                             style = MaterialTheme.typography.titleMedium,
                             color = MaterialTheme.colorScheme.primary,
                             fontWeight = FontWeight.Bold
-                        )
-                        Text(
-                            text = getDateTimeInstance().format(announcement.datePosted),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                     Spacer(modifier = Modifier.height(12.dp))
@@ -97,6 +108,12 @@ fun AnnouncementList(announcements: List<Announcement>) {
                         text = announcement.content,
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurface
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Text(
+                        text = getDateTimeInstance().format(announcement.datePosted),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }

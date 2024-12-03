@@ -1,5 +1,6 @@
 package com.team9.soccermanager.screens.chat
 
+import android.icu.text.DateFormat.getDateTimeInstance
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -16,6 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.*
@@ -34,7 +36,7 @@ fun ChatView(
     //ID of chat to display
     chatID: String,
     fullname: String,
-    viewModel: ChatViewModel = ChatViewModel(chatID),
+    viewModel: ChatViewModel = ChatViewModel(chatID) ,
     switchToWelcome: () -> Unit,
     switchMainScreen: (MainScreens) -> Unit,
     switchMenuScreen: (MenuScreens) -> Unit
@@ -51,7 +53,7 @@ fun ChatView(
         signOut = { viewModel.signOut(); switchToWelcome() },
         switchMainScreen = switchMainScreen,
         switchMenuScreen = switchMenuScreen,
-        allowBack = true,
+        allowBack = true
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -106,25 +108,35 @@ private fun Chat(paddingValues: PaddingValues, messages: MutableList<Message>, v
                 val arrangement = if (m.right) Arrangement.End else Arrangement.Start
                 val color = if (m.right) MaterialTheme.colorScheme.inversePrimary else MaterialTheme.colorScheme.inverseOnSurface
 
-                Row(
-                    horizontalArrangement = arrangement,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .clip(shape = RoundedCornerShape(10.dp))
-                            .background(color)
-                            .fillMaxWidth(0.8f)
-                            .padding(10.dp)
+                Column {
+                    Row(
+                        horizontalArrangement = arrangement,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .clip(shape = RoundedCornerShape(10.dp))
+                                .background(color)
+                                .fillMaxWidth(0.8f)
+                                .padding(10.dp)
+                        ) {
+                            Text(
+                                text = m.text,
+                                fontSize = 16.sp,
+                            )
+                        }
+                    }
+                    Row(horizontalArrangement = arrangement,
+                        modifier = Modifier.fillMaxWidth()
                     ) {
                         Text(
-                            text = m.text,
-                            fontSize = 16.sp,
+                            text = getDateTimeInstance().format(m.time),
+                            fontSize = 10.sp
                         )
                     }
                 }
 
-                Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(13.dp))
             }
         }
 
@@ -168,7 +180,7 @@ private fun Chat(paddingValues: PaddingValues, messages: MutableList<Message>, v
 
                 IconButton(
                     onClick = {
-                        if (newText.isNotEmpty()) {
+                        if (newText.isNotBlank()) {
                             viewModel.sendMessage(newText)
                             newText = ""
                         }

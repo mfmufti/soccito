@@ -17,7 +17,6 @@ data class PlrAvail(val avail: Availability, val reason: String) {
 
 data class User(
     var id: String,
-    //var playerAvail: PlrAvail,
     var email: String,
     var fullname: String,
     var leagueID: String,
@@ -30,5 +29,5 @@ data class User(
     var lastAnnouncementViewTime: Long
 ) {
     // need to provide no-arg constructor to support deserialization with Firebase
-    constructor() : this("", /*PlrAvail(),*/"", "", "", "", "", "", "", listOf(), "", 0)
+    constructor() : this("", "", "", "", "", "", "", "", listOf(), "", 0)
 }
