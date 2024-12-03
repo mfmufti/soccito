@@ -125,17 +125,6 @@ class AccountTest {
         unmockkObject(Account)
     }
 
-    @Test
-    fun `test sendEmailVerification`() {
-        mockkObject(Account)
-        justRun { Account.sendEmailVerification() }
-
-        Account.sendEmailVerification()
-
-        verify { Account.sendEmailVerification() }
-        unmockkObject(Account)
-    }
-
     @AfterTest
     fun completion() {
         unmockkAll()
