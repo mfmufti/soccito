@@ -64,6 +64,11 @@ import com.team9.soccermanager.model.MenuScreens
 import com.team9.soccermanager.model.PlrAvail
 import com.team9.soccermanager.ui.composable.BarsWrapper
 
+/*
+  Composable function for the coach roster screen..
+  It displays a list of players and their availability, allowing the coach to edit it.
+ */
+
 @Composable
 fun CoachRosterView(
     viewModel: CoachRosterViewModel = remember { CoachRosterViewModel() },
@@ -195,6 +200,8 @@ fun CoachRosterView(
         }
     }
 }
+
+//Displays a dialog for editing player availability.
 
 @Composable
 fun ShowEditingDialog(currPlr: AvailView, dismiss: () -> Unit, handleSubmit: (String, Boolean, String, (String) -> Unit, () -> Unit) -> Unit) {

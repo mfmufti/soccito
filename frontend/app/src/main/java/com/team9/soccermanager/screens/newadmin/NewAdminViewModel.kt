@@ -12,12 +12,23 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+/*
+ View model for the new admin screen..
+ It handles validating and processing the league name entered by a new admin.
+ */
+
+
 class NewAdminViewModel : ViewModel() {
     private var league = mutableStateOf("")
     private var error = mutableStateOf("")
 
     fun getLeague() = league
     fun getError() = error
+
+    /*
+     Checks if the league name is valid and if the league already exists.
+     @param success A callback function to be invoked if the league name is valid and the league does not already exist.
+     */
 
     fun checkLeague(success: (String) -> Unit) {
         if (league.value.isBlank()) {

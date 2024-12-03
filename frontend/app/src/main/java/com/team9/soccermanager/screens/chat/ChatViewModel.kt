@@ -16,6 +16,11 @@ import com.team9.soccermanager.model.accessor.Message
 import com.team9.soccermanager.screens.playerhome.PlayerHomeViewModel
 import kotlinx.coroutines.runBlocking
 
+/*
+ View model for the chat screen.
+ It handles loading and displaying messages for a specific chat, + sending new messages.
+*/
+
 class ChatViewModel(private val chatID: String): PlayerHomeViewModel() {
     private val messages = mutableStateListOf<Message>()
     private var loading = mutableStateOf(true)

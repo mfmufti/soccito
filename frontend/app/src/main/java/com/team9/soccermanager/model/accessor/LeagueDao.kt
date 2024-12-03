@@ -5,6 +5,12 @@ import com.team9.soccermanager.model.League
 import com.team9.soccermanager.model.LeagueError
 import com.team9.soccermanager.model.RankingRow
 
+/*
+  `LeagueDao`, defines the data access methods for leagues in the application.
+  Implementations of this interface will provide the logic for interacting with the data source
+  (firestore in this case) to manage league-related data.
+ */
+
 interface LeagueDao {
     suspend fun getLeagueById(id: String) : League?
     suspend fun getLeagueByInviteCode(code: String) : League?

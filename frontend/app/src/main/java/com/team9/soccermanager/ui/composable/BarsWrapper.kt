@@ -80,6 +80,10 @@ import com.team9.soccermanager.model.MenuScreens
 import com.team9.soccermanager.model.accessor.ChatAccessor
 import kotlinx.coroutines.launch
 
+/* This file contains the BarsWrapper composable functions for UI elements used in the
+ application. This composable is used throughout the application to provide common elements including
+  navigation bars, navigation drawers, and notification buttons. */
+
 @Composable
 fun BarsWrapper(
     title: String = "",

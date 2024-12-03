@@ -32,6 +32,12 @@ import com.team9.soccermanager.ui.composable.BarsWrapper
 import java.text.DateFormat.getDateTimeInstance
 import java.util.Date
 
+/*
+ Composable function for the admin home screen.
+ It displays the admin's name, upcoming game schedule, and a button to view league standings.
+ */
+
+
 @Composable
 fun AdminHomeView(
     viewModel: AdminHomeViewModel = remember { AdminHomeViewModel() },

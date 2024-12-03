@@ -11,6 +11,12 @@ import com.team9.soccermanager.model.Team
 import com.team9.soccermanager.model.TeamCodeError
 import com.team9.soccermanager.model.TeamError
 
+/*
+ `TeamDao`, defines the data access methods for teams in the application.
+ Implementations of this interface will provide the logic for interacting with the data source
+ (firestore) to manage team-related data.
+ */
+
 interface TeamDao {
     suspend fun getTeamById(id: String, requireConnection: Boolean = false) : Team?
     fun addSnapshotListener(id: String, snapshotListener: (DocumentSnapshot?) -> Unit): ListenerRegistration

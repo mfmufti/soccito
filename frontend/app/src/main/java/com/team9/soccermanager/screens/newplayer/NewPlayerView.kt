@@ -8,6 +8,11 @@ import androidx.compose.ui.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.unit.*
 
+/*
+ Composable function for the new player screen.
+ It displays a form (textbox) for entering a team code and joining a team.
+ */
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewPlayerView(

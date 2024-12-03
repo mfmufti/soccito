@@ -10,6 +10,12 @@ import com.team9.soccermanager.model.GS
 import com.team9.soccermanager.model.NameError
 import com.team9.soccermanager.model.PwdError
 
+/*
+ `UserAccessor`, provides data access methods for users in the application.
+ It implements the `UserDao` interface and interacts with Firebase Authentication and Firestore
+ to manage user data, including password updates and username updates.
+ */
+
 object UserAccessor : UserDao {
     override fun updateUserPwd(currPwd: String, newPwd: String, onError: (PwdError) -> Unit) {
         val user = FirebaseAuth.getInstance().currentUser

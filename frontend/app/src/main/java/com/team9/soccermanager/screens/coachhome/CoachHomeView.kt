@@ -30,6 +30,11 @@ import com.team9.soccermanager.ui.composable.BarsWrapper
 import java.text.DateFormat.getDateTimeInstance
 import java.util.Date
 
+/*
+ Composable function for the coach home screen.
+ It displays the coach's home screen, including announcements, upcoming games.
+ */
+
 @Composable
 fun CoachHomeView(
     viewModel: CoachHomeViewModel = remember { CoachHomeViewModel() },

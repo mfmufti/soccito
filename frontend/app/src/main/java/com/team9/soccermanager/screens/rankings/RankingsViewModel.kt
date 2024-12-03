@@ -8,7 +8,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class RankingsViewModel {
+/*
+  View model for the rankings screen.
+  It handles fetching and managing the ranking data.
+ */
+
+class    RankingsViewModel {
 
     private val loading = mutableStateOf(true)
     private val teamsList = mutableStateListOf<RankingRow>()

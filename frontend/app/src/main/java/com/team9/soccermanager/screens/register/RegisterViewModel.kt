@@ -16,6 +16,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+/*
+ View model for the registration screen.
+ Handles user registration logic, including account creation, league/team creation, and team joining.
+ */
+
 class RegisterViewModel(val type: String, val other: Map<String, String>): ViewModel() {
     private var fullnameState = mutableStateOf(""); private var fullname by fullnameState
     private var emailState = mutableStateOf(""); private var email by emailState

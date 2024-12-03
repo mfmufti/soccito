@@ -14,6 +14,12 @@ import com.team9.soccermanager.model.LeagueError
 import com.team9.soccermanager.model.RankingRow
 import kotlinx.coroutines.tasks.await
 
+/*
+ `LeagueAccessor`, provides data access methods for leagues in the application.
+  It implements the `LeagueDao` interface and interacts with Firestore to manage league data,
+  including league creation, retrieval, updates, and game management within a league.
+ */
+
 object LeagueAccessor : LeagueDao {
     private const val LEAGUE_COL = "leagues"
     private var lastLoadedGames: List<Game>? = null
@@ -131,7 +137,7 @@ object LeagueAccessor : LeagueDao {
     override fun getGameFromLoaded(id: Int): Game {
         return lastLoadedGames!!.first { it.id == id }
     }
-
+    // Write to database
     override suspend fun writeGame(game: Game, newGame: Boolean): GameError {
         try {
             val docRef = Firebase.firestore.collection(LEAGUE_COL).document(GS.user!!.leagueID)

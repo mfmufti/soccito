@@ -46,6 +46,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
 
+/*
+ Composable function for the change password screen.
+ It allows users to change their password and provides error feedback (pop up) if necessary.
+ */
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChangePasswordView(

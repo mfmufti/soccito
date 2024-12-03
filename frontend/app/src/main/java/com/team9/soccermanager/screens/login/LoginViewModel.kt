@@ -4,6 +4,12 @@ import com.team9.soccermanager.model.Account
 import com.team9.soccermanager.model.GS
 import com.team9.soccermanager.model.LoginError
 
+/*
+ View model for the login screen.
+ It handles user login and authentication, via Firebase Auth.
+ */
+
+
 class LoginViewModel {
 
     fun handleLogin(email: String, password: String, success: (String) -> Unit, failure: (String) -> Unit) {

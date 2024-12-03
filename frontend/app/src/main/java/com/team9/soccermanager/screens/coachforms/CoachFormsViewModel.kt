@@ -12,6 +12,11 @@ import com.team9.soccermanager.model.accessor.TeamAccessor
 import com.team9.soccermanager.screens.playerhome.PlayerHomeViewModel
 import kotlinx.coroutines.launch
 
+/*
+ View model for the coach forms screen.
+ It handles displaying and managing forms for the team.
+ */
+
 class CoachFormsViewModel: PlayerHomeViewModel() {
     private val forms = mutableStateListOf<Form>()
     private val loading = mutableStateOf(true)

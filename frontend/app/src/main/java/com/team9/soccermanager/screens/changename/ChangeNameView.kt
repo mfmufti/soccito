@@ -52,6 +52,11 @@ import com.team9.soccermanager.model.GS
 import com.team9.soccermanager.ui.theme.success
 import kotlinx.coroutines.launch
 
+/*
+ Composable function for the change name screen.
+ It allows users to change their full name and provides error feedback if necessary.
+ */
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChangeNameView(

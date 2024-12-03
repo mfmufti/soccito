@@ -58,6 +58,13 @@ import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
 
+/*
+ Composable function for the game edit screen.
+ It provides forms for creating or editing game details.
+ */
+
+//Displays the game edit screen, allowing admin to create or edit game details.
+
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun GameEditView(
@@ -113,6 +120,9 @@ fun GameEditView(
         }
     }
 }
+
+//Displays the forms for editing game details.
+
 
 @Composable
 fun GameEditForms(viewModel: GameEditViewModel, newGame: Boolean, goBack: () -> Unit, goToGameSchedule: () -> Unit) {
@@ -315,7 +325,7 @@ private fun formatDate(date: Date): String {
     df.timeZone = TimeZone.getTimeZone("GMT")
     return df.format(date)
 }
-
+//Pick date of game
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun DatePickerModal(
@@ -344,7 +354,7 @@ private fun DatePickerModal(
         DatePicker(state = datePickerState)
     }
 }
-
+//Pick time of game (clock composable)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TimePickerModal(

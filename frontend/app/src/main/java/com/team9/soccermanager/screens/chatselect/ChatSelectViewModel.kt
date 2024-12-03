@@ -14,6 +14,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+/*
+   View model for the chat selection screen.
+   It handles loading and displaying a list of chats for the user to select from.
+ */
+
 class ChatSelectViewModel: PlayerHomeViewModel() {
     private val chats = mutableStateListOf<Chat>()
     private var loading = mutableStateOf(true)
@@ -28,7 +33,7 @@ class ChatSelectViewModel: PlayerHomeViewModel() {
     fun resetErrorLoadingChat() {
         errorLoadingChat.value = false
     }
-
+    //Initializes the view model and loads the list of chats.
     init {
         CoroutineScope(Dispatchers.Main).launch {
             delay(1000)

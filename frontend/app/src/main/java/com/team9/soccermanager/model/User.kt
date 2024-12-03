@@ -2,6 +2,11 @@ package com.team9.soccermanager.model
 
 import com.google.firebase.firestore.DocumentReference
 
+/*
+  This file defines data classes representing a player's availability (PlrAvail) and a user (User) in the application.
+ */
+
+
 data class PlrAvail(val avail: Availability, val reason: String) {
     constructor() : this(Availability.AVAILABLE, "")
     constructor(plrAvailMap: Map<*, *>) : this(

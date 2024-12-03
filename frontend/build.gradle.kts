@@ -1,5 +1,6 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
+    // Apply plugins to all sub-projects/modules, but don't enable them by default (apply false)
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.kotlin.compose) apply false
@@ -9,6 +10,8 @@ plugins {
 
 buildscript {
     dependencies {
+        // Define dependencies for the build script itself
+        // Google Maps Secrets Gradle plugin
         classpath("com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin:2.0.1")
     }
 }

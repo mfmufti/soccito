@@ -12,6 +12,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+/*
+ View model for the coach roster screen of the Soccer Manager application.
+ It handles displaying and managing player availability.
+ */
+
 class CoachRosterViewModel : PlayerHomeViewModel() {
 
     private var plrAvailability = mutableStateListOf<AvailView>()
@@ -53,6 +58,7 @@ class CoachRosterViewModel : PlayerHomeViewModel() {
 
     }
 
+    //Initializes the view model and loads player availability data.
     init {
         CoroutineScope(Dispatchers.IO).launch {
             TeamAccessor.getPlayerAvail(

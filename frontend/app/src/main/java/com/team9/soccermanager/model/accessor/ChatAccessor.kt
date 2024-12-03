@@ -11,6 +11,10 @@ import com.google.firebase.functions.ktx.functions
 import com.google.firebase.ktx.Firebase
 import com.team9.soccermanager.model.GS
 
+/* This object, `ChatAccessor`, provides data access methods for chats in the application.
+ It implements the `ChatDao` interface and interacts with Firestore to manage chat data.
+ */
+
 object ChatAccessor: ChatDao {
     private val chatSorter = { a: Chat, b: Chat ->
         if (a.type == b.type) {

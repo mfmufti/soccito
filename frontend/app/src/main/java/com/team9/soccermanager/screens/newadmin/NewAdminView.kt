@@ -9,6 +9,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.*
 
+/*
+ Composable function for the new admin screen .
+ It displays a form for entering a league name to create a new league.
+ */
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewAdminView(
