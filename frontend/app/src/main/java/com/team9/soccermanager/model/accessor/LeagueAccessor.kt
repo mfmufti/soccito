@@ -1,5 +1,6 @@
 package com.team9.soccermanager.model.accessor
 
+import androidx.compose.runtime.mutableStateListOf
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.SetOptions
@@ -7,8 +8,10 @@ import com.google.firebase.firestore.firestore
 import com.google.firebase.firestore.toObject
 import com.team9.soccermanager.model.GS
 import com.team9.soccermanager.model.GameError
+import com.team9.soccermanager.model.GameStatus
 import com.team9.soccermanager.model.League
 import com.team9.soccermanager.model.LeagueError
+import com.team9.soccermanager.model.RankingRow
 import kotlinx.coroutines.tasks.await
 
 object LeagueAccessor : LeagueDao {
@@ -193,5 +196,48 @@ object LeagueAccessor : LeagueDao {
                 return GameError.UNKNOWN
             }
         }
+    }
+
+    override suspend fun getRankingsData(onResult: (List<RankingRow>) -> Unit) {
+        val teamsList = mutableStateListOf<RankingRow>()
+        try {
+            val league = getLeagueById(GS.user!!.leagueID)
+            val byId = mutableMapOf<String, RankingRow>()
+            val games = getGames().second
+
+            for (i in league!!.teamIds.indices) {
+                byId[league.teamIds[i]] = RankingRow(league.teamIds[i], league.teamNames[i], 0, 0, 0, 0, 0)
+            }
+
+            for (game in games) {
+                if (game.status == GameStatus.COMPLETED) {
+                    val id1 = game.team1ID
+                    val id2 = game.team2ID
+                    byId[id1]!!.gp++
+                    byId[id2]!!.gp++
+                    if (game.team1Score < game.team2Score) {
+                        byId[id2]!!.pts += 3
+                        byId[id1]!!.losses++
+                        byId[id2]!!.wins++
+                    } else if (game.team1Score > game.team2Score) {
+                        byId[id1]!!.pts += 3
+                        byId[id1]!!.wins++
+                        byId[id2]!!.losses++
+                    } else {
+                        byId[id1]!!.pts++
+                        byId[id2]!!.pts++
+                        byId[id1]!!.draws++
+                        byId[id2]!!.draws++
+                    }
+                }
+            }
+            for ((_, row) in byId) {
+                teamsList.add(row)
+            }
+        } catch (e: Exception) {
+            println("Error: ${e.message}")
+        }
+        teamsList.sortByDescending { it.pts }
+        onResult(teamsList)
     }
 }

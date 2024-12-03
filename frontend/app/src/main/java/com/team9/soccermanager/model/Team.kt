@@ -20,7 +20,7 @@ data class AvailView (val playerId: String, val playerName: String, var playerAv
     constructor() : this("", "", PlrAvail())
 }
 
-data class RankingView(val id: String, val teamName: String, val gp: Long, val wins: Long, val losses: Long, val draws: Long, val pts: Long)
+data class RankingRow(val id: String, val teamName: String, var gp: Long, var wins: Long, var losses: Long, var draws: Long, var pts: Long)
 
 data class Team (
     var id: String,
