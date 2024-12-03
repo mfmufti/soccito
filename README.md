@@ -1,6 +1,6 @@
 # Team101-09
 
-# Soccito
+# Soccito (Android App)
 
 Soccito is the perfect app for organizing and managing soccer leagues effortlessly. Whether you're a Player, Coach, or Admin, Soccito streamlines your experience:
 
