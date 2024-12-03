@@ -47,7 +47,6 @@ object Account {
                     userProfile.email = email
                     userProfile.type = type
                     userProfile.id = auth.currentUser?.uid!!
-                    println(auth.currentUser?.uid!!)
                     Firebase.firestore.collection("users").document(auth.currentUser?.uid!!)
                         .set(userProfile).addOnSuccessListener {
                             if (type == "player") {
@@ -195,13 +194,5 @@ object Account {
             updateRemoteUser("notificationToken", token)
 
         })
-    }
-
-    fun sendEmailVerification() {
-        /*val user = auth.currentUser!!
-        user.sendEmailVerification()
-            .addOnCompleteListener(this) { task ->
-                // Email Verification sent
-            }*/
     }
 }

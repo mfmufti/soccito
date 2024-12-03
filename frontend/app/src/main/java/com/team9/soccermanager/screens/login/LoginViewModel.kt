@@ -7,7 +7,7 @@ import com.team9.soccermanager.model.LoginError
 class LoginViewModel {
 
     fun handleLogin(email: String, password: String, success: (String) -> Unit, failure: (String) -> Unit) {
-        if (email.isEmpty() || password.isEmpty()) {
+        if (email.isBlank() || password.isBlank()) {
             failure("Please provide an email and password")
             return
         }

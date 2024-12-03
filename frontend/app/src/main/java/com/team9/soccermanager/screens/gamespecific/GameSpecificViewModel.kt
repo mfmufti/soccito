@@ -84,8 +84,4 @@ class GameSpecificViewModel(gameIndex: Int) : PlayerHomeViewModel() {
             editing.value = false
         }
     }
-
-    override fun onCleared() {
-        println("for I have truly vanished")
-    }
 }

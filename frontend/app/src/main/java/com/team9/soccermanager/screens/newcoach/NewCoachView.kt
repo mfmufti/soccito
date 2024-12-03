@@ -6,6 +6,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.ui.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.*
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -68,7 +69,7 @@ fun NewCoachView(
             if (error.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(16.dp))
 
-                Text(error, color = MaterialTheme.colorScheme.error)
+                Text(error, color = MaterialTheme.colorScheme.error, textAlign = TextAlign.Center)
             }
 
             Spacer(modifier = Modifier.height(16.dp))

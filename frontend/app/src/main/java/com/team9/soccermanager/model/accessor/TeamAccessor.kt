@@ -47,7 +47,6 @@ object TeamAccessor : TeamDao {
                 _lastAccessedTeam = null
             }
         }
-//        println("returning ...")
         return _lastAccessedTeam
     }
 
@@ -226,7 +225,6 @@ object TeamAccessor : TeamDao {
             }
             if (currTeam.data == null) {
                 onError(TeamError.UNKNOWN)
-                println("here1")
                 return
             }
             val res: MutableList<AvailView> = mutableListOf()
@@ -235,7 +233,6 @@ object TeamAccessor : TeamDao {
                 val currPlr = db.collection(USER_COL).document(currPid).get().await()
                 if (currPlr.data == null) {
                     onError(TeamError.UNKNOWN)
-                    println("here2")
                     return
                 }
                 val currPlrName = currPlr.data!!["fullname"] as String
@@ -245,7 +242,6 @@ object TeamAccessor : TeamDao {
             onResult(res)
         } catch(e: Exception) {
             onError(TeamError.UNKNOWN)
-            println("here3")
         }
     }
 
@@ -287,7 +283,6 @@ object TeamAccessor : TeamDao {
                         onTokens(snapshot.documents.mapNotNull { document -> document.getString("notificationToken") }.distinct())
                     }
                 }
-
         }
     }
 }

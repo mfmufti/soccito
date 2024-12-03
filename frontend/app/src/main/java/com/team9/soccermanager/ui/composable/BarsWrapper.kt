@@ -1,8 +1,6 @@
 package com.team9.soccermanager.ui.composable
 
 import androidx.compose.foundation.clickable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,16 +21,16 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.Logout
+import androidx.compose.material.icons.automirrored.outlined.Announcement
 import androidx.compose.material.icons.filled.AccountBox
+import androidx.compose.material.icons.filled.Campaign
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Forum
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.ManageAccounts
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Button
@@ -71,12 +69,15 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import com.team9.soccermanager.CoachAnnouncementsScreen
 import com.team9.soccermanager.PlayerAnnouncementsScreen
 import com.team9.soccermanager.model.GS
 import com.team9.soccermanager.model.MainScreens
 import com.team9.soccermanager.model.MenuScreens
+import com.team9.soccermanager.model.accessor.ChatAccessor
 import kotlinx.coroutines.launch
 
 @Composable
@@ -94,6 +95,8 @@ fun BarsWrapper(
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
     val showDialog = remember { mutableStateOf(false) }
+    val seen = remember { mutableStateOf(true) }
+    ChatAccessor.checkChatStatus { seen.value = it }
 
     Scaffold (
         snackbarHost = {
@@ -217,18 +220,33 @@ fun BarsWrapper(
                                     }
 
                                     if (allowBack) {
-                                        IconButton(onClick = { switchMainScreen(MainScreens.BACK) }) {
+                                        IconButton(onClick = {
+                                            if (activeScreen == MainScreens.CHAT) {
+                                                switchMainScreen(MainScreens.CHAT)
+                                            } else {
+                                                switchMainScreen(MainScreens.BACK)
+                                            }
+
+                                        }) {
                                             Icon(
                                                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                                                 contentDescription = "back",
                                             )
                                         }
                                     }
-                                    Text(text = title)
+                                    Text(
+                                        text = if (title.length > 15) {
+                                            title.take(15) + "..."
+                                        } else {
+                                            title
+                                        },
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis,
+                                    )
                                     Row(
                                         verticalAlignment = Alignment.CenterVertically
                                     ) {
-                                        if (GS.user!!.type != "admin") { AnnouncementNotificationsButton(onClick = {}) }
+                                        if (GS.user!!.type != "admin") { AnnouncementNotificationsButton() }
                                         IconButton(
                                             onClick = {
                                                 scope.launch {
@@ -274,11 +292,22 @@ fun BarsWrapper(
                                         }
                                     }
                                     IconButton(onClick = { switchMainScreen(MainScreens.CHAT) }) {
-                                        Icon(
-                                            contentDescription = "Chat",
-                                            imageVector = Icons.Filled.Forum,
-                                            tint = getTint(MainScreens.CHAT, activeScreen)
-                                        )
+                                        BadgedBox(
+                                            badge = {
+                                                if (!seen.value) {
+                                                    Badge(
+                                                        containerColor = Color.Red,
+                                                        modifier = Modifier.size(8.dp)
+                                                    )
+                                                }
+                                            }
+                                        ) {
+                                            Icon(
+                                                contentDescription = "Chat",
+                                                imageVector = Icons.Filled.Forum,
+                                                tint = getTint(MainScreens.CHAT, activeScreen)
+                                            )
+                                        }
                                     }
                                 }
                             },
@@ -324,8 +353,6 @@ private fun DrawerMenuItem(icon: ImageVector, label: String, onClick: () -> Unit
     }
 }
 
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ShowLogOutWarning(signOut: () -> Unit, dismiss: () -> Unit) {
     AlertDialog(
@@ -346,30 +373,32 @@ private fun ShowLogOutWarning(signOut: () -> Unit, dismiss: () -> Unit) {
 }
 
 @Composable
-fun AnnouncementNotificationsButton(
-    onClick: () -> Unit
-) {
+fun AnnouncementNotificationsButton() {
 
     val notificationState = GS.notificationState.collectAsState()
 
     IconButton(onClick = {
-        if (GS.user != null && GS.user!!.type == "player") {
-            GS.nav?.switch(PlayerAnnouncementsScreen)
+        if (GS.user != null) {
+            if(GS.user!!.type == "player") {
+                GS.nav?.switch(PlayerAnnouncementsScreen)
+            } else {
+                GS.nav?.switch(CoachAnnouncementsScreen)
+            }
         }
     } ) {
         BadgedBox(
             badge = {
                 if (notificationState.value) {
                     Badge(
-                        contentColor = Color.White,
+                        contentColor = Color.Red,
                         modifier = Modifier.size(8.dp)
-                    ) {}
+                    )
                 }
             }
         ) {
             Icon(
-                imageVector = Icons.Outlined.Notifications,
-                contentDescription = "Notifications",
+                imageVector = Icons.Filled.Campaign,
+                contentDescription = "Announcements",
             )
         }
     }

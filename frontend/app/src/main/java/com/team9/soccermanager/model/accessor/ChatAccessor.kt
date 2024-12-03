@@ -1,10 +1,13 @@
 package com.team9.soccermanager.model.accessor
 
 import androidx.compose.runtime.mutableStateListOf
+import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ListenerRegistration
+import com.google.firebase.firestore.firestore
 import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.functions.ktx.functions
 import com.google.firebase.ktx.Firebase
 import com.team9.soccermanager.model.GS
 
@@ -42,11 +45,24 @@ object ChatAccessor: ChatDao {
         val iterateAndAdd = { doc: DocumentSnapshot, field: String, type: String ->
             for (user in doc.data!![field] as List<*>) {
                 waiting++
-                db.collection("users").document(user as String).get().addOnSuccessListener {
-                    if (it.data != null && it.id != myId) {
-                        chats.add(
-                            Chat(it.data!!["fullname"] as String, type, it.reference)
-                        )
+                db.collection("users").document(user as String).get().addOnSuccessListener { usr ->
+                    if (usr.data != null && usr.id != myId) {
+                        waiting++
+                        Firebase.firestore.collection("users").document(GS.user!!.id).get().addOnSuccessListener { it ->
+                            waiting++
+                            getChatID(it.reference, usr.reference, { chatId ->
+                                waiting++
+                                hasFullyRead(chatId) { read ->
+                                    chats.add(
+                                        Chat(usr.data!!["fullname"] as String, type, usr.reference, read)
+                                    )
+                                    decrementAndCheck()
+                                }
+                                decrementAndCheck()
+                            }, {})
+                            decrementAndCheck()
+                        }.addOnFailureListener {
+                        }
                     }
                     decrementAndCheck()
                 }.addOnFailureListener({ sendError() })
@@ -112,7 +128,9 @@ object ChatAccessor: ChatDao {
             if (found.isEmpty()) {
                 val data = mapOf(
                     "messages" to listOf<Any>(),
-                    "users" to listOf(userRef1, userRef2)
+                    "users" to listOf(userRef1, userRef2),
+                    userRef1.id to 0,
+                    userRef2.id to 0
                 )
                 db.collection("chats").add(data).addOnSuccessListener {
                     onSuccess(it.id)
@@ -134,7 +152,7 @@ object ChatAccessor: ChatDao {
                 for (message in newMessages) {
                     val m = message as Map<*, *>
                     val isFromCurrent = (m["from"] as DocumentReference).id == GS.user?.id
-                    messages.add(Message(isFromCurrent, m["text"] as String))
+                    messages.add(Message(isFromCurrent, m["text"] as String, m["time"] as Long))
                 }
             }
         }
@@ -156,17 +174,108 @@ object ChatAccessor: ChatDao {
         })
     }
 
+    override fun getLastSeen(chatID: String, onSuccess: (Long) -> Unit) {
+        Firebase.firestore.collection("chats").document(chatID).get().addOnSuccessListener {
+            if (it.data != null) {
+                onSuccess(it.data!![GS.user!!.id] as Long)
+            }
+        }
+    }
+
     override fun sendMessage(chatID: String, text: String) {
         val db = Firebase.firestore
-        val toAdd = hashMapOf(
-            "from" to db.collection("users").document(GS.user!!.id),
-            "text" to text
-        )
+        val toAdd = ChatMessage(db.collection("users").document(GS.user!!.id), text, System.currentTimeMillis())
         db.collection("chats").document(chatID).get().addOnSuccessListener {
             val messages = it.data!!["messages"] as List<*>
             val messagesUpdated : ArrayList<Any?> = ArrayList(messages)
             messagesUpdated.add(toAdd)
-            db.collection("chats").document(chatID).update("messages", messagesUpdated)
+            db.collection("chats").document(chatID).update("messages", messagesUpdated).addOnSuccessListener {
+                db.collection("chats").document(chatID).update(GS.user!!.id, System.currentTimeMillis()).addOnSuccessListener {
+                    db.collection("chats").document(chatID).get().addOnSuccessListener {
+                        val users = it.data!!["users"] as List<*>
+                        var sendToId: String = ""
+                        sendToId = if ((users[0] as DocumentReference).id != GS.user!!.id) {
+                            (users[0] as DocumentReference).id
+                        } else {
+                            (users[1] as DocumentReference).id
+                        }
+                        db.collection("users").document(sendToId).get().addOnSuccessListener { it1 ->
+                            if (it1.data!!["notificationToken"] != null) {
+                                sendChatNotification(it1.data!!["notificationToken"] as String)
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
+
+    override fun updateUserReadTime(chatID: String, onSuccess: () -> Unit) {
+        Firebase.firestore.collection("chats").document(chatID).update(GS.user!!.id, System.currentTimeMillis()).addOnSuccessListener {
+            onSuccess()
+        }
+    }
+
+    override fun checkChatStatus(onResult: (Boolean) -> Unit) {
+        if (GS.user != null) {
+            var allSeen = true
+            Firebase.firestore.collection("users").document(GS.user!!.id).get().addOnSuccessListener {
+                Firebase.firestore.collection("chats").whereArrayContains("users", it.reference).get().addOnSuccessListener { it1 ->
+                    for (d in it1.documents) {
+                        val msgList = d.data!!["messages"] as List<*>
+                        if (msgList.isNotEmpty()) {
+                            val lastMsg = msgList[msgList.size - 1] as Map<*, *>
+                            val lastMsgTime = lastMsg["time"] as Long
+                            val lastChatSeen = d.data!![GS.user!!.id] as Long
+                            if (lastChatSeen < lastMsgTime) {
+                                allSeen = false
+                            }
+                        }
+                    }
+                    onResult(allSeen)
+                }
+            }
+        }
+    }
+
+
+    private fun hasFullyRead(chatID: String, onSuccess: (Boolean) -> Unit) {
+        Firebase.firestore.collection("chats").document(chatID).get().addOnSuccessListener {
+            val msgList = it.data!!["messages"] as List<*>
+            if (msgList.isNotEmpty()) {
+                val lastMsg = msgList[msgList.size - 1] as Map<*, *>
+                val lastMsgTime = lastMsg["time"] as Long
+                val lastChatSeen = it.data!![GS.user!!.id] as Long
+                if (lastChatSeen < lastMsgTime) {
+                    onSuccess(false)
+                } else {
+                    onSuccess(true)
+                }
+            } else {
+                onSuccess(true)
+            }
+        }
+    }
+
+    private fun sendChatNotification(token: String): Task<String> {
+        // Create the arguments to the callable function.
+        val data = mapOf(
+            "title" to "New Chat",
+            "body" to "${GS.user?.fullname} sent a chat",
+            "token" to token
+        )
+
+        return Firebase.functions
+            .getHttpsCallable("sendNotification")
+            .call(data)
+            .continueWith { task ->
+                // This continuation runs on either success or failure, but if the task
+                // has failed then result will throw an Exception which will be
+                // propagated down.
+                val result = task.result.getData()
+                result.toString()
+                // result
+            }
+    }
+
 }
