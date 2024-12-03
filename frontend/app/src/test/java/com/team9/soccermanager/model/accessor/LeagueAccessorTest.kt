@@ -31,6 +31,7 @@ class LeagueAccessorTest {
         unmockkAll()
     }
 
+    // Tests the getLeagueById function by verifying it returns the correct league with the given ID.
     @Test
     fun `test getLeagueById`() = runTest {
         val mockLeague = mockk<League>()
@@ -43,6 +44,7 @@ class LeagueAccessorTest {
         coVerify { LeagueAccessor.getLeagueById("mockId") }
     }
 
+    // Tests the getLeagueByInviteCode function by verifying it returns the correct league with the given invite code.
     @Test
     fun `test getLeagueByInviteCode`() = runTest {
         val mockLeague = mockk<League>()
@@ -55,6 +57,7 @@ class LeagueAccessorTest {
         coVerify { LeagueAccessor.getLeagueByInviteCode("mockCode") }
     }
 
+    // Tests the createLeague function by verifying it creates a new league with the given name.
     @Test
     fun `test createLeague`() = runTest {
         val mockLeague = mockk<League>()
@@ -67,6 +70,7 @@ class LeagueAccessorTest {
         coVerify { LeagueAccessor.createLeague("mockLeagueName") }
     }
 
+    // Tests the leagueExists function by verifying it returns the correct error code when a league with the given name already exists.
     @Test
     fun `test leagueExists`() = runTest {
         coEvery { LeagueAccessor.leagueExists("mockLeague") } returns LeagueError.EXISTS
@@ -77,6 +81,7 @@ class LeagueAccessorTest {
         coVerify { LeagueAccessor.leagueExists("mockLeague") }
     }
 
+    // Tests the updateLeague function by verifying it successfully updates a league.
     @Test
     fun `test updateLeague`() = runTest {
         coEvery { LeagueAccessor.updateLeague(any()) } returns true
@@ -87,6 +92,7 @@ class LeagueAccessorTest {
         coVerify { LeagueAccessor.updateLeague(any()) }
     }
 
+    // Tests the getGames function by verifying it returns a list of games.
     @Test
     fun `test getGames`() = runTest {
         val mockGameList = listOf(mockk<Game>(), mockk<Game>())
@@ -99,6 +105,7 @@ class LeagueAccessorTest {
         coVerify { LeagueAccessor.getGames() }
     }
 
+    // Tests the getGame function by verifying it returns the correct game with the given ID.
     @Test
     fun `test getGame`() = runTest {
         val mockGame = mockk<Game>()
@@ -112,6 +119,7 @@ class LeagueAccessorTest {
         coVerify { LeagueAccessor.getGame(123) }
     }
 
+    // Tests the getGameFromLoaded function by verifying it returns the correct game with the given ID from the loaded games.
     @Test
     fun `test getGameFromLoaded`() {
         val mockGame = mockk<Game>()
@@ -124,6 +132,7 @@ class LeagueAccessorTest {
         verify { LeagueAccessor.getGameFromLoaded(123) }
     }
 
+    // Tests the writeGame function by verifying it successfully writes a game to the database.
     @Test
     fun `test writeGame`() = runTest {
         coEvery { LeagueAccessor.writeGame(any(), true) } returns GameError.NONE
@@ -134,6 +143,7 @@ class LeagueAccessorTest {
         coVerify { LeagueAccessor.writeGame(any(), true) }
     }
 
+    // Tests the deleteGame function by verifying it successfully deletes a game from the database.
     @Test
     fun `test deleteGame`() = runTest {
         coEvery { LeagueAccessor.deleteGame(123) } returns GameError.NONE
@@ -144,6 +154,7 @@ class LeagueAccessorTest {
         coVerify { LeagueAccessor.deleteGame(123) }
     }
 
+    // Tests the getRankingsData function by verifying it returns the correct rankings data.
     @Test
     fun `test getRankingsData`() = runTest {
         val mockRankingRowList = listOf(mockk<RankingRow>(), mockk<RankingRow>())
