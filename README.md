@@ -2,6 +2,14 @@
 
 # Soccito
 
+Soccito is the perfect app for organizing and managing soccer leagues effortlessly. Whether you're a Player, Coach, or Admin, Soccito streamlines your experience:
+
+- League Insights at a Glance: Stay updated with real-time standings, scores, and game schedules.
+- Game Locations Made Easy: Integrated Google Maps helps you quickly find where to play.
+- All Info in One Place: Players can upload important forms directly to the app, keeping everything organized for coaches.
+- Seamless Communication: Built-in chat ensures smooth and efficient team and league communication.
+
+Download Soccito today and take your soccer league management to the next level!
 
 ## Team members
 <ul>
