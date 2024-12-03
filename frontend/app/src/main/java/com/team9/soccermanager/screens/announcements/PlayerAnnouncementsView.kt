@@ -82,6 +82,7 @@ fun AnnouncementList(announcements: List<Announcement>) {
                         .padding(20.dp)
                         .fillMaxWidth(),
                 ) {
+                    /*
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
@@ -98,6 +99,7 @@ fun AnnouncementList(announcements: List<Announcement>) {
                             fontWeight = FontWeight.Bold
                         )
                     }
+                     */
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
                         text = announcement.content,
