@@ -11,6 +11,8 @@ Soccito is the perfect app for organizing and managing soccer leagues effortless
 
 Download Soccito today and take your soccer league management to the next level!
 
+ADD SCREENSHOT
+
 ## Team members
 <ul>
   <li>Syed Murtaza Shah (mw2shah@uwaterloo.ca)</li>
