@@ -116,11 +116,9 @@ fun CoachHomeView(
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     Text(
-                                        text = if (announcement.authorName.length <= 17) {
-                                            announcement.authorName
-                                        } else {
-                                            announcement.authorName.take(17) + "..."
-                                        },
+                                        text = announcement.authorName,
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis,
                                         style = MaterialTheme.typography.titleMedium,
                                         color = MaterialTheme.colorScheme.primary,
                                         fontWeight = FontWeight.Bold

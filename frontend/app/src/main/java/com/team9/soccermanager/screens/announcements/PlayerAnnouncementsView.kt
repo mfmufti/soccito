@@ -12,6 +12,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.*
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.team9.soccermanager.model.Announcement
@@ -88,11 +89,9 @@ fun AnnouncementList(announcements: List<Announcement>) {
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = if (announcement.authorName.length <= 17) {
-                                    announcement.authorName
-                                } else {
-                                    announcement.authorName.take(17) + "..."
-                            },
+                            text = announcement.authorName,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                             style = MaterialTheme.typography.titleMedium,
                             color = MaterialTheme.colorScheme.primary,
                             fontWeight = FontWeight.Bold
