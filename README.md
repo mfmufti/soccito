@@ -43,5 +43,11 @@ ADD SCREENSHOT
 ## User Documentation
 <a href="https://git.uwaterloo.ca/mw2shah/team-9/-/wikis/User-Documentation">User Documentation</a>
 
+## Design Diagrams
+<a href="https://git.uwaterloo.ca/mw2shah/team-9/-/wikis/Design-Diagrams">Design Diagrams</a>
+
+## Project Reflection
+<a href="https://git.uwaterloo.ca/mw2shah/team-9/-/wikis/Project-Reflection">Project Reflection</a>
+
 ## Meeting Notes
 <a href="https://git.uwaterloo.ca/mw2shah/team-9/-/wikis/Meeting-Notes">Meeting Notes</a>
