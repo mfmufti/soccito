@@ -17,8 +17,14 @@ import com.team9.soccermanager.model.MenuScreens
 import com.team9.soccermanager.ui.composable.BarsWrapper
 import java.text.DateFormat.getDateTimeInstance
 
+/*
+ Composable functions for the player announcements screen.
+ It displays a list of announcements for the player's team.
+ */
+
 @Composable
 fun PlayerAnnouncementsView(
+    //title of screen
     title: String,
     viewModel: PlayerAnnouncementsViewModel = remember { PlayerAnnouncementsViewModel() },
     switchToWelcome: () -> Unit,

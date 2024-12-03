@@ -16,6 +16,11 @@ import com.team9.soccermanager.model.MainScreens
 import com.team9.soccermanager.model.MenuScreens
 import com.team9.soccermanager.ui.composable.BarsWrapper
 
+/*
+ Composable function for the chat selection screen.
+ It displays a list of chats that the user can select to open.
+ */
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChatSelectView(

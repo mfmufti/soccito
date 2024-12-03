@@ -5,6 +5,11 @@ import com.team9.soccermanager.model.GS
 import com.team9.soccermanager.model.NameError
 import com.team9.soccermanager.model.accessor.UserAccessor
 
+/*
+ View model for the change name screen.
+ It handles name change requests and provides error feedback to the user.
+ */
+
 class ChangeNameViewModel {
 
     private val error = mutableStateOf("")

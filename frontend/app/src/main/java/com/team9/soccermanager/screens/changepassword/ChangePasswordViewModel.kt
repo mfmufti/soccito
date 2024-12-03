@@ -4,6 +4,11 @@ import androidx.compose.runtime.mutableStateOf
 import com.team9.soccermanager.model.PwdError
 import com.team9.soccermanager.model.accessor.UserAccessor
 
+/*
+ View model for the change password screen.
+ It handles password change requests and provides error feedback to the user.
+ */
+
 class ChangePasswordViewModel {
 
     private val error = mutableStateOf("")

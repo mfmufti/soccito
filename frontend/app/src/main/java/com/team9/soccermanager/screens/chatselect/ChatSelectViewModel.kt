@@ -10,6 +10,11 @@ import com.team9.soccermanager.model.accessor.Chat
 import com.team9.soccermanager.model.accessor.ChatAccessor
 import com.team9.soccermanager.screens.playerhome.PlayerHomeViewModel
 
+/*
+   View model for the chat selection screen.
+   It handles loading and displaying a list of chats for the user to select from.
+ */
+
 class ChatSelectViewModel: PlayerHomeViewModel() {
     private val chats = mutableStateListOf<Chat>()
     private var loading = mutableStateOf(true)
@@ -24,7 +29,7 @@ class ChatSelectViewModel: PlayerHomeViewModel() {
     fun resetErrorLoadingChat() {
         errorLoadingChat.value = false
     }
-
+    //Initializes the view model and loads the list of chats.
     init {
         ChatAccessor.loadChats({ chats.addAll(it); loading.value = false }, { error.value = true })
     }

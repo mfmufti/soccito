@@ -8,7 +8,13 @@ import com.team9.soccermanager.model.GS
 import com.team9.soccermanager.model.accessor.TeamAccessor
 import com.team9.soccermanager.screens.coachhome.CoachHomeViewModel
 
+/*
+ View model for the coach announcements screen.
+ It handles sending notifications to players about new announcements.
+ */
+
 class CoachAnnouncementsViewModel : CoachHomeViewModel() {
+    //Sends notifications to all players in the team.
     fun sendNotifications() {
         TeamAccessor.getNotificationTokens { tokens ->
             for (token in tokens) {
@@ -22,7 +28,7 @@ class CoachAnnouncementsViewModel : CoachHomeViewModel() {
             }
         }
     }
-
+//Sends a notification to a specific player using their notification token.
     private fun sendNotification(token: String): Task<String> {
         // Create the arguments to the callable function.
         val data = mapOf(

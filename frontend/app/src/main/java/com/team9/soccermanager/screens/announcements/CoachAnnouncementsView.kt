@@ -21,6 +21,11 @@ import com.team9.soccermanager.model.MainScreens
 import com.team9.soccermanager.model.MenuScreens
 import com.team9.soccermanager.ui.composable.BarsWrapper
 
+/*
+ Composable functions for the coach announcements screen.
+ It displays a list of announcements and allows the coach to create new announcements.
+ */
+
 @Composable
 fun CoachAnnouncementsView(
     title: String,

@@ -24,8 +24,14 @@ import com.team9.soccermanager.model.MenuScreens
 import com.team9.soccermanager.model.accessor.Message
 import com.team9.soccermanager.ui.composable.BarsWrapper
 
+/*
+ Composable function for the chat screen.
+ It displays the chat messages and allows the user to send new messages.
+ */
+
 @Composable
 fun ChatView(
+    //ID of chat to display
     chatID: String,
     fullname: String,
     viewModel: ChatViewModel = ChatViewModel(chatID),
@@ -68,6 +74,7 @@ fun ChatView(
     }
 }
 
+//Display Chat messages and input field for new messages
 @Composable
 private fun Chat(paddingValues: PaddingValues, messages: MutableList<Message>, viewModel: ChatViewModel) {
     val listState = rememberLazyListState()
