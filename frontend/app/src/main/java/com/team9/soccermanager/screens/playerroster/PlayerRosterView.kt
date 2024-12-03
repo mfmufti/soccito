@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.*
 import com.team9.soccermanager.model.Availability
 import com.team9.soccermanager.model.GS
@@ -98,6 +99,8 @@ fun PlayerRosterView(
                             ) {
                                 Text(
                                     text = playeravail.playerName,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
                                     fontSize = 25.sp,
                                     fontWeight = FontWeight.Bold
                                 )

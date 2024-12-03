@@ -17,10 +17,15 @@ class NewCoachViewModel : ViewModel() {
     fun getError() = error
 
     fun checkTeam(success: (String, String) -> Unit) {
-        if (leagueCode.value.isEmpty() || team.value.isEmpty()) {
+        if (leagueCode.value.isBlank() || team.value.isBlank()) {
             error.value = "Please fill all fields"
             return
         }
+        if (team.value.trim().length > 25) {
+            error.value = "Team name must be less than 26 characters"
+            return
+        }
+        team.value = team.value.trim()
         viewModelScope.launch {
             when (TeamAccessor.teamExists(team.value, leagueCode.value)) {
                 TeamError.NONE -> success(leagueCode.value, team.value)

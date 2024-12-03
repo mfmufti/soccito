@@ -66,7 +66,7 @@ fun CoachHomeView(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(text = "Hello $fullname", style = TextStyle(fontSize = 30.sp))
+            Text(text = "Hello $fullname", style = TextStyle(fontSize = 30.sp), textAlign = TextAlign.Center, modifier = Modifier.padding(8.dp))
 
             Spacer(modifier = Modifier.height(15.dp))
 
@@ -74,7 +74,7 @@ fun CoachHomeView(
                 modifier = Modifier
                     .padding(16.dp)
                     .fillMaxWidth()
-                    .height(200.dp),
+                    .height(220.dp),
                 shape = RoundedCornerShape(8.dp),
                 border = BorderStroke(1.dp, Color.Gray)
             ) {
@@ -109,23 +109,24 @@ fun CoachHomeView(
                                     .padding(20.dp)
                                     .fillMaxWidth(),
                             ) {
+
                                 Row(
                                     modifier = Modifier.fillMaxWidth(),
                                     horizontalArrangement = Arrangement.SpaceBetween,
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     Text(
-                                        text = announcement.authorName,
+                                        text = if (announcement.authorName.length <= 17) {
+                                            announcement.authorName
+                                        } else {
+                                            announcement.authorName.take(17) + "..."
+                                        },
                                         style = MaterialTheme.typography.titleMedium,
                                         color = MaterialTheme.colorScheme.primary,
                                         fontWeight = FontWeight.Bold
                                     )
-                                    Text(
-                                        text = getDateTimeInstance().format(announcement.datePosted),
-                                        style = MaterialTheme.typography.bodySmall,
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                                    )
                                 }
+
                                 Spacer(modifier = Modifier.height(12.dp))
                                 Text(
                                     text = announcement.content,
@@ -133,6 +134,12 @@ fun CoachHomeView(
                                     color = MaterialTheme.colorScheme.onSurface,
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis
+                                )
+                                Spacer(modifier = Modifier.height(10.dp))
+                                Text(
+                                    text = getDateTimeInstance().format(announcement.datePosted),
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             }
                         }

@@ -17,6 +17,7 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.*
 import com.team9.soccermanager.model.GS
 
@@ -42,7 +43,14 @@ fun RankingsView(
                         )
                     }
                 },
-                actions = {Text(text = GS.user?.leagueName + " Standings", fontSize = 20.sp, fontWeight = FontWeight.Bold)}
+                actions = {
+                    Text(
+                        text =
+                        if (GS.user?.leagueName!!.length > 17) {
+                            GS.user?.leagueName!!.take(17) + "...Standings"
+                        } else {
+                            GS.user?.leagueName + " Standings"
+                        }, fontSize = 20.sp, fontWeight = FontWeight.Bold)}
             )
         }
     ) { padding ->
@@ -81,7 +89,7 @@ fun RankingsView(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Text("Pos", modifier = Modifier.width(70.dp), textAlign = TextAlign.Center, color = Color.White)
-                                Text("Team", modifier = Modifier.width(180.dp), textAlign = TextAlign.Center, color = Color.White)
+                                Text("Team", modifier = Modifier.width(180.dp), textAlign = TextAlign.Center, color = Color.White, maxLines = 1, overflow = TextOverflow.Ellipsis)
                                 Text("Pts", modifier = Modifier.width(70.dp), textAlign = TextAlign.Center, color = Color.White, fontWeight = FontWeight.Bold)
                                 Text("GP", modifier = Modifier.width(70.dp), textAlign = TextAlign.Center, color = Color.White)
                                 Text("W", modifier = Modifier.width(70.dp), textAlign = TextAlign.Center, color = Color.White)

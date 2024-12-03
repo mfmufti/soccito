@@ -67,9 +67,6 @@ fun GameSpecificView(
     var coachsNotesEditing by remember { viewModel.getCoachsNotesEditing() }
     var errorEditing by remember { viewModel.getErrorEditing() }
 
-    println("it is: ")
-    println(game)
-
     BarsWrapper(
         title = when (game.status) {
             GameStatus.ONGOING -> "Game Ongoing"

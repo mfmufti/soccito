@@ -20,10 +20,15 @@ class NewAdminViewModel : ViewModel() {
     fun getError() = error
 
     fun checkLeague(success: (String) -> Unit) {
-        if (league.value.isEmpty()) {
+        if (league.value.isBlank()) {
             error.value = "Please enter a league name"
             return
         }
+        if (league.value.trim().length > 25) {
+            error.value = "League name must be less than 26 characters"
+            return
+        }
+        league.value = league.value.trim()
         viewModelScope.launch {
             when (LeagueAccessor.leagueExists(league.value)) {
                 LeagueError.NONE -> success(league.value)

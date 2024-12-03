@@ -109,13 +109,16 @@ fun ChangeNameView(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 if (error.value.isNotEmpty()) {
-                    Row {
+                    Row (
+                        modifier = Modifier.padding(13.dp),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
                         Icon(
                             imageVector = Icons.Filled.Error,
                             contentDescription = "Error Icon",
                             tint = MaterialTheme.colorScheme.error
                         )
-                        Spacer(modifier = Modifier.width(8.dp))
                         Text(
                             text = error.value,
                             color = MaterialTheme.colorScheme.error,
@@ -136,12 +139,19 @@ fun ChangeNameView(
                             Row (
                                 horizontalArrangement = Arrangement.spacedBy(3.dp)
                             ){
+
+                                if (tempName.trim().length > 25) {
+                                    error.value = "Fullname should not exceed 25 characters"
+                                } else {
+                                    error.value = ""
+                                }
+
                                 IconButton(
-                                    enabled = tempName.isNotBlank(),
+                                    enabled = tempName.isNotBlank() && tempName.trim().length < 26,
                                     onClick = {
-                                        currName = tempName
+                                        currName = tempName.trim()
                                         isEditing = false
-                                        viewModel.handleNameChange(tempName) {
+                                        viewModel.handleNameChange(tempName.trim()) {
                                             scope.launch {
                                                 snackbarHostState.showSnackbar(message = "Fullname updated!", duration = SnackbarDuration.Short)
                                             }

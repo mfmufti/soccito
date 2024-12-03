@@ -28,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -109,7 +110,7 @@ fun RegisterView(
             if (error.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(16.dp))
 
-                Text(error, color = MaterialTheme.colorScheme.error)
+                Text(error, color = MaterialTheme.colorScheme.error, textAlign = TextAlign.Center)
             }
 
             Spacer(modifier = Modifier.height(16.dp))
