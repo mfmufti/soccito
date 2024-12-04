@@ -28,6 +28,8 @@ import kotlinx.coroutines.test.runTest
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
+/* Deeper tests for various methods of the TeamAccessor model file */
+
 class TeamAccessorTestDeep {
     private val team: Team = Team()
     private val TEAM_COL = "teams"

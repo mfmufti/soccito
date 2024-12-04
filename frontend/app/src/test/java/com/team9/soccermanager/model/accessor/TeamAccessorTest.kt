@@ -10,6 +10,8 @@ import com.team9.soccermanager.model.TeamCodeError
 import com.team9.soccermanager.model.TeamError
 import io.mockk.*
 
+/* Tests for the various methods of the TeamAccessor model file */
+
 class TeamTest {
     val testInvite = "kzOcrvvilvTOU1VzxF9x"
 

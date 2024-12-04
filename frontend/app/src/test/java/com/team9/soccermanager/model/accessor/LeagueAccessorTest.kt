@@ -19,6 +19,8 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
+/* Tests for the various methods of the LeagueAccessor model file */
+
 class LeagueAccessorTest {
 
     @BeforeTest

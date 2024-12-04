@@ -7,6 +7,8 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertTrue
 
+/* Tests for the various methods of the Account model file */
+
 class AccountTest {
     @BeforeTest
     fun setup() {
