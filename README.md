@@ -1,5 +1,3 @@
-# Team101-09
-
 # Soccito (Android App)
 
 Soccito is the perfect app for organizing and managing soccer leagues effortlessly. Whether you're a Player, Coach, or Admin, Soccito streamlines your experience:
@@ -19,38 +17,13 @@ Download Soccito today and take your soccer league management to the next level!
   <li>Musab Mufti (m8mufti@uwaterloo.ca)</li>
   <li>David Movsisyan (dmovsisy@uwaterloo.ca)</li>
   <li>Omar Elnajmi (oelnajmi@uwaterloo.ca)</li>
-</ul> 
-
-## Team Contract
-<a href="https://git.uwaterloo.ca/mw2shah/team-9/-/wikis/Team-Contract">Team Contract</a>
-
-## Project Proposal
-<a href="https://git.uwaterloo.ca/mw2shah/team-9/-/wikis/Project-Proposal">Project Proposal</a>
-
-## Design Proposal
-<a href="https://git.uwaterloo.ca/mw2shah/team-9/-/wikis/Design-Proposal">Design Proposal</a>
-
-## Meeting Notes
-<a href="https://git.uwaterloo.ca/mw2shah/team-9/-/wikis/Meeting-Notes">Meeting Notes</a>
+</ul>
 
 ## Releases
-<a href="https://git.uwaterloo.ca/mw2shah/team-9/-/releases/1.1.0">Release 1.1.0</a>\
 <a href="https://drive.google.com/file/d/1qeLfBo7Q2G__PTiMN203jkDThLdo2DRq/view?usp=sharing">Version 1.1.0 Download</a>
 
-<a href="https://git.uwaterloo.ca/mw2shah/team-9/-/releases/1.2.0">Release 1.2.0</a>\
 <a href="https://drive.google.com/file/d/1tbggOG4wagCgY8mmm2F9H7vvoOkKcGES/view?usp=sharing">Version 1.2.0 Download</a>
 
-<a href="https://git.uwaterloo.ca/mw2shah/team-9/-/releases/1.3.0">Release 1.3.0</a>\
 <a href="https://drive.google.com/file/d/1QxkoeMtOnvWzfLRmXFyQlbR0eh4QM5T4/view?usp=sharing">Version 1.3.0 Download</a>
 
-<a href="https://git.uwaterloo.ca/mw2shah/team-9/-/releases/1.4.0">Release 1.4.0</a>\
 <a href="https://drive.google.com/file/d/1CPLRuEE3hze6UsMdYcv2BikZH40TXCCg/view?usp=sharing">Version 1.4.0 Download</a>
-
-## User Documentation
-<a href="https://git.uwaterloo.ca/mw2shah/team-9/-/wikis/User-Documentation">User Documentation</a>
-
-## Design Diagrams
-<a href="https://git.uwaterloo.ca/mw2shah/team-9/-/wikis/Design-Diagrams">Design Diagrams</a>
-
-## Project Reflection
-<a href="https://git.uwaterloo.ca/mw2shah/team-9/-/wikis/Project-Reflection">Project Reflection</a>
